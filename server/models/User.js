@@ -24,16 +24,8 @@ const userSchema = new mongoose.Schema(
     },
     accountType: {
       type: String,
-      enum: ["Admin", "Student", "Instructor"],
+      enum: ["Admin", "Student"],
       required: true,
-    },
-    active: {
-      type: Boolean,
-      default: true,
-    },
-    approved: {
-      type: Boolean,
-      default: true,
     },
     additionalDetails: {
       type: mongoose.Schema.Types.ObjectId,
