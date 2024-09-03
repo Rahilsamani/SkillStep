@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
+  Author: { type: String, required: true },
   courseName: { type: String, required: true },
   courseDescription: { type: String },
   instructor: {
