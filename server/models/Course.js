@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
   Author: { type: String, required: true },
-  courseName: { type: String, required: true },
+  courseName: { type: String },
   courseDescription: { type: String },
   instructor: {
     type: mongoose.Schema.Types.ObjectId,
@@ -33,10 +33,6 @@ const courseSchema = new mongoose.Schema({
   },
   thumbnail: {
     type: String,
-  },
-  tags: {
-    type: [String],
-    required: true,
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
