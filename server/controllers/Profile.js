@@ -113,35 +113,6 @@ exports.getAllUserDetails = async (req, res) => {
   }
 };
 
-exports.getAllUserDetails = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const userDetails = await User.findById(userId)
-      .populate("additionalDetails")
-      .exec();
-
-    if (!userDetails) {
-      return res.status(404).json({
-        success: false,
-        message: "User details not found",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "User details fetched successfully",
-      data: userDetails,
-    });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      success: false,
-      message: "Error fetching user details",
-      error: error.message,
-    });
-  }
-};
-
 exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -202,22 +173,6 @@ exports.getEnrolledCourses = async (req, res) => {
       data: userDetails.courses,
     });
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-exports.instructorDashboard = async (req, res) => {
-  try {
-    const courses = await Course.find({ instructor: req.user.id });
-    return res.status(200).json({
-      success: true,
-      data: courses,
-    });
-  } catch (error) {
-    console.error(error);
     return res.status(500).json({
       success: false,
       message: error.message,

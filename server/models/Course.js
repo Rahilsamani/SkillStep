@@ -4,11 +4,6 @@ const courseSchema = new mongoose.Schema({
   Author: { type: String, required: true },
   courseName: { type: String },
   courseDescription: { type: String },
-  instructor: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
   whatYouWillLearn: {
     type: String,
   },
@@ -28,9 +23,6 @@ const courseSchema = new mongoose.Schema({
       ref: "RatingAndReview",
     },
   ],
-  price: {
-    type: Number,
-  },
   thumbnail: {
     type: String,
   },
@@ -47,10 +39,6 @@ const courseSchema = new mongoose.Schema({
   ],
   instructions: {
     type: [String],
-  },
-  status: {
-    type: String,
-    enum: ["Draft", "Published"],
   },
   createdAt: {
     type: Date,

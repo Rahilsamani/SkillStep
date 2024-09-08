@@ -11,16 +11,8 @@ require("dotenv").config();
 // SignUp
 const signUp = async (req, res) => {
   try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword,
-      accountType,
-      contactNumber,
-      otp,
-    } = req.body;
+    const { firstName, lastName, email, password, confirmPassword, otp } =
+      req.body;
 
     if (
       !firstName ||
@@ -59,8 +51,6 @@ const signUp = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    let approved = accountType === "Instructor" ? false : true;
-
     const profileDetails = await Profile.create({
       gender: null,
       dateOfBirth: null,
@@ -74,8 +64,6 @@ const signUp = async (req, res) => {
       email,
       contactNumber,
       password: hashedPassword,
-      accountType,
-      approved,
       additionalDetails: profileDetails._id,
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     });

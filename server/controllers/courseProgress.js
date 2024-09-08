@@ -1,16 +1,16 @@
-const SubSection = require("../models/SubSection");
+const Section = require("../models/Section");
 const CourseProgress = require("../models/CourseProgress");
 
 exports.updateCourseProgress = async (req, res) => {
-  const { courseId, subsectionId } = req.body;
+  const { courseId, sectionId } = req.body;
   const userId = req.user.id;
 
   try {
-    const subsection = await SubSection.findById(subsectionId);
-    if (!subsection) {
+    const section = await Section.findById(sectionId);
+    if (!section) {
       return res
         .status(404)
-        .json({ success: false, message: "Invalid subsection" });
+        .json({ success: false, message: "Invalid section" });
     }
 
     let courseProgress = await CourseProgress.findOne({
@@ -25,13 +25,13 @@ exports.updateCourseProgress = async (req, res) => {
       });
     }
 
-    if (courseProgress.completedVideos.includes(subsectionId)) {
+    if (courseProgress.completedVideos.includes(sectionId)) {
       return res
         .status(400)
-        .json({ success: false, message: "Subsection already completed" });
+        .json({ success: false, message: "Section already completed" });
     }
 
-    courseProgress.completedVideos.push(subsectionId);
+    courseProgress.completedVideos.push(sectionId);
     await courseProgress.save();
 
     return res.status(200).json({
