@@ -1,48 +1,28 @@
 import FoundingStory from "../assets/Images/FoundingStory.png";
-import BannerImage1 from "../assets/Images/aboutus1.webp";
-import BannerImage2 from "../assets/Images/aboutus2.webp";
-import BannerImage3 from "../assets/Images/aboutus3.webp";
-
+import WhyChooseUs from "../components/core/AboutPage/ChooseUs";
 import HighlightText from "../components/core/Homepage/HighlightText";
-import Quote from "../components/core/AboutPage/Quote";
-import StatsComponenet from "../components/core/AboutPage/StatsComponenet";
-import LearningGrid from "../components/core/AboutPage/LearningGrid";
-import ContactFormSection from "../components/core/AboutPage/ContactFormSection";
 import Footer from "../components/common/Footer";
-import ReviewSlider from "../components/common/ReviewSlider";
 
 const About = () => {
   return (
     <div>
       {/* Section 1 */}
-      <section className="bg-richblack-700">
-        <div className="relative mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-white">
-          <header className="mx-auto py-20 text-4xl font-semibold lg:w-[70%]">
-            Driving Innovation in Online Education for a
+      <section>
+        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-richblack-100">
+          <header className="mx-auto py-20 text-4xl font-semibold lg:w-[90%]">
+            Driving Innovation in Online Education for a<br></br>
             <HighlightText text={"Brighter Future"} />
-            <p className="mx-auto mt-3 text-center text-base font-medium text-richblack-300 lg:w-[85%]">
-              SkillStep is at the forefront of driving innovation in online
-              education. We're passionate about creating a brighter future by
-              offering cutting-edge courses, leveraging emerging technologies,
-              and nurturing a vibrant learning community.
+            <p className="mx-auto mt-3 text-center text-base font-medium text-richblack-300 lg:w-[90%]">
+              At SkillStep, we make learning accessible, engaging, and
+              structured to help you grow step by step. Our platform supports
+              individuals committed to self-improvement, offering curated
+              courses, progress tracking, and gamified rewards for an effective
+              and fun learning experience.
             </p>
           </header>
-          <div className="sm:h-[70px] lg:h-[150px]"> </div>
-          <div className="absolute bottom-0 left-[50%] grid w-[100%] translate-x-[-50%] translate-y-[30%] grid-cols-3 gap-3 lg:gap-5">
-            <img src={BannerImage1} alt="" />
-            <img src={BannerImage2} alt="" />
-            <img src={BannerImage3} alt="" />
-          </div>
         </div>
       </section>
       {/* Section 2 */}
-      <section className="border-b border-richblack-700">
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
-          <div className="h-[100px] "></div>
-          <Quote />
-        </div>
-      </section>
-      {/* Section 3 */}
       <section>
         <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
           <div className="flex flex-col items-center gap-10 lg:flex-row justify-between">
@@ -52,20 +32,18 @@ const About = () => {
                 Our Founding Story
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-                Our e-learning platform was born out of a shared vision and
-                passion for transforming education. It all began with a group of
-                educators, technologists, and lifelong learners who recognized
-                the need for accessible, flexible, and high-quality learning
-                opportunities in a rapidly evolving digital world.
+                SkillStep was born out of a simple realization — learning online
+                often lacks structure and motivation. Our founders, passionate
+                lifelong learners, found themselves overwhelmed by the sheer
+                number of resources and courses available but with no clear path
+                to mastery.
               </p>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-                As experienced educators ourselves, we witnessed firsthand the
-                limitations and challenges of traditional education systems. We
-                believed that education should not be confined to the walls of a
-                classroom or restricted by geographical boundaries. We
-                envisioned a platform that could bridge these gaps and empower
-                individuals from all walks of life to unlock their full
-                potential.
+                They envisioned a platform that would not only provide
+                high-quality content but also guide learners through structured
+                pathways, ensuring consistency, progress, and long-term success.
+                Thus, SkillStep was created to bridge the gap between endless
+                information and effective, goal-oriented learning.
               </p>
             </div>
             <div>
@@ -79,17 +57,16 @@ const About = () => {
 
           <div className="flex flex-col items-center lg:gap-10 lg:flex-row justify-between">
             {/* Our vision and mission */}
-            <div className="my-24 flex lg:w-[40%] flex-col gap-10">
+            <div className="flex lg:w-[40%] flex-col gap-10">
               <h1 className="bg-gradient-to-b from-[#FF512F] to-[#F09819] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
                 Our Vision
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-                With this vision in mind, we set out on a journey to create an
-                e-learning platform that would revolutionize the way people
-                learn. Our team of dedicated experts worked tirelessly to
-                develop a robust and intuitive platform that combines
-                cutting-edge technology with engaging content, fostering a
-                dynamic and interactive learning experience.
+                To create a global community of learners empowered by
+                structured, consistent learning experiences that help them
+                achieve their full potential in a rapidly evolving world. We aim
+                to foster an environment where individuals can continuously
+                grow, adapt, and excel, regardless of their starting point.
               </p>
             </div>
             <div className="my-24 flex lg:w-[40%] flex-col gap-10">
@@ -97,29 +74,19 @@ const About = () => {
                 Our Mission
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
-                Our mission goes beyond just delivering courses online. We
-                wanted to create a vibrant community of learners, where
-                individuals can connect, collaborate, and learn from one
-                another. We believe that knowledge thrives in an environment of
-                sharing and dialogue, and we foster this spirit of collaboration
-                through forums, live sessions, and networking opportunities.
+                Our mission is to revolutionize the way people learn by offering
+                structured, engaging, and rewarding educational experiences. We
+                are committed to making learning accessible, motivating learners
+                to stay consistent, and helping them celebrate every milestone
+                on their journey to mastery.
               </p>
             </div>
           </div>
         </div>
       </section>
       {/* Section 4 */}
-      <StatsComponenet />
-      {/* Section 5 */}
-      <section className="mx-auto mt-20 flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-white">
-        <LearningGrid />
-        <ContactFormSection />
-      </section>
-      <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">
-        <h1 className="text-center text-4xl font-semibold mt-8">
-          Reviews from other learners
-          <ReviewSlider />
-        </h1>
+      <div className="flex justify-center items-center">
+        <WhyChooseUs />
       </div>
       <Footer />
     </div>
