@@ -7,13 +7,12 @@ import { useNavigate } from "react-router-dom";
 import { sendOtp } from "../../../services/operations/authAPI";
 import { setSignupData } from "../../../slices/authSlice";
 import { ACCOUNT_TYPE } from "../../../utils/constants";
-import Tab from "../../common/Tab";
 
 function SignupForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // student or instructor
+  // student
   const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
 
   const [formData, setFormData] = useState({
@@ -54,24 +53,8 @@ function SignupForm() {
     setAccountType(ACCOUNT_TYPE.STUDENT);
   }
 
-  const tabData = [
-    {
-      id: 1,
-      tabName: "Student",
-      type: ACCOUNT_TYPE.STUDENT,
-    },
-    {
-      id: 2,
-      tabName: "Instructor",
-      type: ACCOUNT_TYPE.INSTRUCTOR,
-    },
-  ];
-
   return (
     <div>
-      {/* Tab */}
-      <Tab tabData={tabData} field={accountType} setField={setAccountType} />
-
       {/* Form */}
       <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-4">
         <div className="flex gap-x-4">

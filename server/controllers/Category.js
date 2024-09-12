@@ -94,9 +94,6 @@ exports.categoryPageDetails = async (req, res) => {
     const allCategories = await Category.find()
       .populate({
         path: "courses",
-        populate: {
-          path: "instructor",
-        },
       })
       .exec();
 

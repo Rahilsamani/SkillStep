@@ -21,7 +21,7 @@ const {
 const { auth, isStudent, isAdmin } = require("../middlewares/auth");
 const { updateCourseProgress } = require("../controllers/courseProgress");
 
-// Instructor Route (Course)
+// Course Creation Route (Course)
 router.post("/createCourse", auth, createCourse);
 router.post("/addSection", auth, createSection);
 router.get("/getAllCourses", getAllCourses);
