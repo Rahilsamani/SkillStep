@@ -10,9 +10,12 @@ require("dotenv").config();
 
 // SignUp
 const signUp = async (req, res) => {
+  console.log("Hello1");
   try {
     const { firstName, lastName, email, password, confirmPassword, otp } =
       req.body;
+
+    console.log("Hello2");
 
     if (
       !firstName ||
@@ -27,12 +30,16 @@ const signUp = async (req, res) => {
         .json({ success: false, message: "All fields are required" });
     }
 
+    console.log("Hello3");
+
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
         message: "Password and Confirm Password do not match",
       });
     }
+
+    console.log("Hello4");
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -41,6 +48,8 @@ const signUp = async (req, res) => {
         .json({ success: false, message: "User is already registered" });
     }
 
+    console.log("Hello5");
+
     const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
 
     if (response.length === 0) {
@@ -48,6 +57,8 @@ const signUp = async (req, res) => {
     } else if (otp !== response[0].otp) {
       return res.status(400).json({ success: false, message: "Invalid OTP" });
     }
+
+    console.log("Hello6");
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -58,15 +69,19 @@ const signUp = async (req, res) => {
       contactNumber: null,
     });
 
+    console.log("Hello7");
+
     const user = await User.create({
       firstName,
       lastName,
       email,
-      contactNumber,
       password: hashedPassword,
       additionalDetails: profileDetails._id,
+      accountType: "Student",
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     });
+
+    console.log("Hello7");
 
     return res
       .status(200)
