@@ -4,9 +4,12 @@ const ContactForm = () => {
   return (
     <div className="border border-richblack-600 text-richblack-300 rounded-xl p-7 lg:p-14 flex gap-3 flex-col">
       <h1 className="text-4xl leading-10 font-semibold text-richblack-5">
-        Got a Idea? We&apos;ve got the skills. Let&apos;s team up
+        We're here to help!
       </h1>
-      <p>Tell us more about yourself and what you&apos;re got in mind.</p>
+      <p>
+        For questions, feedback, or support, reach out anytime. Our team is
+        dedicated to ensuring you have the best experience on SkillStep.
+      </p>
       <div className="mt-7">
         <ContactUsForm />
       </div>
