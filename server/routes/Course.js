@@ -29,7 +29,7 @@ router.post("/getFullCourseDetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
 // Admin Routes (Category)
-router.post("/createCategory", auth, isAdmin, createCategory);
+router.post("/createCategory", auth, createCategory);
 router.get("/showAllCategories", showAllCategories);
 router.post("/getCategoryPageDetails", categoryPageDetails);
 

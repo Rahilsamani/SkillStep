@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema(
     accountType: {
       type: String,
       enum: ["Admin", "Student"],
+      default: "Student",
       required: true,
     },
     additionalDetails: {

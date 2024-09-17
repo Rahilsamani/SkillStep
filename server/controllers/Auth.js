@@ -64,7 +64,6 @@ const signUp = async (req, res) => {
       email,
       password: hashedPassword,
       additionalDetails: profileDetails._id,
-      accountType: "Student",
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
     });
 
@@ -178,7 +177,7 @@ const sendOTP = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     const userDetails = await User.findById(req.user.id);
-    const { oldPassword, newPassword, confirmNewPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
     const isPasswordMatch = await bcrypt.compare(
       oldPassword,
@@ -189,13 +188,6 @@ const changePassword = async (req, res) => {
       return res
         .status(401)
         .json({ success: false, message: "The password is incorrect" });
-    }
-
-    if (newPassword !== confirmNewPassword) {
-      return res.status(401).json({
-        success: false,
-        message: "The new password and confirm password do not match",
-      });
     }
 
     const encryptedPassword = await bcrypt.hash(newPassword, 10);
