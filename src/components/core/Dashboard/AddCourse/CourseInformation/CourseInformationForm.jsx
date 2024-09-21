@@ -7,8 +7,9 @@ import {
   addCourseDetails,
   fetchCourseCategories,
 } from "../../../../../services/operations/courseDetailsAPI";
-import { setCourse, setStep } from "../../../../../slices/courseSlice";
+import { setCourse } from "../../../../../slices/courseSlice";
 import IconBtn from "../../../../common/IconBtn";
+const axios = require("axios");
 
 export default function CourseInformationForm() {
   const {
@@ -36,28 +37,97 @@ export default function CourseInformationForm() {
     getCategories();
 
     if (editCourse) {
-      // If form is in edit mode, prefill values
       setValue("playlistUrl", course.playlistUrl);
       setValue("courseCategory", course.category);
     }
   }, [editCourse, course, setValue]);
 
+  const apiSecretKey = "AIzaSyBMb5GkBMSwCqAA2eR6FVksssDa9n9biF8";
+
+  async function fetchAllPlaylistItems(playlistId) {
+    let allItems = [];
+    let nextPageToken = "";
+
+    do {
+      // Fetch the playlist data
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${playlistId}&part=snippet&maxResults=50${
+          nextPageToken ? `&pageToken=${nextPageToken}` : ""
+        }&key=${apiSecretKey}`
+      );
+
+      // Parse the JSON response
+      const data = await response.json();
+
+      // Check if items exist in the response
+      if (data.items) {
+        allItems = allItems.concat(data.items);
+      }
+
+      // Get the next page token, if any
+      nextPageToken = data.nextPageToken || null;
+    } while (nextPageToken);
+
+    console.log("All Items -> ", allItems);
+
+    return allItems;
+  }
+
+  const validatePlaylistUrl = (url) => {
+    const regex =
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:playlist\?list=)([A-Za-z0-9_-]{34})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
+  function getPlaylistId(url) {
+    const urlParams = new URLSearchParams(new URL(url).search);
+    return urlParams.get("list");
+  }
+
   const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("playlistUrl", data.playlistUrl);
-    formData.append("category", data.courseCategory);
-    formData.append("status", "DRAFT");
+    // Validate playlist URL
+    const isValid = validatePlaylistUrl(data.playlistUrl);
+    if (!isValid) {
+      toast.error("Please Enter a Valid URL");
+      return;
+    }
 
-    setLoading(true);
-    const result = await addCourseDetails(formData, token);
-    setLoading(false);
+    // Extract playlistId from the URL
+    const playlistId = getPlaylistId(data.playlistUrl);
 
-    if (result) {
-      dispatch(setStep(2));
-      dispatch(setCourse(result));
-      toast.success("Course details saved successfully!");
-    } else {
-      toast.error("Error saving course details.");
+    try {
+      // Fetch all playlist items
+      const courseSections = await fetchAllPlaylistItems(playlistId);
+
+      console.log("Course Sections -> ", courseSections);
+
+      // Prepare form data for submission
+      const formData = new FormData();
+      formData.append("playlistUrl", data.playlistUrl);
+      formData.append("category", data.courseCategory);
+      formData.append("courseSections", JSON.stringify(courseSections));
+
+      const firstSectionDetails = courseSections[0];
+
+      console.log("First Section -> ", firstSectionDetails);
+
+      // Send form data
+      setLoading(true);
+      const result = await addCourseDetails(formData, token);
+      setLoading(false);
+
+      // Check if course details were successfully added
+      if (result) {
+        dispatch(setCourse(result));
+        toast.success("Course Created successfully!");
+      } else {
+        toast.error("Error saving course details.");
+      }
+    } catch (error) {
+      console.error("Error fetching playlist items or saving course:", error);
+      toast.error("An error occurred. Please try again.");
+      setLoading(false);
     }
   };
 
@@ -91,7 +161,6 @@ export default function CourseInformationForm() {
         </label>
         <select
           {...register("courseCategory", { required: true })}
-          defaultValue=""
           id="courseCategory"
           className="form-style w-full"
         >
@@ -99,12 +168,13 @@ export default function CourseInformationForm() {
             Choose a Category
           </option>
           {!loading &&
-            courseCategories?.map((category, indx) => (
-              <option key={indx} value={category?._id}>
+            courseCategories?.map((category) => (
+              <option key={category?._id} value={category?._id}>
                 {category?.name}
               </option>
             ))}
         </select>
+
         {errors.courseCategory && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
             Course Category is required
@@ -114,7 +184,7 @@ export default function CourseInformationForm() {
 
       {/* Submit Button */}
       <div className="flex justify-end gap-x-2">
-        <IconBtn disabled={loading} text="Next">
+        <IconBtn disabled={loading} text="Submit">
           <MdNavigateNext />
         </IconBtn>
       </div>
