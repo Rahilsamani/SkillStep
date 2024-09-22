@@ -23,7 +23,6 @@ import Settings from "./components/core/Dashboard/Settings";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import Cart from "./components/core/Dashboard/Cart";
 import AddCourse from "./components/core/Dashboard/AddCourse";
-import MyCourses from "./components/core/Dashboard/MyCourses";
 import EditCourse from "./components/core/Dashboard/EditCourse";
 import Catalog from "./pages/Catalog";
 import CourseDetails from "./pages/CourseDetails";
@@ -128,7 +127,6 @@ function App() {
 
           <>
             <Route path="dashboard/add-course" element={<AddCourse />} />
-            <Route path="dashboard/my-courses" element={<MyCourses />} />
             <Route
               path="dashboard/edit-course/:courseId"
               element={<EditCourse />}

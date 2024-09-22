@@ -13,31 +13,18 @@ export const sidebarLinks = [
   },
   {
     id: 3,
-    name: "My Courses",
-    path: "/dashboard/my-courses",
-    icon: "VscVm",
-  },
-  {
-    id: 4,
     name: "Add Course",
     path: "/dashboard/add-course",
     icon: "VscAdd",
   },
   {
-    id: 5,
+    id: 4,
     name: "Enrolled Courses",
     path: "/dashboard/enrolled-courses",
     icon: "VscMortarBoard",
   },
   {
-    id: 6,
-    name: "Purchase History",
-    path: "/dashboard/purchase-history",
-    icon: "VscHistory",
-  },
-
-  {
-    id: 7,
+    id: 5,
     name: "Cart",
     path: "/dashboard/cart",
     icon: "VscArchive",
