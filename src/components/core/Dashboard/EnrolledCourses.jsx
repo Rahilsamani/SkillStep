@@ -14,6 +14,7 @@ export default function EnrolledCourses() {
       // fetch user's enrolled courses
       const res = await getUserEnrolledCourses(token);
       setEnrolledCourses(res);
+      console.log("Enrolled Courses -> ", res);
     } catch (error) {
       console.log("Could not fetch enrolled courses.");
     }
@@ -37,10 +38,9 @@ export default function EnrolledCourses() {
       ) : (
         <div className="my-8 text-richblack-5">
           {/* Headings */}
-          <div className="flex rounded-t-lg bg-richblack-500 ">
+          <div className="flex justify-between rounded-t-lg bg-richblack-500 ">
             <p className="w-[45%] px-5 py-3">Course Name</p>
-            <p className="w-1/4 px-2 py-3">Duration</p>
-            <p className="flex-1 px-2 py-3">Progress</p>
+            <p className="w-[45%] px-2 py-3">Progress</p>
           </div>
           {/* Course Names */}
           {enrolledCourses.map((course, i, arr) => (
@@ -64,15 +64,9 @@ export default function EnrolledCourses() {
                   className="h-14 w-14 rounded-lg object-cover"
                 />
                 <div className="flex max-w-xs flex-col gap-2">
-                  <p className="font-semibold">{course.courseName}</p>
-                  <p className="text-xs text-richblack-300">
-                    {course.courseDescription.length > 50
-                      ? `${course.courseDescription.slice(0, 50)}...`
-                      : course.courseDescription}
-                  </p>
+                  <p className="font-semibold">{course.Author}</p>
                 </div>
               </div>
-              <div className="w-1/4 px-2 py-3">{course?.totalDuration}</div>
               <div className="flex w-1/5 flex-col gap-2 px-2 py-3">
                 <p>Progress: {course.progressPercentage || 0}%</p>
                 <ProgressBar
