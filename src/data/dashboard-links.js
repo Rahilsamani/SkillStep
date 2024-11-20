@@ -7,26 +7,14 @@ export const sidebarLinks = [
   },
   {
     id: 2,
-    name: "Dashboard",
-    path: "/dashboard/instructor",
-    icon: "VscDashboard",
-  },
-  {
-    id: 3,
     name: "Add Course",
     path: "/dashboard/add-course",
     icon: "VscAdd",
   },
   {
-    id: 4,
+    id: 3,
     name: "Enrolled Courses",
     path: "/dashboard/enrolled-courses",
     icon: "VscMortarBoard",
-  },
-  {
-    id: 5,
-    name: "Cart",
-    path: "/dashboard/cart",
-    icon: "VscArchive",
   },
 ];

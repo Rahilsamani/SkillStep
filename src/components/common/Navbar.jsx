@@ -110,7 +110,7 @@ function Navbar() {
           </ul>
         </nav>
         <div className="hidden items-center gap-x-4 md:flex">
-          {user && (
+          {/* {user && (
             <Link to="/dashboard/cart" className="relative">
               <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
               {totalItems > 0 && (
@@ -119,7 +119,7 @@ function Navbar() {
                 </span>
               )}
             </Link>
-          )}
+          )} */}
           {token === null && (
             <Link to="/login">
               <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">

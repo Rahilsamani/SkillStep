@@ -8,7 +8,7 @@ const About = () => {
     <div>
       {/* Section 1 */}
       <section>
-        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-richblack-100">
+        <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-richblack-50">
           <header className="mx-auto py-20 text-4xl font-semibold lg:w-[90%]">
             Driving Innovation in Online Education for a<br></br>
             <HighlightText text={"Brighter Future"} />

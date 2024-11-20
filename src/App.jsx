@@ -145,7 +145,7 @@ function App() {
           {user?.accountType === ACCOUNT_TYPE.STUDENT && (
             <>
               <Route
-                path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
+                path="view-course/:courseId/section/:sectionId"
                 element={<VideoDetails />}
               />
             </>
