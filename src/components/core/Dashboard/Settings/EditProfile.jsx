@@ -50,7 +50,7 @@ export default function EditProfile() {
                 defaultValue={user?.firstName}
               />
               {errors.firstName && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
+                <span className="-mt-1 text-[12px] text-blue-100">
                   Please enter your first name.
                 </span>
               )}
@@ -69,7 +69,7 @@ export default function EditProfile() {
                 defaultValue={user?.lastName}
               />
               {errors.lastName && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
+                <span className="-mt-1 text-[12px] text-blue-100">
                   Please enter your last name.
                 </span>
               )}
@@ -99,7 +99,7 @@ export default function EditProfile() {
                 defaultValue={user?.additionalDetails?.dateOfBirth}
               />
               {errors.dateOfBirth && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
+                <span className="-mt-1 text-[12px] text-blue-100">
                   {errors.dateOfBirth.message}
                 </span>
               )}
@@ -125,7 +125,7 @@ export default function EditProfile() {
                 })}
               </select>
               {errors.gender && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
+                <span className="-mt-1 text-[12px] text-blue-100">
                   Please enter your Date of Birth.
                 </span>
               )}
@@ -154,7 +154,7 @@ export default function EditProfile() {
                 defaultValue={user?.additionalDetails?.contactNumber}
               />
               {errors.contactNumber && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
+                <span className="-mt-1 text-[12px] text-blue-100">
                   {errors.contactNumber.message}
                 </span>
               )}
@@ -173,7 +173,7 @@ export default function EditProfile() {
                 defaultValue={user?.additionalDetails?.about}
               />
               {errors.about && (
-                <span className="-mt-1 text-[12px] text-yellow-100">
+                <span className="-mt-1 text-[12px] text-blue-100">
                   Please enter your About.
                 </span>
               )}

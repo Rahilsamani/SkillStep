@@ -50,8 +50,8 @@ export default function InstructorChart({ courses }) {
           onClick={() => setCurrChart("students")}
           className={`rounded-sm p-1 px-3 transition-all duration-200 ${
             currChart === "students"
-              ? "bg-richblack-700 text-yellow-50"
-              : "text-yellow-400"
+              ? "bg-richblack-700 text-blue-50"
+              : "text-blue-400"
           }`}
         >
           Students
@@ -60,8 +60,8 @@ export default function InstructorChart({ courses }) {
           onClick={() => setCurrChart("income")}
           className={`rounded-sm p-1 px-3 transition-all duration-200 ${
             currChart === "income"
-              ? "bg-richblack-700 text-yellow-50"
-              : "text-yellow-400"
+              ? "bg-richblack-700 text-blue-50"
+              : "text-blue-400"
           }`}
         >
           Income

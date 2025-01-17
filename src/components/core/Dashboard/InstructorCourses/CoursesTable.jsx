@@ -94,8 +94,8 @@ export default function CoursesTable({ courses, setCourses }) {
                         <HiClock size={14} /> Drafted
                       </p>
                     ) : (
-                      <div className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-yellow-100">
-                        <div className="flex h-3 w-3 items-center justify-center rounded-full bg-yellow-100 text-richblack-700">
+                      <div className="flex w-fit flex-row items-center gap-2 rounded-full bg-richblack-700 px-2 py-[2px] text-[12px] font-medium text-blue-100">
+                        <div className="flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 text-richblack-700">
                           <FaCheck size={8} />
                         </div>
                         Published

@@ -100,7 +100,7 @@ const Instructor = () => {
             <div className="flex items-center justify-between">
               <p className="text-lg font-bold text-richblack-5">Your Courses</p>
               <Link to="/dashboard/my-courses">
-                <p className="text-xs font-semibold text-yellow-50">View All</p>
+                <p className="text-xs font-semibold text-blue-50">View All</p>
               </Link>
             </div>
 
@@ -139,7 +139,7 @@ const Instructor = () => {
             You have not created any courses yet
           </p>
           <Link to="/dashboard/add-course">
-            <p className="mt-1 text-center text-lg font-semibold text-yellow-50">
+            <p className="mt-1 text-center text-lg font-semibold text-blue-50">
               Create a course
             </p>
           </Link>

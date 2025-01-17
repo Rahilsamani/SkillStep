@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai";
+import { AiOutlineMenu } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import logo from "../../assets/Logo/brand_logo.png";
@@ -10,9 +10,6 @@ import { categories } from "../../services/apis";
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.profile);
-  const { totalItems } = useSelector((state) => state.cart);
-
   const location = useLocation();
 
   const [subLinks, setSubLinks] = useState([]);
@@ -67,16 +64,6 @@ function Navbar() {
           </ul>
         </nav>
         <div className="hidden items-center gap-x-4 md:flex">
-          {user && (
-            <Link to="/dashboard/cart" className="relative">
-              <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
-              {totalItems > 0 && (
-                <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-          )}
           {token === null && (
             <Link to="/login">
               <button
