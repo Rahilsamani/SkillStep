@@ -185,7 +185,7 @@ const Home = () => {
         </div>
 
         {/* Section 6 */}
-        <div className="flex flex-col-reverse lg:flex-row justify-center items-center mt-10 gap-10 sm:gap-20 mb-10">
+        <div className="flex flex-col-reverse lg:flex-row justify-center items-center mt-10 gap-10 sm:gap-20 mb-20">
           {/* right part */}
           <div className="w-[90%] lg:w-[38%]">
             <Atom />
