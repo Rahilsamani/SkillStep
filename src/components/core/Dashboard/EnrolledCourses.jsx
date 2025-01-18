@@ -71,6 +71,7 @@ export default function EnrolledCourses() {
                 <ProgressBar
                   completed={course.progressPercentage || 0}
                   height="8px"
+                  width="400px"
                   isLabelVisible={false}
                 />
               </div>
