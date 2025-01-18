@@ -8,48 +8,43 @@ const { convertSecondsToDuration } = require("../utils/secToDuration");
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { firstName, lastName, dateOfBirth, about, contactNumber, gender } =
-      req.body;
-    const userId = req.user.id;
+    const {
+      firstName = "",
+      lastName = "",
+      dateOfBirth = "",
+      about = "",
+      contactNumber = "",
+      gender = "",
+    } = req.body;
+    const id = req.user.id;
 
-    const userDetails = await User.findById(userId);
-    if (!userDetails) {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
-
+    const userDetails = await User.findById(id);
     const profile = await Profile.findById(userDetails.additionalDetails);
-    if (!profile) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Profile not found" });
-    }
 
-    userDetails.firstName = firstName || userDetails.firstName;
-    userDetails.lastName = lastName || userDetails.lastName;
-    await userDetails.save();
+    const user = await User.findByIdAndUpdate(id, { firstName, lastName });
 
-    profile.dateOfBirth = dateOfBirth || profile.dateOfBirth;
-    profile.about = about || profile.about;
-    profile.contactNumber = contactNumber || profile.contactNumber;
-    profile.gender = gender || profile.gender;
+    await user.save();
+
+    profile.dateOfBirth = dateOfBirth;
+    profile.about = about;
+    profile.contactNumber = contactNumber;
+    profile.gender = gender;
 
     await profile.save();
 
-    const updatedUserDetails = await User.findById(userId)
+    const updatedUserDetails = await User.findById(id)
       .populate("additionalDetails")
       .exec();
-    return res.status(200).json({
+
+    return res.json({
       success: true,
       message: "Profile updated successfully",
-      data: updatedUserDetails,
+      updatedUserDetails,
     });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({
       success: false,
-      message: "Error updating profile",
+      message: "Something went wrong while updating profile",
       error: error.message,
     });
   }
@@ -57,39 +52,38 @@ exports.updateProfile = async (req, res) => {
 
 exports.deleteAccount = async (req, res) => {
   try {
-    const userId = req.user.id;
-
-    const user = await User.findById(userId);
+    const id = req.user.id;
+    const user = await User.findById({ _id: id });
     if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
     }
 
-    await Profile.findByIdAndDelete(user.additionalDetails);
+    await Profile.findByIdAndDelete({
+      _id: new mongoose.Types.ObjectId(user.additionalDetails),
+    });
 
     for (const courseId of user.courses) {
       await Course.findByIdAndUpdate(
         courseId,
-        { $pull: { studentsEnrolled: userId } },
+        { $pull: { studentsEnrolled: id } },
         { new: true }
       );
     }
 
-    await User.findByIdAndDelete(userId);
-    await CourseProgress.deleteMany({ userId });
+    await User.findByIdAndDelete({ _id: id });
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Account deleted successfully",
+      message: "User deleted successfully",
     });
+
+    await CourseProgress.deleteMany({ userId: id });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      success: false,
-      message: "Error deleting account",
-      error: error.message,
-    });
+    res
+      .status(500)
+      .json({ success: false, message: "User Cannot be deleted successfully" });
   }
 };
 
@@ -113,6 +107,36 @@ exports.getAllUserDetails = async (req, res) => {
   }
 };
 
+exports.updateDisplayPicture = async (req, res) => {
+  try {
+    const displayPicture = req.files.displayPicture;
+    const userId = req.user.id;
+    const image = await uploadImageToCloudinary(
+      displayPicture,
+      process.env.FOLDER_NAME,
+      1000,
+      1000
+    );
+
+    const updatedProfile = await User.findByIdAndUpdate(
+      { _id: userId },
+      { image: image.secure_url },
+      { new: true }
+    );
+
+    res.send({
+      success: true,
+      message: `Image Updated successfully`,
+      data: updatedProfile,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -121,10 +145,45 @@ exports.getEnrolledCourses = async (req, res) => {
         path: "courses",
         populate: {
           path: "courseContent",
+          populate: {
+            path: "subSection",
+          },
         },
       })
       .exec();
     userDetails = userDetails.toObject();
+    var SubsectionLength = 0;
+    for (var i = 0; i < userDetails.courses.length; i++) {
+      let totalDurationInSeconds = 0;
+      SubsectionLength = 0;
+      for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+        totalDurationInSeconds += userDetails.courses[i].courseContent[
+          j
+        ].subSection.reduce(
+          (acc, curr) => acc + parseInt(curr.timeDuration),
+          0
+        );
+        userDetails.courses[i].totalDuration = convertSecondsToDuration(
+          totalDurationInSeconds
+        );
+        SubsectionLength +=
+          userDetails.courses[i].courseContent[j].subSection.length;
+      }
+      let courseProgressCount = await CourseProgress.findOne({
+        courseID: userDetails.courses[i]._id,
+        userId: userId,
+      });
+      courseProgressCount = courseProgressCount?.completedVideos.length;
+      if (SubsectionLength === 0) {
+        userDetails.courses[i].progressPercentage = 100;
+      } else {
+        const multiplier = Math.pow(10, 2);
+        userDetails.courses[i].progressPercentage =
+          Math.round(
+            (courseProgressCount / SubsectionLength) * 100 * multiplier
+          ) / multiplier;
+      }
+    }
 
     if (!userDetails) {
       return res.status(400).json({

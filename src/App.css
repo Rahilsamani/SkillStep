@@ -7,10 +7,6 @@ body {
   overflow-x: hidden;
 }
 
-.homepage_bg {
-  background: url("../src/assets/Images/bghome.svg");
-}
-
 .codeblock1 {
   width: 372.95px;
   height: 257.05px;
