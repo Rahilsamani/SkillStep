@@ -10,7 +10,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   const [videoBarActive, setVideoBarActive] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const { sectionId, subSectionId } = useParams();
+  const { sectionId } = useParams();
   const {
     courseSectionData,
     courseEntireData,
@@ -24,15 +24,9 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
       const currentSectionIndx = courseSectionData.findIndex(
         (data) => data._id === sectionId
       );
-      const currentSubSectionIndx = courseSectionData?.[
-        currentSectionIndx
-      ]?.subSection.findIndex((data) => data._id === subSectionId);
-      const activeSubSectionId =
-        courseSectionData[currentSectionIndx]?.subSection?.[
-          currentSubSectionIndx
-        ]?._id;
-      setActiveStatus(courseSectionData?.[currentSectionIndx]?._id);
-      setVideoBarActive(activeSubSectionId);
+      const activeSectionId = courseSectionData[currentSectionIndx]?._id;
+      setActiveStatus(activeSectionId);
+      setVideoBarActive(activeSectionId);
     })();
   }, [courseSectionData, courseEntireData, location.pathname]);
 
@@ -63,7 +57,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
             </div>
 
             <div className="flex flex-col">
-              <p>{courseEntireData?.courseName}</p>
+              <p>{courseEntireData?.Author}</p>
               <p className="text-sm font-semibold text-richblack-500">
                 {completedLectures?.length} / {totalNoOfLectures}
               </p>
@@ -73,56 +67,30 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
           <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
             {courseSectionData.map((section, index) => (
               <div
-                className="mt-2 cursor-pointer text-sm text-richblack-5"
-                onClick={() => setActiveStatus(section?._id)}
+                className={`mt-2 cursor-pointer text-sm text-richblack-5 ${
+                  videoBarActive === section._id
+                    ? "bg-blue-200 font-semibold text-richblack-800"
+                    : "hover:bg-richblack-900"
+                }`}
+                onClick={() => {
+                  setActiveStatus(section?._id);
+                  navigate(
+                    `/view-course/${courseEntireData?._id}/section/${section?._id}`
+                  );
+                  setVideoBarActive(section._id);
+                }}
                 key={index}
               >
                 {/* Section */}
                 <div className="flex flex-row justify-between bg-richblack-600 px-5 py-4">
-                  <div className="w-[70%] font-semibold">
-                    {section?.sectionName}
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`${
-                        activeStatus === section?.sectionName
-                          ? "rotate-0"
-                          : "rotate-180"
-                      } transition-all duration-500`}
-                    >
-                      <BsChevronDown />
-                    </span>
-                  </div>
-                </div>
+                  <div className="w-[70%] font-semibold">{section?.title}</div>
 
-                {/* Sub Sections */}
-                {activeStatus === section?._id && (
-                  <div className="transition-[height] duration-500 ease-in-out">
-                    {section.subSection.map((topic, i) => (
-                      <div
-                        className={`flex gap-3  px-5 py-2 ${
-                          videoBarActive === topic._id
-                            ? "bg-blue-200 font-semibold text-richblack-800"
-                            : "hover:bg-richblack-900"
-                        } `}
-                        key={i}
-                        onClick={() => {
-                          navigate(
-                            `/view-course/${courseEntireData?._id}/section/${section?._id}/sub-section/${topic?._id}`
-                          );
-                          setVideoBarActive(topic._id);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={completedLectures.includes(topic?._id)}
-                          onChange={() => {}}
-                        />
-                        {topic.title}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                  <input
+                    type="checkbox"
+                    checked={completedLectures.includes(section?._id)}
+                    onChange={() => {}}
+                  />
+                </div>
               </div>
             ))}
           </div>

@@ -11,7 +11,6 @@ export default function EnrolledCourses() {
 
   const getEnrolledCourses = async () => {
     try {
-      // fetch user's enrolled courses
       const res = await getUserEnrolledCourses(token);
       setEnrolledCourses(res);
     } catch (error) {
@@ -53,7 +52,7 @@ export default function EnrolledCourses() {
                 className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
                 onClick={() => {
                   navigate(
-                    `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}`
+                    `/view-course/${course?._id}/${course.courseContent?.[0]._id}`
                   );
                 }}
               >

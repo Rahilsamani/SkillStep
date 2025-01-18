@@ -1,32 +1,13 @@
-import { useEffect, useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import logo from "../../assets/Logo/brand_logo.png";
 import { NavbarLinks } from "../../data/navbar-links";
 import ProfileDropdown from "../core/Auth/profileDropDown";
-import { apiConnector } from "../../services/apiConnector";
-import { categories } from "../../services/apis";
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth);
   const location = useLocation();
-
-  const [subLinks, setSubLinks] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        const res = await apiConnector("GET", categories.CATEGORIES_API);
-        setSubLinks(res?.data?.data);
-      } catch (error) {
-        console.log("Could not fetch Categories.", error);
-      }
-      setLoading(false);
-    })();
-  }, []);
 
   function matchRoute(route) {
     return matchPath({ path: route }, location.pathname);

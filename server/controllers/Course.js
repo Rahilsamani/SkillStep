@@ -99,6 +99,7 @@ exports.getFullCourseDetails = async (req, res) => {
 
     const courseDetails = await Course.findOne({ _id: courseId })
       .populate("category")
+      .populate("courseContent")
       .exec();
 
     const courseProgressCount = await CourseProgress.findOne({

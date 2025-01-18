@@ -71,7 +71,7 @@ const Home = () => {
             <div className="flex flex-row gap-7 mt-8">
               <CTAButton
                 active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
+                linkto={"/signup"}
               >
                 Explore
               </CTAButton>
@@ -101,7 +101,7 @@ const Home = () => {
             <div className="flex flex-row gap-7 mt-8">
               <CTAButton
                 active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
+                linkto={"/signup"}
               >
                 Explore
               </CTAButton>
@@ -141,7 +141,7 @@ const Home = () => {
             <div className="flex flex-row gap-7 mt-8">
               <CTAButton
                 active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
+                linkto={"/signup"}
               >
                 Explore
               </CTAButton>
@@ -171,7 +171,7 @@ const Home = () => {
             <div className="flex flex-row gap-7 mt-8">
               <CTAButton
                 active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
+                linkto={"/signup"}
               >
                 Explore
               </CTAButton>
@@ -213,7 +213,7 @@ const Home = () => {
             <div className="flex flex-row gap-7 mt-8">
               <CTAButton
                 active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
+                linkto={"/signup"}
               >
                 Explore
               </CTAButton>

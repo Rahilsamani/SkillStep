@@ -26,15 +26,12 @@ export default function ViewCourse() {
         dispatch
       );
 
-      console.log("Course Data -> ", courseData);
-
       dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
       dispatch(setEntireCourseData(courseData.courseDetails));
       dispatch(setCompletedLectures(courseData.completedVideos));
 
       let lectures = courseData?.courseDetails?.courseContent?.length;
-      console.log("Lectures -> ", lectures);
-      
+
       dispatch(setTotalNoOfLectures(lectures));
     })();
   }, []);
