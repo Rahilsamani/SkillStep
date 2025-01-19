@@ -32,7 +32,6 @@ export const fetchCourseCategories = async () => {
 // add the course details
 export const addCourseDetails = async (data, token) => {
   let result = null;
-  const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector("POST", CREATE_COURSE_API, data, {
       "Content-Type": "multipart/form-data",
@@ -42,20 +41,17 @@ export const addCourseDetails = async (data, token) => {
     if (!response?.data?.success) {
       throw new Error("Could Not Add Course Details");
     }
-    toast.success("Course Details Added Successfully");
     result = response?.data?.data;
   } catch (error) {
     console.log("CREATE COURSE API ERROR............", error);
     toast.error(error.message);
   }
-  toast.dismiss(toastId);
   return result;
 };
 
 // create a section
 export const createSection = async (data, token) => {
   let result = null;
-  const toastId = toast.loading("Loading...");
   try {
     const response = await apiConnector("POST", CREATE_SECTION_API, data, {
       Authorization: `Bearer ${token}`,
@@ -64,13 +60,11 @@ export const createSection = async (data, token) => {
     if (!response?.data?.success) {
       throw new Error("Could Not Create Section");
     }
-    // toast.success("Course Section Created");
     result = response?.data?.updatedCourseDetails;
   } catch (error) {
     console.log("CREATE SECTION API ERROR............", error);
     toast.error(error.message);
   }
-  toast.dismiss(toastId);
   return result;
 };
 

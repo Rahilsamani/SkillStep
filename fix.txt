@@ -1,5 +1,3 @@
-3. baar baar course added successfully
-
 4. pehli baar mein enrolled courses mein nhi jaa pa rha hu
 
 5. mark as complete is not working
