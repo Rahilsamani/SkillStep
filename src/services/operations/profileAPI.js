@@ -5,8 +5,11 @@ import { apiConnector } from "../apiConnector";
 import { profileEndpoints } from "../apis";
 import { logout } from "./authAPI";
 
-const { GET_USER_DETAILS_API, GET_USER_ENROLLED_COURSES_API } =
-  profileEndpoints;
+const {
+  GET_USER_DETAILS_API,
+  GET_USER_ENROLLED_COURSES_API,
+  GET_USER_COURSES_PROGRESS_API,
+} = profileEndpoints;
 
 export function getUserDetails(token, navigate) {
   return async (dispatch) => {
@@ -54,5 +57,27 @@ export async function getUserEnrolledCourses(token) {
     toast.error("Could Not Get Enrolled Courses");
   }
   toast.dismiss(toastId);
+  return result;
+}
+
+export async function getUserCoursesProgress(token) {
+  let result = [];
+  try {
+    const response = await apiConnector(
+      "GET",
+      GET_USER_COURSES_PROGRESS_API,
+      null,
+      { Authorization: `Bearer ${token}` }
+    );
+
+    if (!response.data.success) {
+      throw new Error(response.data.message);
+    }
+    result = response.data.data;
+    console.log("result -> ", result);
+  } catch (error) {
+    console.log("GET_USER_COURSES_PROGRESS_API ERROR............", error);
+    toast.error("Could Not Get User Courses Progress");
+  }
   return result;
 }

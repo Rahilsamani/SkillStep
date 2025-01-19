@@ -40,10 +40,6 @@ exports.createCourse = async (req, res) => {
       completedVideos: [],
     });
 
-    // Update the course with the progress ID
-    newCourse.courseProgress = CoursePro._id;
-    await newCourse.save();
-
     // Add course ID to the category
     await Category.findByIdAndUpdate(
       category,
@@ -51,10 +47,14 @@ exports.createCourse = async (req, res) => {
       { new: true }
     );
 
-    // Add course ID to user's courses
     await User.findByIdAndUpdate(
       userId,
-      { $push: { courses: newCourse._id } },
+      {
+        $push: {
+          courses: newCourse._id,
+          courseProgress: CoursePro._id,
+        },
+      },
       { new: true }
     );
 

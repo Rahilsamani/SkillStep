@@ -4,6 +4,7 @@ const CourseProgress = require("../models/CourseProgress");
 const Course = require("../models/Course");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { calculateCourseProgress } = require("../utils/calculateCourseProgress");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -163,6 +164,60 @@ exports.getEnrolledCourses = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+exports.getCourseProgress = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userDetails = await User.findById(userId)
+      .populate({
+        path: "courses",
+        populate: { path: "courseContent" },
+      })
+      .populate({
+        path: "courseProgress",
+        populate: { path: "completedVideos" },
+      })
+      .exec();
+
+    if (!userDetails) {
+      return res.status(404).json({
+        success: false,
+        message: `Could not find user with ID: ${userId}`,
+      });
+    }
+
+    const coursesWithProgress = userDetails.courses.map((course) => {
+      const courseProgress = userDetails.courseProgress.find(
+        (progress) => progress.courseID.toString() === course._id.toString()
+      );
+
+      const completedLectures = courseProgress?.completedVideos || [];
+      const totalLectures = course.courseContent || [];
+
+      const progress = calculateCourseProgress(
+        completedLectures,
+        totalLectures
+      );
+
+      return {
+        courseId: course._id,
+        progress,
+      };
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: coursesWithProgress,
+    });
+  } catch (error) {
+    console.error("Error calculating course progress:", error);
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while fetching course progress",
     });
   }
 };
