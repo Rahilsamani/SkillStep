@@ -103,7 +103,6 @@ const VideoDetails = () => {
 
   return (
     <div className="flex flex-col gap-5 text-white">
-      {console.log("video data -> ", videoData)}
       {videoData ? (
         <ReactPlayer
           ref={playerRef}

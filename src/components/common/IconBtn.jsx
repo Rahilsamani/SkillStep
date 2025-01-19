@@ -13,9 +13,7 @@ export default function IconBtn({
       onClick={onclick}
       className={`flex items-center cursor-pointer gap-x-2 rounded-md py-2 px-4 font-semibold text-richblack-900
               ${
-                outline
-                  ? "border border-blue-50 bg-transparent"
-                  : "bg-blue-50"
+                outline ? "border border-blue-50 bg-transparent" : "bg-blue-50"
               } ${customClasses}`}
       type={type}
     >

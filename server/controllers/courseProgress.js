@@ -2,6 +2,7 @@ const Section = require("../models/Section");
 const CourseProgress = require("../models/CourseProgress");
 
 exports.updateCourseProgress = async (req, res) => {
+  console.log("hello1");
   const { courseId, sectionId } = req.body;
   const userId = req.user.id;
 

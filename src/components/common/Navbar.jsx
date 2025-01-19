@@ -2,12 +2,26 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { useSelector } from "react-redux";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import logo from "../../assets/Logo/brand_logo.png";
-import { NavbarLinks } from "../../data/navbar-links";
 import ProfileDropdown from "../core/Auth/profileDropDown";
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth);
   const location = useLocation();
+
+  const NavbarLinks = [
+    {
+      title: "Home",
+      path: "/",
+    },
+    {
+      title: "About Us",
+      path: "/about",
+    },
+    {
+      title: "Contact Us",
+      path: "/contact",
+    },
+  ];
 
   function matchRoute(route) {
     return matchPath({ path: route }, location.pathname);
