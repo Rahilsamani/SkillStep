@@ -26,7 +26,6 @@ import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 
 import { getUserDetails } from "./services/operations/profileAPI";
-import { ACCOUNT_TYPE } from "./utils/constants";
 
 function App() {
   const dispatch = useDispatch();
@@ -101,7 +100,7 @@ function App() {
           <Route path="dashboard/my-profile" element={<MyProfile />} />
           <Route path="dashboard/Settings" element={<Settings />} />
 
-          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+          {user?.accountType === "Student" && (
             <>
               <Route
                 path="dashboard/enrolled-courses"
@@ -122,7 +121,7 @@ function App() {
             </PrivateRoute>
           }
         >
-          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+          {user?.accountType === "Student" && (
             <>
               <Route
                 path="view-course/:courseId/:sectionId"

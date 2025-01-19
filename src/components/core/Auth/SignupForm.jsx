@@ -6,14 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 import { sendOtp } from "../../../services/operations/authAPI";
 import { setSignupData } from "../../../slices/authSlice";
-import { ACCOUNT_TYPE } from "../../../utils/constants";
 
 function SignupForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  // student
-  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -40,6 +36,7 @@ function SignupForm() {
       toast.error("Passwords do not match");
       return;
     }
+    const accountType = "Student";
     const signupData = { ...formData, accountType };
     dispatch(setSignupData(signupData)); // Setting signup data to state To be used after otp verification
     dispatch(sendOtp(formData.email, navigate)); // Send OTP to user for verification
@@ -50,7 +47,6 @@ function SignupForm() {
       password: "",
       confirmPassword: "",
     }); // Reset
-    setAccountType(ACCOUNT_TYPE.STUDENT);
   }
 
   return (

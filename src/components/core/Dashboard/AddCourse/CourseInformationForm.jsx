@@ -7,9 +7,9 @@ import {
   addCourseDetails,
   createSection,
   fetchCourseCategories,
-} from "../../../../../services/operations/courseDetailsAPI";
-import { setCourse } from "../../../../../slices/courseSlice";
-import IconBtn from "../../../../common/IconBtn";
+} from "../../../../services/operations/courseDetailsAPI";
+import { setCourse } from "../../../../slices/courseSlice";
+import IconBtn from "../../../common/IconBtn";
 
 export default function CourseInformationForm() {
   const {
@@ -20,7 +20,7 @@ export default function CourseInformationForm() {
   } = useForm();
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  const { course, editCourse } = useSelector((state) => state.course);
+  const { course } = useSelector((state) => state.course);
   const [loading, setLoading] = useState(false);
   const [courseCategories, setCourseCategories] = useState([]);
   const user = useSelector((state) => state.profile.user._id);
@@ -36,12 +36,7 @@ export default function CourseInformationForm() {
     };
 
     getCategories();
-
-    if (editCourse) {
-      setValue("playlistUrl", course.playlistUrl);
-      setValue("courseCategory", course.category);
-    }
-  }, [editCourse, course, setValue]);
+  }, [course, setValue]);
 
   async function fetchAllPlaylistItems(playlistId) {
     let allItems = [];

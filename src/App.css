@@ -121,16 +121,8 @@ body {
 }
 
 /* Buttons */
-.yellowButton {
-  @apply cursor-pointer rounded-md bg-blue-50 px-[20px] py-[8px] font-semibold text-richblack-900;
-}
-
 .blackButton {
   @apply cursor-pointer rounded-md bg-richblack-800 px-[20px] py-[8px] font-semibold text-richblack-5;
-}
-
-.section_heading {
-  @apply text-2xl font-bold text-richblack-5 lg:text-4xl;
 }
 
 .swiper-slide {

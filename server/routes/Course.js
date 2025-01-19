@@ -1,11 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  createCourse,
-  getAllCourses,
-  getFullCourseDetails,
-} = require("../controllers/Course");
+const { createCourse, getFullCourseDetails } = require("../controllers/Course");
 const {
   showAllCategories,
   createCategory,
@@ -23,7 +19,6 @@ const { updateCourseProgress } = require("../controllers/courseProgress");
 // Course Creation Route (Course)
 router.post("/createCourse", auth, createCourse);
 router.post("/addSection", auth, createSection);
-router.get("/getAllCourses", getAllCourses);
 router.post("/getFullCourseDetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 

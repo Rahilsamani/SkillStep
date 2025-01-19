@@ -24,27 +24,27 @@ const Atom = () => {
           <img
             src={Apple}
             alt="apple-logo"
-            className="absolute top-[20px] -right-7 sm:-right-[50px] sm:top-[70px] logo w-[100px] sm:w-[150px]"
+            className="absolute top-[20px] -right-7 sm:-right-[52px] sm:top-[55px] logo w-[100px] sm:w-[150px]"
           />
           <img
             src={Google}
             alt="google-logo"
-            className="absolute top-[20px] -left-7 sm:-left-[50px] sm:top-[70px] logo w-[100px] sm:w-[150px]"
+            className="absolute top-[20px] -left-7 sm:-left-[50px] sm:top-[55px] logo w-[100px] sm:w-[150px]"
           />
           <img
             src={Netflix}
             alt="netflix-logo"
-            className="absolute -bottom-[47px] sm:-bottom-[75px] logo w-[100px] sm:w-[150px]"
+            className="absolute -bottom-[47px] sm:-bottom-[74px] logo w-[100px] sm:w-[150px]"
           />
           <img
             src={Microsoft}
             alt="microsoft-logo"
-            className="absolute -left-[32px] bottom-[35px] sm:-left-[35px] sm:bottom-[40px] logo w-[100px] sm:w-[150px]"
+            className="absolute -left-[32px] bottom-[35px] sm:-left-[44px] sm:bottom-[40px] logo w-[100px] sm:w-[150px]"
           />
           <img
             src={Meta}
             alt="meta-logo"
-            className="absolute bottom-[35px] -right-[32px] sm:-right-[35px] sm:bottom-[40px] logo w-[100px] sm:w-[150px]"
+            className="absolute bottom-[35px] -right-[32px] sm:-right-[42px] sm:bottom-[40px] logo w-[100px] sm:w-[150px]"
           />
 
           {/* Inner rotating container */}
@@ -53,22 +53,22 @@ const Atom = () => {
               <img
                 src={Adobe}
                 alt="adobe-logo"
-                className="absolute top-[7px] -left-[50px] sm:-left-[72px] sm:top-[24px] inner-logo w-[100px] sm:w-[150px]"
+                className="absolute top-[7px] -left-[50px] sm:-left-[72px] sm:top-[16px] inner-logo w-[100px] sm:w-[150px]"
               />
               <img
                 src={Linkedin}
                 alt="linkedin-logo"
-                className="absolute top-[7px] -right-[50px] sm:-right-[72px] sm:top-[24px] inner-logo w-[100px] sm:w-[150px]"
+                className="absolute top-[7px] -right-[50px] sm:-right-[72px] sm:top-[16px] inner-logo w-[100px] sm:w-[150px]"
               />
               <img
                 src={Flipkart}
                 alt="flipkart-logo"
-                className="absolute -bottom-[50px] left-2 sm:left-[23px] sm:-bottom-[75px] inner-logo w-[100px] sm:w-[150px]"
+                className="absolute -bottom-[50px] left-2 sm:left-[16px] sm:-bottom-[72px] inner-logo w-[100px] sm:w-[150px]"
               />
               <img
                 src={Ola}
                 alt="ola-logo"
-                className="absolute -top-[50px] right-2 sm:left-[23px] sm:-top-[70px] inner-logo w-[100px] sm:w-[150px]"
+                className="absolute -top-[50px] right-2 sm:left-[16px] sm:-top-[70px] inner-logo w-[100px] sm:w-[150px]"
               />
             </div>
           </div>

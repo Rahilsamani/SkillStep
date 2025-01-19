@@ -69,26 +69,6 @@ exports.createCourse = async (req, res) => {
   }
 };
 
-// Fetch all courses
-exports.getAllCourses = async (req, res) => {
-  try {
-    const allCourses = await Course.find({});
-
-    res.status(200).json({
-      success: true,
-      data: allCourses,
-      message: "Fetched all courses successfully",
-    });
-  } catch (error) {
-    console.error("Error occurred while fetching all courses:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Could not fetch course details",
-      error: error.message,
-    });
-  }
-};
-
 // Get Course Details
 exports.getFullCourseDetails = async (req, res) => {
   try {

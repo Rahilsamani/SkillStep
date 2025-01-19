@@ -1,5 +1,3 @@
-2. atom logos are not correctly aligned
-
 3. baar baar course added successfully
 
 4. pehli baar mein enrolled courses mein nhi jaa pa rha hu
