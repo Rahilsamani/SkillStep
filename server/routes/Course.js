@@ -22,7 +22,6 @@ router.post("/addSection", auth, createSection);
 router.post("/getFullCourseDetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 
-// Admin Routes (Category)
 router.post("/createCategory", auth, createCategory);
 router.get("/showAllCategories", showAllCategories);
 

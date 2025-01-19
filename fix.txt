@@ -1,7 +1,5 @@
 4. pehli baar mein enrolled courses mein nhi jaa pa rha hu
 
-5. mark as complete is not working
-
 6. playlist mein hidden videos pey error aata hai
 
 7. loading time bahot hai

@@ -6,14 +6,7 @@ const User = require("../models/User");
 // Create a new course
 exports.createCourse = async (req, res) => {
   try {
-    const {
-      Author,
-      category,
-      youtubePlaylistId,
-      thumbnail,
-      userId,
-      courseSections,
-    } = req.body;
+    const { Author, category, youtubePlaylistId, thumbnail, userId } = req.body;
 
     // Validate required fields
     if (!Author || !youtubePlaylistId || !category || !thumbnail || !userId) {
@@ -52,6 +45,12 @@ exports.createCourse = async (req, res) => {
       { $push: { courses: newCourse._id } },
       { new: true }
     );
+
+    await CourseProgress.create({
+      userId,
+      courseID: newCourse._id,
+      completedVideos: [],
+    });
 
     // Respond with success
     res.status(200).json({

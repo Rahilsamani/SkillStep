@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { BsChevronDown } from "react-icons/bs";
 import { IoIosArrowBack } from "react-icons/io";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import IconBtn from "../../common/IconBtn";
+import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI";
+import { updateCompletedLectures } from "../../../slices/viewCourseSlice";
 
 export default function VideoDetailsSidebar({ setReviewModal }) {
-  const [activeStatus, setActiveStatus] = useState("");
   const [videoBarActive, setVideoBarActive] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,6 +17,9 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
     totalNoOfLectures,
     completedLectures,
   } = useSelector((state) => state.viewCourse);
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (() => {
@@ -25,10 +28,31 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
         (data) => data._id === sectionId
       );
       const activeSectionId = courseSectionData[currentSectionIndx]?._id;
-      setActiveStatus(activeSectionId);
       setVideoBarActive(activeSectionId);
     })();
-  }, [courseSectionData, courseEntireData, location.pathname]);
+  }, [courseSectionData, courseEntireData, location.pathname, sectionId]);
+
+  const handleLectureCompletion = async (sectionId) => {
+    try {
+      setLoading(true);
+      const courseId = courseEntireData?._id;
+
+      if (!courseId) {
+        console.error("Course ID is missing");
+        return;
+      }
+
+      const res = await markLectureAsComplete({ courseId, sectionId }, token);
+
+      if (res) {
+        dispatch(updateCompletedLectures(sectionId));
+      }
+    } catch (error) {
+      console.error("Error completing lecture:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -73,7 +97,6 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                     : "hover:bg-richblack-900"
                 }`}
                 onClick={() => {
-                  setActiveStatus(section?._id);
                   navigate(
                     `/view-course/${courseEntireData?._id}/${section?._id}`
                   );
@@ -88,7 +111,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                   <input
                     type="checkbox"
                     checked={completedLectures.includes(section?._id)}
-                    onChange={() => {}}
+                    onChange={() => handleLectureCompletion(section?._id)}
                   />
                 </div>
               </div>
