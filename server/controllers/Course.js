@@ -30,7 +30,19 @@ exports.createCourse = async (req, res) => {
       youtubePlaylistId,
       thumbnail,
       studentsEnrolled: [userId],
+      discordLink: "",
     });
+
+    // Create CourseProgress
+    const CoursePro = await CourseProgress.create({
+      userId,
+      courseID: newCourse._id,
+      completedVideos: [],
+    });
+
+    // Update the course with the progress ID
+    newCourse.courseProgress = CoursePro._id;
+    await newCourse.save();
 
     // Add course ID to the category
     await Category.findByIdAndUpdate(
@@ -45,12 +57,6 @@ exports.createCourse = async (req, res) => {
       { $push: { courses: newCourse._id } },
       { new: true }
     );
-
-    await CourseProgress.create({
-      userId,
-      courseID: newCourse._id,
-      completedVideos: [],
-    });
 
     // Respond with success
     res.status(200).json({

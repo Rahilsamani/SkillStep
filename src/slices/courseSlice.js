@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  step: 1,
   course: null,
   paymentLoading: false,
   loading: false,
@@ -15,7 +14,6 @@ const courseSlice = createSlice({
       state.course = action.payload;
     },
     resetCourseState: (state) => {
-      state.step = 1;
       state.course = null;
     },
     setLoading(state, value) {

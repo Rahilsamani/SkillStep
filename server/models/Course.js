@@ -40,6 +40,9 @@ const courseSchema = new mongoose.Schema({
   instructions: {
     type: [String],
   },
+  discordLink: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

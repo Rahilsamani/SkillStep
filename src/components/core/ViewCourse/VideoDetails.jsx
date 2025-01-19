@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
+import { Link } from "react-router-dom";
 
 const VideoDetails = () => {
   const { courseId, sectionId } = useParams();
@@ -11,10 +12,8 @@ const VideoDetails = () => {
     (state) => state.viewCourse
   );
   const [isExpanded, setIsExpanded] = useState(false);
-
   const [videoData, setVideoData] = useState(null);
   const [previewSource, setPreviewSource] = useState("");
-  const [videoEnded, setVideoEnded] = useState(false);
 
   useEffect(() => {
     if (!courseSectionData.length || !courseId || !sectionId) {
@@ -29,7 +28,6 @@ const VideoDetails = () => {
     if (currentSection) {
       setVideoData(currentSection);
       setPreviewSource(courseEntireData.thumbnail);
-      setVideoEnded(false);
     } else {
       navigate("/dashboard/enrolled-courses");
     }
@@ -45,7 +43,6 @@ const VideoDetails = () => {
           url={`https://www.youtube.com/watch?v=${videoData.videoId}`}
           playing
           controls
-          onEnded={() => setVideoEnded(true)}
         />
       ) : (
         <img
@@ -56,6 +53,20 @@ const VideoDetails = () => {
       )}
 
       <h1 className="mt-4 text-3xl font-semibold">{videoData?.title}</h1>
+
+      {courseEntireData?.discordLink && (
+        <div className="bg-richblack-600 px-5 py-2 rounded-lg">
+          Join the discord server for this course:{" "}
+          <Link
+            className="text-caribbeangreen-200"
+            to={courseEntireData?.discordLink}
+            target="_blank"
+          >
+            Discord Link
+          </Link>
+        </div>
+      )}
+
       <div className="bg-richblack-600 p-5 mb-20 rounded-lg">
         <p className={`pt-2 pb-6 ${!isExpanded ? "line-clamp-2" : ""}`}>
           {videoData?.description}
