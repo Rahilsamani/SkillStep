@@ -9,7 +9,6 @@ const {
 const {
   showAllCategories,
   createCategory,
-  categoryPageDetails,
 } = require("../controllers/Category");
 const { createSection } = require("../controllers/Section");
 
@@ -31,7 +30,6 @@ router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 // Admin Routes (Category)
 router.post("/createCategory", auth, createCategory);
 router.get("/showAllCategories", showAllCategories);
-router.post("/getCategoryPageDetails", categoryPageDetails);
 
 // Students Route (Rating And Review)
 router.post("/createRating", auth, isStudent, createRating);

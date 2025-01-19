@@ -5,13 +5,9 @@
     "@ramonak/react-progress-bar": "^5.3.0",
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",
-    "chart.js": "^4.4.7",
     "concurrently": "^9.1.2",
-    "copy-to-clipboard": "^3.3.3",
     "react": "^18.0.0",
-    "react-chartjs-2": "^5.3.0",
     "react-dom": "^18.0.0",
-    "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.5.1",
     "react-icons": "^5.4.0",
@@ -23,9 +19,7 @@
     "react-router-dom": "^7.1.2",
     "react-scripts": "^5.0.1",
     "react-super-responsive-table": "^6.0.1",
-    "react-type-animation": "^3.2.0",
     "swiper": "^11.2.1",
-    "video-react": "^0.16.0",
     "web-vitals": "^4.2.4"
   },
   "scripts": {

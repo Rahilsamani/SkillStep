@@ -11,7 +11,7 @@ export default function IconBtn({
     <button
       disabled={disabled}
       onClick={onclick}
-      className={`flex items-center cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900
+      className={`flex items-center cursor-pointer gap-x-2 rounded-md py-2 px-4 font-semibold text-richblack-900
               ${
                 outline
                   ? "border border-blue-50 bg-transparent"

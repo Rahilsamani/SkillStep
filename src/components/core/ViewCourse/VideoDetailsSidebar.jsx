@@ -38,16 +38,16 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
         </div>
       ) : (
         <div className="flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
-          <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-5 text-lg font-bold text-richblack-25">
-            <div className="flex w-full items-center justify-between ">
+          <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-2 text-lg font-bold text-richblack-25">
+            <div className="flex w-full items-center justify-between mt-5">
               <div
                 onClick={() => {
                   navigate(`/dashboard/enrolled-courses`);
                 }}
                 title="back"
-                className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-richblack-100 p-1 text-richblack-700 hover:scale-90"
+                className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-richblack-100 text-richblack-700 pr-1 hover:scale-90"
               >
-                <IoIosArrowBack size={30} />
+                <IoIosArrowBack size={25} />
               </div>
               <IconBtn
                 text="Add Review"
@@ -67,15 +67,15 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
           <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
             {courseSectionData.map((section, index) => (
               <div
-                className={`mt-2 cursor-pointer text-sm text-richblack-5 ${
+                className={`mt-2 cursor-pointer text-sm text-richblack-25 ${
                   videoBarActive === section._id
-                    ? "bg-blue-200 font-semibold text-richblack-800"
+                    ? "bg-blue-200 font-semibold text-white"
                     : "hover:bg-richblack-900"
                 }`}
                 onClick={() => {
                   setActiveStatus(section?._id);
                   navigate(
-                    `/view-course/${courseEntireData?._id}/section/${section?._id}`
+                    `/view-course/${courseEntireData?._id}/${section?._id}`
                   );
                   setVideoBarActive(section._id);
                 }}
@@ -83,7 +83,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
               >
                 {/* Section */}
                 <div className="flex flex-row justify-between bg-richblack-600 px-5 py-4">
-                  <div className="w-[70%] font-semibold">{section?.title}</div>
+                  <div className="w-[90%] text-[13px]">{section?.title}</div>
 
                   <input
                     type="checkbox"
