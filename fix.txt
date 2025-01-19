@@ -1,0 +1,23 @@
+1. when logged in, after clicking about us nav link and footer it is navigating to the dashboard
+
+2. atom logos are not correctly aligned
+
+3. baar baar course added successfully
+
+4. pehli baar mein enrolled courses mein nhi jaa pa rha hu
+
+5. mark as complete is not working
+
+6. playlist mein hidden videos pey error aata hai
+
+7. loading time bahot hai
+
+8. discord ki link bhi share karna hai
+
+9. courses page bhi hona chahiye
+
+10. starting mein kitne lectures roz add hone chahiye
+
+11. jab bhi new video aaye tooh mail aana chahiye
+
+12. mobile responsive check kar lena

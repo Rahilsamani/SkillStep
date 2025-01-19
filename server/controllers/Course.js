@@ -39,8 +39,6 @@ exports.createCourse = async (req, res) => {
       studentsEnrolled: [userId],
     });
 
-    console.log("Course Sections -> ", courseSections[0]);
-
     // Add course ID to the category
     await Category.findByIdAndUpdate(
       category,
