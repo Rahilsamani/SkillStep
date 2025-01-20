@@ -19,6 +19,7 @@ const createSection = async (req, res) => {
       thumbnail,
       videoId,
       availableOn,
+      courseId,
     });
 
     const updatedCourseDetails = await Course.findByIdAndUpdate(

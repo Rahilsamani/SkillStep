@@ -2,6 +2,11 @@ const Course = require("../models/Course");
 const Category = require("../models/Category");
 const CourseProgress = require("../models/CourseProgress");
 const User = require("../models/User");
+const Section = require("../models/Section");
+const {
+  notificationEmailTemplate,
+} = require("../mail/templates/videoAvailable");
+const mailSender = require("../utils/mailSender");
 
 // Create a new course
 exports.createCourse = async (req, res) => {
@@ -155,5 +160,48 @@ exports.getFullCourseDetails = async (req, res) => {
       message: "Could not fetch course details",
       error: error.message,
     });
+  }
+};
+
+exports.notifyUsers = async () => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const sections = await Section.find({
+      availableOn: {
+        $gte: today,
+        $lt: tomorrow,
+      },
+      usersNotified: false,
+    }).populate("courseId");
+
+    for (const section of sections) {
+      const users = await User.find({ courses: section.courseId });
+      for (const user of users) {
+        const subject = `New Section Available: ${section.title}`;
+
+        const htmlContent = notificationEmailTemplate(
+          `${user.firstName} ${user.lastName}`,
+          `New Video: ${section.title}`,
+          `We're excited to let you know that a new video titled "${section.title}" is now available. Head over to your course dashboard and continue learning!`,
+          `http://localhost:3000/view-course/${section.courseId._id}/${section._id}`,
+          "Go to Course"
+        );
+
+        await mailSender(user.email, subject, (body = htmlContent));
+      }
+
+      // Mark section as notified
+      section.usersNotified = true;
+      await section.save();
+    }
+
+    console.log("Email notifications sent successfully.");
+  } catch (error) {
+    console.error("Error notifying users:", error);
   }
 };

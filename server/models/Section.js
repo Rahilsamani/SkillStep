@@ -17,6 +17,12 @@ const sectionSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
+  courseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Course",
+    required: true,
+  },
+  usersNotified: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Section", sectionSchema);

@@ -13,6 +13,9 @@ const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
+const { notifyUsers } = require("./controllers/Course");
+const schedule = require("node-schedule");
+
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
@@ -50,6 +53,9 @@ app.get("/", (req, res) => {
     message: "Your server is up and running....",
   });
 });
+
+// Schedule job to run daily at 11:59 PM
+schedule.scheduleJob("59 23 * * *", notifyUsers);
 
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);

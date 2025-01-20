@@ -1,16 +1,10 @@
 4. pehli baar mein enrolled courses mein nhi jaa pa rha hu
 
-6. playlist mein hidden videos pey error aata hai
-
 7. loading time bahot hai
 
 9. courses page bhi hona chahiye
 
-10. starting mein kitne lectures roz add hone chahiye
-
-11. jab bhi new video aaye tooh mail aana chahiye
-
 12. mobile responsive check kar lena
 
-14. select category mein problem hai
+13. complete dynamic nhi hora because section ko available on de rhe hai
 
