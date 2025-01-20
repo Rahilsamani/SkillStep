@@ -190,7 +190,7 @@ export default function CourseInformationForm() {
           id="courseCategory"
           className="form-style w-full"
         >
-          <option value="" disabled>
+          <option value="" disabled selected>
             Choose a Category
           </option>
           {!loading &&
