@@ -102,6 +102,7 @@ export default function CourseInformationForm() {
       formData.append("youtubePlaylistId", data.playlistUrl);
       formData.append("userId", user);
       formData.append("category", data.courseCategory);
+      formData.append("videosPerDay", data.videosPerDay);
 
       const firstSectionDetails = courseSections[0].snippet;
       formData.append("Author", firstSectionDetails.videoOwnerChannelTitle);
@@ -112,7 +113,13 @@ export default function CourseInformationForm() {
       const result = await addCourseDetails(formData, token);
 
       if (result && result._id && !result.exist) {
-        for (const [index, section] of courseSections.entries()) {
+        let dayCount = 0;
+        for (let i = 0; i < courseSections.length; i++) {
+          if (i % data.videosPerDay === 0) {
+            dayCount += 1;
+          }
+
+          const section = courseSections[i];
           if (section && section.snippet) {
             const { title, thumbnails, description, resourceId } =
               section.snippet;
@@ -120,7 +127,7 @@ export default function CourseInformationForm() {
             const videoId = resourceId.videoId;
 
             const availableOn = new Date(Date.now());
-            availableOn.setDate(availableOn.getDate() + index);
+            availableOn.setDate(availableOn.getDate() + dayCount);
 
             await createSection(
               {
@@ -132,12 +139,6 @@ export default function CourseInformationForm() {
                 availableOn,
               },
               token
-            );
-          } else {
-            console.warn(
-              `Invalid section or snippet missing for section: ${JSON.stringify(
-                section
-              )}`
             );
           }
         }
@@ -204,6 +205,29 @@ export default function CourseInformationForm() {
         {errors.courseCategory && (
           <span className="ml-2 text-xs tracking-wide text-pink-200">
             Course Category is required
+          </span>
+        )}
+      </div>
+
+      {/* Number of Videos per Day */}
+      <div className="flex flex-col space-y-2">
+        <label className="text-sm text-richblack-5" htmlFor="videosPerDay">
+          Videos Per Day <sup className="text-pink-200">*</sup>
+        </label>
+        <input
+          id="videosPerDay"
+          type="number"
+          placeholder="Enter number of videos per day"
+          {...register("videosPerDay", {
+            required: true,
+            min: 1,
+            valueAsNumber: true,
+          })}
+          className="form-style w-full"
+        />
+        {errors.videosPerDay && (
+          <span className="ml-2 text-xs tracking-wide text-pink-200">
+            Please enter a valid number greater than 0
           </span>
         )}
       </div>
