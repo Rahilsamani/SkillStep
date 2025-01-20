@@ -74,7 +74,6 @@ export async function getUserCoursesProgress(token) {
       throw new Error(response.data.message);
     }
     result = response.data.data;
-    console.log("result -> ", result);
   } catch (error) {
     console.log("GET_USER_COURSES_PROGRESS_API ERROR............", error);
     toast.error("Could Not Get User Courses Progress");

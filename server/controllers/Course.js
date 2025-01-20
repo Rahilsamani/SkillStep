@@ -23,7 +23,54 @@ exports.createCourse = async (req, res) => {
         .json({ success: false, message: "Category not found" });
     }
 
-    // Create a new course
+    // Check if course already exists
+    let course = await Course.findOne({ youtubePlaylistId });
+
+    // Function to handle course progress and user enrollment
+    const handleCourseProgressAndUser = async (course) => {
+      if (!course.studentsEnrolled.includes(userId)) {
+        course.studentsEnrolled.push(userId);
+        await course.save();
+      }
+
+      // Ensure the course is added to the user's courses if not already present
+      const user = await User.findById(userId);
+      if (!user.courses.includes(course._id)) {
+        user.courses.push(course._id);
+        await user.save();
+      }
+
+      // Create CourseProgress if not already created
+      let courseProgress = await CourseProgress.findOne({
+        userId,
+        courseID: course._id,
+      });
+      course.courseProgress = courseProgress;
+      course.save();
+
+      if (!courseProgress) {
+        courseProgress = await CourseProgress.create({
+          userId,
+          courseID: course._id,
+          completedVideos: [],
+        });
+      }
+
+      return courseProgress;
+    };
+
+    if (course) {
+      // Course exists, handle progress and enrollment
+      const courseProgress = await handleCourseProgressAndUser(course);
+      return res.status(200).json({
+        success: true,
+        data: course,
+        message: "Course already exists and user enrolled successfully",
+        exist: true,
+      });
+    }
+
+    // Create a new course if not found
     const newCourse = await Course.create({
       Author,
       category,
@@ -33,8 +80,8 @@ exports.createCourse = async (req, res) => {
       discordLink: "",
     });
 
-    // Create CourseProgress
-    const CoursePro = await CourseProgress.create({
+    // Create CourseProgress for the new course
+    const courseProgress = await CourseProgress.create({
       userId,
       courseID: newCourse._id,
       completedVideos: [],
@@ -50,19 +97,17 @@ exports.createCourse = async (req, res) => {
     await User.findByIdAndUpdate(
       userId,
       {
-        $push: {
-          courses: newCourse._id,
-          courseProgress: CoursePro._id,
-        },
+        $push: { courses: newCourse._id, courseProgress: courseProgress._id },
       },
       { new: true }
     );
 
-    // Respond with success
+    // Respond with success for new course creation
     res.status(200).json({
       success: true,
       data: newCourse,
       message: "Course created successfully",
+      exist: false,
     });
   } catch (error) {
     console.error("Error occurred while creating course:", error);

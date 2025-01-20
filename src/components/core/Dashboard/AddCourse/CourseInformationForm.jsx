@@ -111,7 +111,7 @@ export default function CourseInformationForm() {
       setLoading(true);
       const result = await addCourseDetails(formData, token);
 
-      if (result && result._id) {
+      if (result && result._id && !result.exist) {
         for (const [index, section] of courseSections.entries()) {
           if (section && section.snippet) {
             const { title, thumbnails, description, resourceId } =
@@ -143,6 +143,8 @@ export default function CourseInformationForm() {
         }
 
         dispatch(setCourse(result));
+        toast.success("Course Created successfully!");
+      } else if (result.exist) {
         toast.success("Course Created successfully!");
       } else {
         toast.error("Error saving course details.");

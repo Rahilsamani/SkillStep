@@ -42,6 +42,7 @@ export const addCourseDetails = async (data, token) => {
       throw new Error("Could Not Add Course Details");
     }
     result = response?.data?.data;
+    result.exist = response?.data?.exist;
   } catch (error) {
     console.log("CREATE COURSE API ERROR............", error);
     toast.error(error.message);
