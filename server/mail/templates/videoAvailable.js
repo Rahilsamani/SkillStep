@@ -58,7 +58,7 @@ exports.notificationEmailTemplate = (
                   display: inline-block;
                   padding: 12px 24px;
                   background-color: #4CAF50;
-                  color: white;
+                  color: #d8d8d8;
                   text-decoration: none;
                   border-radius: 4px;
                   font-size: 16px;
@@ -67,7 +67,7 @@ exports.notificationEmailTemplate = (
               }
       
               .cta:hover {
-                  background-color: #45a049;
+                  background-color: #fbfaf2;
               }
       
               .footer {
