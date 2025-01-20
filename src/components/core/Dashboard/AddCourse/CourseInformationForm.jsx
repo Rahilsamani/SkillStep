@@ -92,16 +92,18 @@ export default function CourseInformationForm() {
       // Fetch all playlist items
       const courseSections = await fetchAllPlaylistItems(playlistId);
 
+      if (!courseSections || courseSections.length === 0) {
+        toast.error("No sections found in the playlist.");
+        return;
+      }
+
       // Prepare form data for submission
       const formData = new FormData();
       formData.append("youtubePlaylistId", data.playlistUrl);
       formData.append("userId", user);
       formData.append("category", data.courseCategory);
-      formData.append("courseSections", courseSections);
 
       const firstSectionDetails = courseSections[0].snippet;
-
-      // Add channel name and thumbnail to the form data
       formData.append("Author", firstSectionDetails.videoOwnerChannelTitle);
       formData.append("thumbnail", firstSectionDetails.thumbnails.high.url);
 
@@ -109,37 +111,37 @@ export default function CourseInformationForm() {
       setLoading(true);
       const result = await addCourseDetails(formData, token);
 
-      for (const section of courseSections) {
-        // Check if section and snippet are valid
-        if (section && section.snippet) {
-          const title = section.snippet.title;
-          const sectionThumbnail = section.snippet.thumbnails.high.url;
-          const description = section.snippet.description;
-          const videoId = section.snippet.resourceId.videoId;
+      if (result && result._id) {
+        for (const [index, section] of courseSections.entries()) {
+          if (section && section.snippet) {
+            const { title, thumbnails, description, resourceId } =
+              section.snippet;
+            const sectionThumbnail = thumbnails.high.url;
+            const videoId = resourceId.videoId;
 
-          // Create the section and associate it with the course
-          await createSection(
-            {
-              title,
-              thumbnail: sectionThumbnail,
-              description,
-              videoId,
-              courseId: result._id,
-            },
-            token
-          );
-        } else {
-          console.warn(
-            `Invalid section or snippet missing for section: ${JSON.stringify(
-              section
-            )}`
-          );
+            const availableOn = new Date(Date.now());
+            availableOn.setDate(availableOn.getDate() + index);
+
+            await createSection(
+              {
+                title,
+                thumbnail: sectionThumbnail,
+                description,
+                videoId,
+                courseId: result._id,
+                availableOn,
+              },
+              token
+            );
+          } else {
+            console.warn(
+              `Invalid section or snippet missing for section: ${JSON.stringify(
+                section
+              )}`
+            );
+          }
         }
-      }
-      setLoading(false);
 
-      // Check if course details were successfully added
-      if (result) {
         dispatch(setCourse(result));
         toast.success("Course Created successfully!");
       } else {
@@ -148,6 +150,7 @@ export default function CourseInformationForm() {
     } catch (error) {
       console.error("Error fetching playlist items or saving course:", error);
       toast.error("An error occurred. Please try again.");
+    } finally {
       setLoading(false);
     }
   };

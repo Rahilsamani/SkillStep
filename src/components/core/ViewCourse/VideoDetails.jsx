@@ -34,11 +34,11 @@ const VideoDetails = () => {
   }, [courseSectionData, courseEntireData, sectionId, navigate, courseId]);
 
   return (
-    <div className="flex flex-col gap-5 text-white">
+    <div className="flex flex-col gap-5 text-white items-center mt-10">
       {videoData ? (
         <ReactPlayer
           ref={playerRef}
-          width="100%"
+          width="90%"
           height="400px"
           url={`https://www.youtube.com/watch?v=${videoData.videoId}`}
           playing

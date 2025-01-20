@@ -3,11 +3,14 @@ const Course = require("../models/Course");
 
 const createSection = async (req, res) => {
   try {
-    const { title, description, thumbnail, videoId, courseId } = req.body;
-    if (!title || !courseId) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing Properties" });
+    const { title, description, thumbnail, videoId, courseId, availableOn } =
+      req.body;
+
+    if (!title || !courseId || !availableOn) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required properties (title, courseId, availableOn)",
+      });
     }
 
     const newSection = await Section.create({
@@ -15,6 +18,7 @@ const createSection = async (req, res) => {
       description,
       thumbnail,
       videoId,
+      availableOn,
     });
 
     const updatedCourseDetails = await Course.findByIdAndUpdate(

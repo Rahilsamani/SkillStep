@@ -13,6 +13,10 @@ const sectionSchema = new mongoose.Schema({
   videoId: {
     type: String,
   },
+  availableOn: {
+    type: Date,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Section", sectionSchema);

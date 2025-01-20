@@ -89,33 +89,39 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
           </div>
 
           <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
-            {courseSectionData.map((section, index) => (
-              <div
-                className={`mt-2 cursor-pointer text-sm text-richblack-25 ${
-                  videoBarActive === section._id
-                    ? "bg-blue-200 font-semibold text-white"
-                    : "hover:bg-richblack-900"
-                }`}
-                onClick={() => {
-                  navigate(
-                    `/view-course/${courseEntireData?._id}/${section?._id}`
-                  );
-                  setVideoBarActive(section._id);
-                }}
-                key={index}
-              >
-                {/* Section */}
-                <div className="flex flex-row justify-between bg-richblack-600 px-5 py-4">
-                  <div className="w-[90%] text-[13px]">{section?.title}</div>
+            {courseSectionData
+              .filter((section) => {
+                const currentDate = new Date();
+                const availableDate = new Date(section?.availableOn);
+                return availableDate <= currentDate;
+              })
+              .map((section, index) => (
+                <div
+                  className={`mt-2 cursor-pointer text-sm text-richblack-25 ${
+                    videoBarActive === section._id
+                      ? "bg-blue-200 font-semibold text-white"
+                      : "hover:bg-richblack-900"
+                  }`}
+                  onClick={() => {
+                    navigate(
+                      `/view-course/${courseEntireData?._id}/${section?._id}`
+                    );
+                    setVideoBarActive(section._id);
+                  }}
+                  key={index}
+                >
+                  {/* Section */}
+                  <div className="flex flex-row justify-between bg-richblack-600 px-5 py-4">
+                    <div className="w-[90%] text-[13px]">{section?.title}</div>
 
-                  <input
-                    type="checkbox"
-                    checked={completedLectures.includes(section?._id)}
-                    onChange={() => handleLectureCompletion(section?._id)}
-                  />
+                    <input
+                      type="checkbox"
+                      checked={completedLectures.includes(section?._id)}
+                      onChange={() => handleLectureCompletion(section?._id)}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       )}
