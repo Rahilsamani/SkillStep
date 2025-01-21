@@ -3,7 +3,6 @@ import { VscSignOut } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { sidebarLinks } from "../../../data/dashboard-links";
 import { logout } from "../../../services/operations/authAPI";
 import ConfirmationModal from "../../common/ConfirmationModal";
 import SidebarLink from "./SidebarLink";
@@ -13,6 +12,27 @@ export default function Sidebar() {
     (state) => state.profile
   );
   const { loading: authLoading } = useSelector((state) => state.auth);
+
+  const sidebarLinks = [
+    {
+      id: 1,
+      name: "My Profile",
+      path: "/dashboard/my-profile",
+      icon: "VscAccount",
+    },
+    {
+      id: 2,
+      name: "Add Course",
+      path: "/dashboard/add-course",
+      icon: "VscAdd",
+    },
+    {
+      id: 3,
+      name: "Enrolled Courses",
+      path: "/dashboard/enrolled-courses",
+      icon: "VscMortarBoard",
+    },
+  ];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

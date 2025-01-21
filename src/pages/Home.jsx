@@ -6,6 +6,7 @@ import Home5 from "../assets/Images/home5.png";
 import HighlightText from "../components/core/Homepage/HighlightText";
 import CTAButton from "../components/core/Homepage/Button";
 import Footer from "../components/common/Footer";
+import Atom from "../components/core/Homepage/Atom";
 
 const Home = () => {
   return (
@@ -68,10 +69,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -98,10 +96,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -109,7 +104,7 @@ const Home = () => {
 
           {/* right part */}
           <div className="w-1/2 sm:w-[38%]">
-            <img src={Home3} height={300} alt="" />
+            <img src={Home3} height={300} alt="" loading="lazy" />
           </div>
         </div>
 
@@ -117,7 +112,7 @@ const Home = () => {
         <div className="flex flex-col-reverse sm:flex-row justify-center items-center gap-10 sm:gap-20">
           {/* left part */}
           <div className="w-1/2 sm:w-[38%]">
-            <img src={Home4} height={300} alt="" />
+            <img src={Home4} height={300} alt="" loading="lazy" />
           </div>
 
           {/* right part */}
@@ -138,10 +133,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -168,10 +160,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"https://docchat-aehjsonnxwib6hxm9kmtic.streamlit.app/"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -179,7 +168,41 @@ const Home = () => {
 
           {/* right part */}
           <div className="w-1/2 sm:w-[38%]">
-            <img src={Home5} height={300} alt="" />
+            <img src={Home5} height={300} alt="" loading="lazy" />
+          </div>
+        </div>
+
+        {/* Section 6 */}
+        <div className="flex flex-col-reverse lg:flex-row justify-center items-center mt-10 gap-10 sm:gap-20 mb-20">
+          {/* right part */}
+          <div className="w-[90%] lg:w-[38%]">
+            <Atom />
+          </div>
+
+          {/* left part */}
+          <div className="w-full lg:w-1/2 flex flex-col gap-6 text-wrap">
+            <div className="text-4xl font-semibold mt-10">
+              Unlock Your
+              <HighlightText text={" Future"} />
+            </div>
+
+            <div className="w-[90%] text-xl font-bold text-blue-50s">
+              Transform Your Learning into Opportunities
+            </div>
+
+            <div className="w-[90%] text-lg font-bold text-richblack-300">
+              At SkillStep, we equip you with the tools and resources to achieve
+              your career goals through structured courses and a supportive
+              community. Gain in-demand skills, access tailored content, earn
+              recognized certifications, and connect with peers and mentors—all
+              designed to prepare you for a brighter future with top companies.
+            </div>
+
+            <div className="flex flex-row gap-7 mt-8">
+              <CTAButton active={true} linkto={"/signup"}>
+                Explore
+              </CTAButton>
+            </div>
           </div>
         </div>
       </div>

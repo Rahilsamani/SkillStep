@@ -75,7 +75,7 @@ function LoginForm() {
         </Link>
       </label>
 
-      <button className="bg-yellow-50 rounded-[8px] font-medium text-richblack-900 px-[12px] py-[8px] mt-6">
+      <button className="bg-blue-50 rounded-[8px] font-semibold text-richblack-900 px-[12px] py-[8px] mt-6">
         Sign In
       </button>
     </form>

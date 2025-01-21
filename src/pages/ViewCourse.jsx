@@ -25,13 +25,13 @@ export default function ViewCourse() {
         token,
         dispatch
       );
+
       dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
       dispatch(setEntireCourseData(courseData.courseDetails));
       dispatch(setCompletedLectures(courseData.completedVideos));
-      let lectures = 0;
-      courseData?.courseDetails?.courseContent?.forEach((sec) => {
-        lectures += sec.subSection.length;
-      });
+
+      let lectures = courseData?.courseDetails?.courseContent?.length;
+
       dispatch(setTotalNoOfLectures(lectures));
     })();
   }, []);

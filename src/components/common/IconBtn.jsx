@@ -11,17 +11,15 @@ export default function IconBtn({
     <button
       disabled={disabled}
       onClick={onclick}
-      className={`flex items-center cursor-pointer gap-x-2 rounded-md py-2 px-5 font-semibold text-richblack-900
+      className={`flex items-center cursor-pointer gap-x-2 rounded-md py-2 px-4 font-semibold text-richblack-900
               ${
-                outline
-                  ? "border border-yellow-50 bg-transparent"
-                  : "bg-yellow-50"
+                outline ? "border border-blue-50 bg-transparent" : "bg-blue-50"
               } ${customClasses}`}
       type={type}
     >
       {children ? (
         <>
-          <span className={`${outline && "text-yellow-50"}`}> {text} </span>
+          <span className={`${outline && "text-blue-50"}`}> {text} </span>
           {children}
         </>
       ) : (

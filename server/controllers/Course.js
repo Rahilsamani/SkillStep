@@ -1,18 +1,26 @@
 const Course = require("../models/Course");
 const Category = require("../models/Category");
 const CourseProgress = require("../models/CourseProgress");
+const User = require("../models/User");
+const Section = require("../models/Section");
+const {
+  notificationEmailTemplate,
+} = require("../mail/templates/videoAvailable");
+const mailSender = require("../utils/mailSender");
 
 // Create a new course
 exports.createCourse = async (req, res) => {
   try {
-    const { Author, category, youtubeVideoIds, thumbnail } = req.body;
+    const { Author, category, youtubePlaylistId, thumbnail, userId } = req.body;
 
-    if (!Author || !youtubePlaylistId || !category || !thumbnail) {
+    // Validate required fields
+    if (!Author || !youtubePlaylistId || !category || !thumbnail || !userId) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
     }
 
+    // Check if category exists
     const categoryDetails = await Category.findById(category);
     if (!categoryDetails) {
       return res
@@ -20,49 +28,110 @@ exports.createCourse = async (req, res) => {
         .json({ success: false, message: "Category not found" });
     }
 
+    // Check if course already exists
+    let course = await Course.findOne({ youtubePlaylistId });
+
+    // Function to handle course progress and user enrollment
+    const handleCourseProgressAndUser = async (course) => {
+      if (!course.studentsEnrolled.includes(userId)) {
+        course.studentsEnrolled.push(userId);
+        await course.save();
+      }
+
+      // Ensure the course is added to the user's courses if not already present
+      const user = await User.findById(userId);
+      const existingCourse = user.courses.find(
+        (c) => c.courseId.toString() === course._id.toString()
+      );
+
+      if (!existingCourse) {
+        user.courses.push({
+          courseId: course._id,
+          enrollmentDate: new Date(),
+        });
+        await user.save();
+      }
+
+      // Create CourseProgress if not already created
+      let courseProgress = await CourseProgress.findOne({
+        userId,
+        courseID: course._id,
+      });
+      course.courseProgress = courseProgress;
+      course.save();
+
+      if (!courseProgress) {
+        courseProgress = await CourseProgress.create({
+          userId,
+          courseID: course._id,
+          completedVideos: [],
+        });
+      }
+
+      return courseProgress;
+    };
+
+    if (course) {
+      // Course exists, handle progress and enrollment
+      const courseProgress = await handleCourseProgressAndUser(course);
+      return res.status(200).json({
+        success: true,
+        data: course,
+        message: "Course already exists and user enrolled successfully",
+        exist: true,
+      });
+    }
+
+    // Create a new course if not found
     const newCourse = await Course.create({
       Author,
       category,
-      youtubeVideoIds,
+      youtubePlaylistId,
       thumbnail,
+      studentsEnrolled: [userId],
+      discordLink: "",
     });
 
+    // Create CourseProgress for the new course
+    const courseProgress = await CourseProgress.create({
+      userId,
+      courseID: newCourse._id,
+      completedVideos: [],
+    });
+
+    // Add course ID to the category
     await Category.findByIdAndUpdate(
-      { _id: category },
+      category,
       { $push: { courses: newCourse._id } },
       { new: true }
     );
 
+    await User.findByIdAndUpdate(
+      userId,
+      {
+        $push: {
+          courses: {
+            courseId: newCourse._id,
+            enrollmentDate: new Date(),
+          },
+          courseProgress: courseProgress._id,
+        },
+      },
+      { new: true }
+    );
+
+    // Respond with success for new course creation
     res.status(200).json({
       success: true,
       data: newCourse,
       message: "Course created successfully",
+      exist: false,
     });
   } catch (error) {
     console.error("Error occurred while creating course:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to create course",
-      error: error.message,
-    });
-  }
-};
-
-// Fetch all courses
-exports.getAllCourses = async (req, res) => {
-  try {
-    const allCourses = await Course.find({});
-
-    res.status(200).json({
-      success: true,
-      data: allCourses,
-      message: "Fetched all courses successfully",
-    });
-  } catch (error) {
-    console.error("Error occurred while fetching all courses:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Could not fetch course details",
       error: error.message,
     });
   }
@@ -76,6 +145,7 @@ exports.getFullCourseDetails = async (req, res) => {
 
     const courseDetails = await Course.findOne({ _id: courseId })
       .populate("category")
+      .populate("courseContent")
       .exec();
 
     const courseProgressCount = await CourseProgress.findOne({
@@ -103,5 +173,55 @@ exports.getFullCourseDetails = async (req, res) => {
       message: "Could not fetch course details",
       error: error.message,
     });
+  }
+};
+
+exports.notifyUsers = async () => {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const sections = await Section.find({}).populate("courseId");
+
+    for (const section of sections) {
+      const users = await User.find({
+        "courses.courseId": section.courseId._id,
+      });
+
+      for (const user of users) {
+        // Find the specific course in the user's courses array
+        const userCourse = user.courses.find((c) =>
+          c.courseId.equals(section.courseId._id)
+        );
+
+        if (!userCourse) continue;
+
+        const enrollmentDate = new Date(userCourse.enrollmentDate);
+        const availableOn = new Date(enrollmentDate);
+        availableOn.setDate(enrollmentDate.getDate() + section.releaseOffset);
+
+        if (availableOn >= today && availableOn < tomorrow) {
+          const subject = `New Section Available: ${section.title}`;
+
+          const htmlContent = notificationEmailTemplate(
+            `${user.firstName} ${user.lastName}`,
+            `New Video: ${section.title}`,
+            `We're excited to let you know that a new video titled "${section.title}" is now available. Head over to your course dashboard and continue learning!`,
+            `http://localhost:3000/view-course/${section.courseId._id}/${section._id}`,
+            "Go to Course"
+          );
+
+          // Send email notification to the user
+          await mailSender(user.email, subject, htmlContent);
+        }
+      }
+    }
+
+    console.log("Email notifications processed successfully.");
+  } catch (error) {
+    console.error("Error notifying users:", error);
   }
 };

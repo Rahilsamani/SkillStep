@@ -13,6 +13,15 @@ const sectionSchema = new mongoose.Schema({
   videoId: {
     type: String,
   },
+  releaseOffset: {
+    type: Number,
+    required: true,
+  },
+  courseId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Course",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Section", sectionSchema);

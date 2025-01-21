@@ -13,15 +13,18 @@ const Support = [
 const Services = [
   {
     name: "Home",
+    link: "/",
   },
   {
     name: "Courses",
   },
   {
     name: "About Us",
+    link: "/about",
   },
   {
     name: "Contact Us",
+    link: "/contact",
   },
   {
     name: "FAQ",
@@ -47,6 +50,7 @@ const Footer = () => {
               width={180}
               height={50}
               className="object-contain"
+              loading="lazy"
             />
           </div>
 
@@ -70,9 +74,7 @@ const Footer = () => {
               key={index}
               className="text-[14px] cursor-pointer hover:text-richblack-50 transition-all duration-200 mt-2"
             >
-              <Link target="blank" to={ele.link}>
-                {ele.name}
-              </Link>
+              <Link to={ele.link}>{ele.name}</Link>
             </div>
           ))}
         </div>

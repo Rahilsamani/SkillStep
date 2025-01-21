@@ -48,7 +48,7 @@ const WhyChooseUs = () => {
         <h2 className="text-4xl font-bold text-richblack-50">
           Why Choose <HighlightText text={"SkillStep "} />?
         </h2>
-        <p className="text-xl text-richblack-400 mt-4">
+        <p className="text-xl text-richblack-25 mt-4">
           Discover the benefits of structured and engaging learning on
           SkillStep.
         </p>
@@ -57,9 +57,9 @@ const WhyChooseUs = () => {
         {benefits.map((benefit, index) => (
           <div
             key={index}
-            className="bg-richblack-200 p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+            className="bg-richblack-50 opacity-90 p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
           >
-            <div className="text-blue-500 text-5xl mb-4">{benefit.icon}</div>
+            <div className="text-blue-200 text-5xl mb-4">{benefit.icon}</div>
             <h3 className="text-2xl font-semibold text-richblack-800 mb-3">
               {benefit.title}
             </h3>

@@ -1,0 +1,55 @@
+.outer-spin-animation {
+  animation: spin-outer-div 70s linear infinite;
+}
+
+@keyframes spin-outer-div {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.logo {
+  animation: spin-logo 70s linear infinite;
+}
+
+@keyframes spin-logo {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.inner-spin-animation {
+  animation: spin-inner-div 40s linear infinite;
+}
+
+@keyframes spin-inner-div {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.inner-logo {
+  animation: spin-inner-logo 93.335s linear infinite;
+}
+
+@keyframes spin-inner-logo {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

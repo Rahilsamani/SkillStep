@@ -76,7 +76,7 @@ exports.contactUsEmail = (
       <body>
           <div class="container">
               <a href="https://SkillStep-edtech-project.vercel.app"><img class="logo"
-                      src="https://raw.githubusercontent.com/Rahilsamani/Ed/main/server/assets/logo.jpeg" alt="SkillStep Logo"></a>
+                      src="https://github.com/Rahilsamani/SkillStep/blob/main/src/assets/Logo/logo.jpeg?raw=true" alt="SkillStep Logo"></a>
               <div class="message">Contact Form Confirmation</div>
               <div class="body">
                   <p>Dear ${firstname} ${lastname},</p>
@@ -89,8 +89,7 @@ exports.contactUsEmail = (
                   <p>Message: ${message}</p>
                   <p>We appreciate your interest and will get back to you shortly. </p>
               </div>
-              <div class="support">If you have any further questions or need immediate assistance, please feel free to reach
-                  out to us at <a href="mailto:info@SkillStep.com">info@SkillStep.com</a>. We are here to help!</div>
+              <div class="support">If you have any further questions or need immediate assistance, please feel free to reach out to us at <a href="mailto:info@SkillStep.com">info@SkillStep.com</a>. We are here to help!</div>
           </div>
       </body>
       
