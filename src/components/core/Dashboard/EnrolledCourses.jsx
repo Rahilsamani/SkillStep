@@ -83,17 +83,17 @@ export default function EnrolledCourses() {
                 className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
                 onClick={() => {
                   navigate(
-                    `/view-course/${course._id}/${course.courseContent?.[0]._id}`
+                    `/view-course/${course.courseId._id}/${course.courseId.courseContent?.[0]._id}`
                   );
                 }}
               >
                 <img
-                  src={course.thumbnail}
+                  src={course.courseId.thumbnail}
                   alt="course_img"
                   className="h-14 w-14 rounded-lg object-cover"
                 />
                 <div className="flex max-w-xs flex-col gap-2">
-                  <p className="font-semibold">{course.Author}</p>
+                  <p className="font-semibold">{course.courseId.Author}</p>
                 </div>
               </div>
               <div className="flex w-1/5 flex-col gap-2 px-2 py-3">

@@ -3,13 +3,13 @@ const Course = require("../models/Course");
 
 const createSection = async (req, res) => {
   try {
-    const { title, description, thumbnail, videoId, courseId, availableOn } =
+    const { title, description, thumbnail, videoId, courseId, releaseOffset } =
       req.body;
 
-    if (!title || !courseId || !availableOn) {
+    if (!title || !courseId || releaseOffset === undefined) {
       return res.status(400).json({
         success: false,
-        message: "Missing required properties (title, courseId, availableOn)",
+        message: "Missing required properties (title, courseId, releaseOffset)",
       });
     }
 
@@ -18,7 +18,7 @@ const createSection = async (req, res) => {
       description,
       thumbnail,
       videoId,
-      availableOn,
+      releaseOffset,
       courseId,
     });
 

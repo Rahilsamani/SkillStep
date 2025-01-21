@@ -13,8 +13,8 @@ const sectionSchema = new mongoose.Schema({
   videoId: {
     type: String,
   },
-  availableOn: {
-    type: Date,
+  releaseOffset: {
+    type: Number,
     required: true,
   },
   courseId: {

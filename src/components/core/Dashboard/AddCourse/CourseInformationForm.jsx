@@ -113,7 +113,8 @@ export default function CourseInformationForm() {
       const result = await addCourseDetails(formData, token);
 
       if (result && result._id && !result.exist) {
-        let dayCount = 0;
+        let dayCount = -1;
+
         for (let i = 0; i < courseSections.length; i++) {
           if (i % data.videosPerDay === 0) {
             dayCount += 1;
@@ -126,9 +127,7 @@ export default function CourseInformationForm() {
             const sectionThumbnail = thumbnails.high.url;
             const videoId = resourceId.videoId;
 
-            const availableOn = new Date(Date.now());
-            availableOn.setDate(availableOn.getDate() + dayCount);
-
+            const releaseOffset = dayCount;
             await createSection(
               {
                 title,
@@ -136,7 +135,7 @@ export default function CourseInformationForm() {
                 description,
                 videoId,
                 courseId: result._id,
-                availableOn,
+                releaseOffset,
               },
               token
             );

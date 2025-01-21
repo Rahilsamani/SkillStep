@@ -40,8 +40,15 @@ exports.createCourse = async (req, res) => {
 
       // Ensure the course is added to the user's courses if not already present
       const user = await User.findById(userId);
-      if (!user.courses.includes(course._id)) {
-        user.courses.push(course._id);
+      const existingCourse = user.courses.find(
+        (c) => c.courseId.toString() === course._id.toString()
+      );
+
+      if (!existingCourse) {
+        user.courses.push({
+          courseId: course._id,
+          enrollmentDate: new Date(),
+        });
         await user.save();
       }
 
@@ -102,7 +109,13 @@ exports.createCourse = async (req, res) => {
     await User.findByIdAndUpdate(
       userId,
       {
-        $push: { courses: newCourse._id, courseProgress: courseProgress._id },
+        $push: {
+          courses: {
+            courseId: newCourse._id,
+            enrollmentDate: new Date(),
+          },
+          courseProgress: courseProgress._id,
+        },
       },
       { new: true }
     );
@@ -171,28 +184,34 @@ exports.notifyUsers = async () => {
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    const sections = await Section.find({
-      availableOn: {
-        $gte: today,
-        $lt: tomorrow,
-      },
-      usersNotified: false,
-    }).populate("courseId");
+    const sections = await Section.find({ usersNotified: false }).populate(
+      "courseId"
+    );
 
     for (const section of sections) {
       const users = await User.find({ courses: section.courseId });
       for (const user of users) {
-        const subject = `New Section Available: ${section.title}`;
-
-        const htmlContent = notificationEmailTemplate(
-          `${user.firstName} ${user.lastName}`,
-          `New Video: ${section.title}`,
-          `We're excited to let you know that a new video titled "${section.title}" is now available. Head over to your course dashboard and continue learning!`,
-          `http://localhost:3000/view-course/${section.courseId._id}/${section._id}`,
-          "Go to Course"
+        const enrollmentDate = new Date(
+          user.courses.find((c) =>
+            c.equals(section.courseId._id)
+          ).enrollmentDate
         );
+        const availableOn = new Date(enrollmentDate);
+        availableOn.setDate(enrollmentDate.getDate() + section.releaseOffset);
 
-        await mailSender(user.email, subject, (body = htmlContent));
+        if (availableOn >= today && availableOn < tomorrow) {
+          const subject = `New Section Available: ${section.title}`;
+
+          const htmlContent = notificationEmailTemplate(
+            `${user.firstName} ${user.lastName}`,
+            `New Video: ${section.title}`,
+            `We're excited to let you know that a new video titled "${section.title}" is now available. Head over to your course dashboard and continue learning!`,
+            `http://localhost:3000/view-course/${section.courseId._id}/${section._id}`,
+            "Go to Course"
+          );
+
+          await mailSender(user.email, subject, (body = htmlContent));
+        }
       }
 
       // Mark section as notified

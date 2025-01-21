@@ -140,11 +140,12 @@ exports.updateDisplayPicture = async (req, res) => {
 exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
-    let userDetails = await User.findOne({ _id: userId })
+    const userDetails = await User.findOne({ _id: userId })
       .populate({
-        path: "courses",
+        path: "courses.courseId",
         populate: {
           path: "courseContent",
+          model: "Section",
         },
       })
       .exec();
@@ -152,7 +153,7 @@ exports.getEnrolledCourses = async (req, res) => {
     if (!userDetails) {
       return res.status(400).json({
         success: false,
-        message: `Could not find user with id: ${userDetails}`,
+        message: `Could not find user with id: ${userId}`,
       });
     }
 
@@ -161,6 +162,7 @@ exports.getEnrolledCourses = async (req, res) => {
       data: userDetails.courses,
     });
   } catch (error) {
+    console.error("Error fetching enrolled courses:", error);
     return res.status(500).json({
       success: false,
       message: error.message,

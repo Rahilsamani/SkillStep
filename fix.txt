@@ -6,6 +6,4 @@
 
 12. mobile responsive check kar lena
 
-13. complete dynamic nhi hora because section ko available on de rhe hai
-
 16. course completeion certificate
