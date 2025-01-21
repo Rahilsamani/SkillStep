@@ -38,7 +38,6 @@ export function getUserDetails(token, navigate) {
 }
 
 export async function getUserEnrolledCourses(token) {
-  const toastId = toast.loading("Loading...");
   let result = [];
   try {
     const response = await apiConnector(
@@ -56,7 +55,6 @@ export async function getUserEnrolledCourses(token) {
     console.log("GET_USER_ENROLLED_COURSES_API API ERROR............", error);
     toast.error("Could Not Get Enrolled Courses");
   }
-  toast.dismiss(toastId);
   return result;
 }
 

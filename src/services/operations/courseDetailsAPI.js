@@ -71,7 +71,6 @@ export const createSection = async (data, token) => {
 
 // get full details of a course
 export const getFullDetailsOfCourse = async (courseId, token, dispatch) => {
-  const toastId = toast.loading("Loading...");
   dispatch(setLoading(true));
   let result = null;
   try {
@@ -91,7 +90,6 @@ export const getFullDetailsOfCourse = async (courseId, token, dispatch) => {
     result = error.response.data;
     toast.error(error.response.data.message);
   }
-  toast.dismiss(toastId);
   dispatch(setLoading(false));
   return result;
 };

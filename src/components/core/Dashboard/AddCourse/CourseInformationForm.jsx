@@ -79,6 +79,7 @@ export default function CourseInformationForm() {
 
   const onSubmit = async (data) => {
     // Validate playlist URL
+    const toastId = toast.loading("Loading...");
     const isValid = validatePlaylistUrl(data.playlistUrl);
     if (!isValid) {
       toast.error("Please Enter a Valid URL");
@@ -142,6 +143,7 @@ export default function CourseInformationForm() {
           }
         }
 
+        toast.dismiss(toastId);
         dispatch(setCourse(result));
         toast.success("Course Created successfully!");
       } else if (result.exist) {
