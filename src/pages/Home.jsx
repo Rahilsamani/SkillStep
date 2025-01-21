@@ -69,10 +69,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"/signup"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -99,10 +96,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"/signup"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -110,7 +104,7 @@ const Home = () => {
 
           {/* right part */}
           <div className="w-1/2 sm:w-[38%]">
-            <img src={Home3} height={300} alt="" />
+            <img src={Home3} height={300} alt="" loading="lazy" />
           </div>
         </div>
 
@@ -118,7 +112,7 @@ const Home = () => {
         <div className="flex flex-col-reverse sm:flex-row justify-center items-center gap-10 sm:gap-20">
           {/* left part */}
           <div className="w-1/2 sm:w-[38%]">
-            <img src={Home4} height={300} alt="" />
+            <img src={Home4} height={300} alt="" loading="lazy" />
           </div>
 
           {/* right part */}
@@ -139,10 +133,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"/signup"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -169,10 +160,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"/signup"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>
@@ -180,7 +168,7 @@ const Home = () => {
 
           {/* right part */}
           <div className="w-1/2 sm:w-[38%]">
-            <img src={Home5} height={300} alt="" />
+            <img src={Home5} height={300} alt="" loading="lazy" />
           </div>
         </div>
 
@@ -211,10 +199,7 @@ const Home = () => {
             </div>
 
             <div className="flex flex-row gap-7 mt-8">
-              <CTAButton
-                active={true}
-                linkto={"/signup"}
-              >
+              <CTAButton active={true} linkto={"/signup"}>
                 Explore
               </CTAButton>
             </div>

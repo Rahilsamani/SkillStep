@@ -50,6 +50,7 @@ const Footer = () => {
               width={180}
               height={50}
               className="object-contain"
+              loading="lazy"
             />
           </div>
 

@@ -106,7 +106,7 @@ export default function CourseInformationForm() {
 
       const firstSectionDetails = courseSections[0].snippet;
       formData.append("Author", firstSectionDetails.videoOwnerChannelTitle);
-      formData.append("thumbnail", firstSectionDetails.thumbnails.high.url);
+      formData.append("thumbnail", firstSectionDetails.thumbnails.default.url);
 
       // Send form data
       setLoading(true);
