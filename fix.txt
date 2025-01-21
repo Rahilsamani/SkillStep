@@ -5,5 +5,3 @@
 16. course completeion certificate
 
 17. section koi bhi banda notify kar dega toh baad mein kisi ko mail nhi aayega
-
-18. fix progress bar problem

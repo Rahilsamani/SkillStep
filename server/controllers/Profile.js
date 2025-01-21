@@ -176,8 +176,7 @@ exports.getCourseProgress = async (req, res) => {
 
     const userDetails = await User.findById(userId)
       .populate({
-        path: "courses",
-        populate: { path: "courseContent" },
+        path: "courses.courseId",
       })
       .populate({
         path: "courseProgress",
@@ -194,16 +193,16 @@ exports.getCourseProgress = async (req, res) => {
 
     const coursesWithProgress = userDetails.courses.map((course) => {
       const courseProgress = userDetails.courseProgress.find(
-        (progress) => progress.courseID.toString() === course._id.toString()
+        (progress) =>
+          progress.courseID.toString() === course.courseId._id.toString()
       );
 
-      const completedLectures = courseProgress?.completedVideos || [];
-      const totalLectures = course.courseContent || [];
+      const completedLectures = courseProgress?.completedVideos.length;
+      const totalLectures = course.courseId.courseContent.length;
 
-      const progress = calculateCourseProgress(
-        completedLectures,
-        totalLectures
-      );
+      if (totalLectures === 0) return 0;
+
+      const progress = Math.round((completedLectures / totalLectures) * 100);
 
       return {
         courseId: course._id,
@@ -213,6 +212,8 @@ exports.getCourseProgress = async (req, res) => {
 
     return res.status(200).json({
       success: true,
+      // userDetails,
+      // coursesWithProgress,
       data: coursesWithProgress,
     });
   } catch (error) {
