@@ -47,12 +47,8 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
     const currentDate = new Date();
 
     return sections.filter((section) => {
-      console.log("Section -> ", section);
       const releaseDate = new Date(enrollmentDate);
-      console.log("Release Date -> ", releaseDate);
       releaseDate.setDate(releaseDate.getDate() + section.releaseOffset);
-      console.log("New Release Date -> ", releaseDate);
-
       return releaseDate <= currentDate;
     });
   };

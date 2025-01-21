@@ -14,10 +14,15 @@ const VideoDetails = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [videoData, setVideoData] = useState(null);
   const [previewSource, setPreviewSource] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!courseSectionData.length || !courseId || !sectionId) {
+    if (!courseId || !sectionId) {
       navigate("/dashboard/enrolled-courses");
+      return;
+    }
+
+    if (courseSectionData.length === 0) {
       return;
     }
 
@@ -25,13 +30,15 @@ const VideoDetails = () => {
       (section) => section._id === sectionId
     );
 
-    if (currentSection) {
-      setVideoData(currentSection);
-      setPreviewSource(courseEntireData.thumbnail);
-    } else {
-      navigate("/dashboard/enrolled-courses");
-    }
+    setVideoData(currentSection);
+    setPreviewSource(courseEntireData.thumbnail);
+
+    setLoading(false);
   }, [courseSectionData, courseEntireData, sectionId, navigate, courseId]);
+
+  if (loading) {
+    return <div className="spinner">Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-5 text-white items-center mt-10">
