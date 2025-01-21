@@ -54,8 +54,8 @@ app.get("/", (req, res) => {
   });
 });
 
-// Schedule job to run daily at 11:59 PM
-schedule.scheduleJob("59 23 * * *", notifyUsers);
+// Schedule job to run daily at 12:01 AM
+schedule.scheduleJob("1 0 * * *", notifyUsers);
 
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);

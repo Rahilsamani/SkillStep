@@ -184,18 +184,22 @@ exports.notifyUsers = async () => {
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
-    const sections = await Section.find({ usersNotified: false }).populate(
-      "courseId"
-    );
+    const sections = await Section.find({}).populate("courseId");
 
     for (const section of sections) {
-      const users = await User.find({ courses: section.courseId });
+      const users = await User.find({
+        "courses.courseId": section.courseId._id,
+      });
+
       for (const user of users) {
-        const enrollmentDate = new Date(
-          user.courses.find((c) =>
-            c.equals(section.courseId._id)
-          ).enrollmentDate
+        // Find the specific course in the user's courses array
+        const userCourse = user.courses.find((c) =>
+          c.courseId.equals(section.courseId._id)
         );
+
+        if (!userCourse) continue;
+
+        const enrollmentDate = new Date(userCourse.enrollmentDate);
         const availableOn = new Date(enrollmentDate);
         availableOn.setDate(enrollmentDate.getDate() + section.releaseOffset);
 
@@ -210,16 +214,13 @@ exports.notifyUsers = async () => {
             "Go to Course"
           );
 
-          await mailSender(user.email, subject, (body = htmlContent));
+          // Send email notification to the user
+          await mailSender(user.email, subject, htmlContent);
         }
       }
-
-      // Mark section as notified
-      section.usersNotified = true;
-      await section.save();
     }
 
-    console.log("Email notifications sent successfully.");
+    console.log("Email notifications processed successfully.");
   } catch (error) {
     console.error("Error notifying users:", error);
   }

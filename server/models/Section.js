@@ -22,7 +22,6 @@ const sectionSchema = new mongoose.Schema({
     ref: "Course",
     required: true,
   },
-  usersNotified: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("Section", sectionSchema);
