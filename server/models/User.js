@@ -37,6 +37,9 @@ const userSchema = new mongoose.Schema(
       {
         courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
         enrollmentDate: { type: Date, required: true },
+        completed: { type: Boolean, default: false },
+        completionDate: Date,
+        certificateIssued: { type: Boolean, default: false },
       },
     ],
     token: {

@@ -1,5 +1,10 @@
+const { generateCertificate } = require("../utils/generateCerificate");
+const mailSender = require("../utils/mailSender");
+const Course = require("../models/Course");
+const User = require("../models/User");
 const Section = require("../models/Section");
 const CourseProgress = require("../models/CourseProgress");
+const { uploadPdfToCloudinary } = require("../utils/imageUploader");
 
 exports.updateCourseProgress = async (req, res) => {
   const { courseId, sectionId } = req.body;
@@ -33,6 +38,46 @@ exports.updateCourseProgress = async (req, res) => {
 
     courseProgress.completedVideos.push(sectionId);
     await courseProgress.save();
+
+    const allSections = await Section.find({ courseId });
+    const completedSectionIds = courseProgress.completedVideos;
+
+    if (
+      allSections.length > 0 &&
+      allSections.length === completedSectionIds.length
+    ) {
+      const user = await User.findById(userId);
+      const userCourse = user.courses.find((c) => c.courseId.equals(courseId));
+
+      if (userCourse) {
+        userCourse.completed = true;
+        userCourse.completionDate = new Date();
+
+        const course = await Course.findById(courseId);
+
+        // Generate the certificate as a buffer
+        const certificateBuffer = await generateCertificate(user, course);
+
+        // Upload the PDF to Cloudinary
+        const uploadResponse = await uploadPdfToCloudinary(
+          certificateBuffer,
+          "certificates",
+          `${user.firstName}_${user.lastName}_${course.title}_Certificate`
+        );
+
+        const certificateUrl = uploadResponse.secure_url;
+
+        // Send email
+        const title = `Your Certificate of Completion for ${course.title}`;
+        const body = `<p>Congratulations ${user.firstName},</p>
+                      <p>You have successfully completed the course <strong>${course.title}</strong>. You can download your certificate <a href="${certificateUrl}">here</a>.</p>`;
+        await mailSender(user.email, title, body);
+
+        userCourse.certificateIssued = true;
+        userCourse.certificateUrl = certificateUrl;
+        await user.save();
+      }
+    }
 
     return res.status(200).json({
       success: true,
