@@ -191,8 +191,9 @@ export default function CourseInformationForm() {
           {...register("courseCategory", { required: true })}
           id="courseCategory"
           className="form-style w-full"
+          defaultValue=""
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             Choose a Category
           </option>
           {!loading &&
