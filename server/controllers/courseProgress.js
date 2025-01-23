@@ -5,6 +5,7 @@ const User = require("../models/User");
 const Section = require("../models/Section");
 const CourseProgress = require("../models/CourseProgress");
 const { uploadPdfToCloudinary } = require("../utils/imageUploader");
+const certificate = require("../mail/templates/certificate");
 
 exports.updateCourseProgress = async (req, res) => {
   const { courseId, sectionId } = req.body;
@@ -69,8 +70,13 @@ exports.updateCourseProgress = async (req, res) => {
 
         // Send email
         const title = `Your Certificate of Completion for ${course.title}`;
-        const body = `<p>Congratulations ${user.firstName},</p>
-                      <p>You have successfully completed the course <strong>${course.title}</strong>. You can download your certificate <a href="${certificateUrl}">here</a>.</p>`;
+        const body = certificate(
+          user.firstName,
+          course.title,
+          course.startDate,
+          course.endDate,
+          userCourse.completionDate
+        );
         await mailSender(user.email, title, body);
 
         userCourse.certificateIssued = true;

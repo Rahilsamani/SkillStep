@@ -1,15 +1,21 @@
-const certificateTemplate = (name, course, startDate, endDate, issueDate) => {
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
     <title>Certificate of Completion</title>
     <style>
       body {
+        background-color: #ffffff;
         font-family: Arial, sans-serif;
         font-size: 16px;
         line-height: 1.6;
         color: #333333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
 
       .cert-container {
@@ -123,7 +129,3 @@ const certificateTemplate = (name, course, startDate, endDate, issueDate) => {
     </div>
   </body>
 </html>
-`;
-};
-
-module.exports = certificateTemplate;
