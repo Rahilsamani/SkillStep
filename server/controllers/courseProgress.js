@@ -1,11 +1,8 @@
-const { generateCertificate } = require("../utils/generateCerificate");
-const mailSender = require("../utils/mailSender");
 const Course = require("../models/Course");
 const User = require("../models/User");
 const Section = require("../models/Section");
 const CourseProgress = require("../models/CourseProgress");
-const { uploadPdfToCloudinary } = require("../utils/imageUploader");
-const certificate = require("../mail/templates/certificate");
+const { sendCertificate } = require("../utils/sendCertificate");
 
 exports.updateCourseProgress = async (req, res) => {
   const { courseId, sectionId } = req.body;
@@ -53,35 +50,10 @@ exports.updateCourseProgress = async (req, res) => {
       if (userCourse) {
         userCourse.completed = true;
         userCourse.completionDate = new Date();
-
-        const course = await Course.findById(courseId);
-
-        // Generate the certificate as a buffer
-        const certificateBuffer = await generateCertificate(user, course);
-
-        // Upload the PDF to Cloudinary
-        const uploadResponse = await uploadPdfToCloudinary(
-          certificateBuffer,
-          "certificates",
-          `${user.firstName}_${user.lastName}_${course.title}_Certificate`
-        );
-
-        const certificateUrl = uploadResponse.secure_url;
-
-        // Send email
-        const title = `Your Certificate of Completion for ${course.Author}`;
-        const body = certificate(
-          user.firstName,
-          user.lastName,
-          course.Author,
-          course.enrollmentDate,
-          userCourse.completionDate
-        );
-        await mailSender(user.email, title, body);
-
-        userCourse.certificateIssued = true;
-        userCourse.certificateUrl = certificateUrl;
         await user.save();
+
+        // Trigger certificate generation
+        processCertificate(user, courseId);
       }
     }
 
@@ -96,5 +68,18 @@ exports.updateCourseProgress = async (req, res) => {
       message: "Internal server error",
       error: error.message,
     });
+  }
+};
+
+const processCertificate = async (user, courseId) => {
+  try {
+    const course = await Course.findById(courseId);
+    const userCourse = user.courses.find((c) => c.courseId.equals(courseId));
+
+    if (course && userCourse) {
+      await sendCertificate(user, course, userCourse);
+    }
+  } catch (error) {
+    console.error("Error in certificate processing:", error.message);
   }
 };

@@ -1,10 +1,8 @@
 const certificateTemplate = (
   firstName,
   lastName,
-  course,
-  startDate,
+  Author,
   endDate,
-  issueDate
 ) => {
   return `
   <!DOCTYPE html>
@@ -24,15 +22,21 @@ const certificateTemplate = (
         height: 520px;
         position: relative;
         padding: 20px;
+        background-image: url('https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true');
+        background-size: cover;
+        background-position: center;
+        box-sizing: border-box;
       }
       .cert-content {
         text-align: center;
         padding: 20px;
         font-family: Georgia, serif;
+        position: relative;
+        z-index: 1;
       }
       .cert-subtitle {
         margin-top: 110px;
-        font-size: 18px;
+        font-size: 24px;
         font-style: italic;
         color: #555;
         margin-bottom: 25px;
@@ -43,6 +47,7 @@ const certificateTemplate = (
         text-align: justify;
         margin: 0 auto;
         width: 90%;
+        color: #333;
       }
       .highlight {
         font-weight: bold;
@@ -54,8 +59,6 @@ const certificateTemplate = (
         justify-content: space-between;
         align-items: center;
         margin-top: 60px;
-        margin-left: 10px;
-        padding: 0 20px;
       }
       .signature-box {
         text-align: center;
@@ -68,23 +71,14 @@ const certificateTemplate = (
       }
       .seal {
         width: 70px;
-        position: absolute;
-        bottom: 120px;
-        right: 90px;
-      }
-      .bg-image {
-        position: absolute;
+        margin-top: 40px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
       }
     </style>
   </head>
   <body>
-    <img
-      src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true"
-      width="800"
-      height="520"
-      class="bg-image"
-      alt=""
-    />
     <div class="cert-container">
       <div class="cert-content">
         <div class="cert-subtitle">This certifies that</div>
@@ -92,13 +86,8 @@ const certificateTemplate = (
           <p>
             <span class="highlight">${firstName} ${lastName},</span> has
             successfully completed the professional course
-            <span class="highlight">${course}</span> on
-            <span class="highlight">SkillStep</span> from
-            <span class="highlight">${startDate}</span> to
-            <span class="highlight">${endDate}</span>. The candidate has
-            demonstrated exceptional skills and understanding. Issued on
-            <span class="highlight">${issueDate}</span>. This certificate serves
-            as recognition of the candidate's outstanding achievement.
+            <span class="highlight">${Author}</span> on
+            <span class="highlight">SkillStep</span>, demonstrating exceptional skills and a comprehensive understanding of the subject. The course was completed on <span class="highlight">${endDate}</span>, and this certificate is issued as a recognition of the candidate's outstanding achievement.
           </p>
         </div>
         <div class="signature-section">
