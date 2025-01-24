@@ -1,9 +1,5 @@
 const Category = require("../models/Category");
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 // Create a new category
 exports.createCategory = async (req, res) => {
   try {

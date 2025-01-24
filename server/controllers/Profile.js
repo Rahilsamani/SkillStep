@@ -4,7 +4,6 @@ const CourseProgress = require("../models/CourseProgress");
 const Course = require("../models/Course");
 const User = require("../models/User");
 const { uploadImageToCloudinary } = require("../utils/imageUploader");
-const { calculateCourseProgress } = require("../utils/calculateCourseProgress");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -212,8 +211,6 @@ exports.getCourseProgress = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      // userDetails,
-      // coursesWithProgress,
       data: coursesWithProgress,
     });
   } catch (error) {

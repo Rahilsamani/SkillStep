@@ -1,9 +1,4 @@
-const certificateTemplate = (
-  firstName,
-  lastName,
-  Author,
-  endDate,
-) => {
+const certificateTemplate = (firstName, lastName, Author, endDate) => {
   return `
   <!DOCTYPE html>
 <html>
@@ -22,7 +17,7 @@ const certificateTemplate = (
         height: 520px;
         position: relative;
         padding: 20px;
-        background-image: url('https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true');
+        background-image: url("https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true");
         background-size: cover;
         background-position: center;
         box-sizing: border-box;
@@ -58,7 +53,7 @@ const certificateTemplate = (
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 60px;
+        margin: 45px 30px 0;
       }
       .signature-box {
         text-align: center;
@@ -68,13 +63,6 @@ const certificateTemplate = (
       .signature-box img {
         width: 120px;
         margin-top: 10px;
-      }
-      .seal {
-        width: 70px;
-        margin-top: 40px;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
       }
     </style>
   </head>
@@ -98,12 +86,13 @@ const certificateTemplate = (
               alt="Signature"
             />
           </div>
+          <img
+            class="seal"
+            width="70px"
+            src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/seal.png?raw=true"
+            alt="Seal"
+          />
         </div>
-        <img
-          class="seal"
-          src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/seal.png?raw=true"
-          alt="Seal"
-        />
       </div>
     </div>
   </body>
