@@ -1,5 +1,13 @@
-const certificateTemplate = (name, course, startDate, endDate, issueDate) => {
-  return `<!DOCTYPE html>
+const certificateTemplate = (
+  firstName,
+  lastName,
+  course,
+  startDate,
+  endDate,
+  issueDate
+) => {
+  return `
+  <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -11,99 +19,80 @@ const certificateTemplate = (name, course, startDate, endDate, issueDate) => {
         line-height: 1.6;
         color: #333333;
       }
-
       .cert-container {
-        width: 800px;
-        height: 500px;
+        width: 750px;
+        height: 520px;
         position: relative;
-        border: 15px solid transparent;
-        border-image: url("https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true")
-          10 round;
         padding: 20px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
       }
-
       .cert-content {
         text-align: center;
         padding: 20px;
         font-family: Georgia, serif;
       }
-
-      .cert-title {
-        font-size: 40px;
-        font-weight: bolder;
-        text-transform: uppercase;
-        color: #ffcc33;
-        margin-bottom: 20px;
-        font-style: italic;
-      }
-
       .cert-subtitle {
-        margin-top: 120px;
+        margin-top: 110px;
         font-size: 18px;
         font-style: italic;
         color: #555;
-        margin-bottom: 30px;
+        margin-bottom: 25px;
       }
-
       .cert-details {
         font-size: 16px;
-        line-height: 1.8;
+        line-height: 1.7;
         text-align: justify;
         margin: 0 auto;
         width: 90%;
       }
-
       .highlight {
         font-weight: bold;
         color: #3f51b5;
-        border-bottom: 2px solid #607d8b;
         padding: 2px 5px;
       }
-
       .signature-section {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 40px;
+        margin-top: 60px;
+        margin-left: 10px;
         padding: 0 20px;
       }
-
       .signature-box {
         text-align: center;
         font-size: 12px;
         color: #555;
       }
-
       .signature-box img {
         width: 120px;
         margin-top: 10px;
       }
-
       .seal {
-        width: 100px;
+        width: 70px;
         position: absolute;
-        bottom: 90px;
+        bottom: 120px;
         right: 90px;
       }
       .bg-image {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
       }
     </style>
   </head>
-
   <body>
-    <img src="./border1.png" width="920" height="870" class="bg-image" alt="" />
+    <img
+      src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true"
+      width="800"
+      height="520"
+      class="bg-image"
+      alt=""
+    />
     <div class="cert-container">
       <div class="cert-content">
         <div class="cert-subtitle">This certifies that</div>
         <div class="cert-details">
           <p>
-            <span class="highlight">${name}</span> has successfully completed
-            the professional course <span class="highlight">${course}</span> on
+            <span class="highlight">${firstName} ${lastName},</span> has
+            successfully completed the professional course
+            <span class="highlight">${course}</span> on
             <span class="highlight">SkillStep</span> from
             <span class="highlight">${startDate}</span> to
             <span class="highlight">${endDate}</span>. The candidate has
@@ -115,10 +104,17 @@ const certificateTemplate = (name, course, startDate, endDate, issueDate) => {
         <div class="signature-section">
           <div class="signature-box">
             <div>Authorized Signature</div>
-            <img src="./signature.png" alt="Signature" />
+            <img
+              src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/signature.png?raw=true"
+              alt="Signature"
+            />
           </div>
         </div>
-        <img class="seal" src="./seal.png" alt="Seal" />
+        <img
+          class="seal"
+          src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/seal.png?raw=true"
+          alt="Seal"
+        />
       </div>
     </div>
   </body>

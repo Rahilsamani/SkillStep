@@ -69,12 +69,12 @@ exports.updateCourseProgress = async (req, res) => {
         const certificateUrl = uploadResponse.secure_url;
 
         // Send email
-        const title = `Your Certificate of Completion for ${course.title}`;
+        const title = `Your Certificate of Completion for ${course.Author}`;
         const body = certificate(
           user.firstName,
-          course.title,
-          course.startDate,
-          course.endDate,
+          user.lastName,
+          course.Author,
+          course.enrollmentDate,
           userCourse.completionDate
         );
         await mailSender(user.email, title, body);

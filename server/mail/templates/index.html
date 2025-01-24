@@ -1,105 +1,112 @@
 <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Certificate of Completion</title>
-        <style>
-            body {
-                background-color: #f4f4f9;
-                font-family: "Helvetica Neue", Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                color: #333333;
-            }
-            
-            .certificate-container {
-                max-width: 900px;
-                margin: 50px auto;
-                background: #ffffff;
-                border: 10px solid #0047ab;
-                padding: 40px;
-                text-align: center;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            }
-            
-            .header {
-                font-size: 24px;
-                font-weight: bold;
-                color: #0047ab;
-                margin-bottom: 20px;
-            }
-            
-            .logo {
-                max-width: 150px;
-                margin: 20px auto;
-            }
-            
-            .body {
-                font-size: 18px;
-                line-height: 1.8;
-                margin: 20px 0;
-            }
-            
-            .highlight {
-                font-size: 22px;
-                font-weight: bold;
-                color: #0047ab;
-            }
-            
-            .date {
-                font-size: 16px;
-                margin-top: 30px;
-                color: #555555;
-            }
-            
-            .signature {
-                margin-top: 50px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-            
-            .signature .sign {
-                text-align: center;
-                font-size: 16px;
-            }
-            
-            .signature .sign img {
-                width: 100px;
-                margin-bottom: 10px;
-            }
-            
-            .footer {
-                margin-top: 40px;
-                font-size: 14px;
-                color: #999999;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="certificate-container">
-            <img src="https://github.com/Rahilsamani/SkillStep/blob/main/src/assets/Logo/logo.jpeg?raw=true" alt="SkillStep Logo" class="logo">
-            <div class="header">Certificate of Completion</div>
-            <div class="body">
-                <p>This is to certify that</p>
-                <p class="highlight">${userName}</p>
-                <p>has successfully completed the course</p>
-                <p class="highlight">${courseName}</p>
-            </div>
-            <div class="date">Date of Completion: ${completionDate}</div>
-            <div class="signature">
-                <div class="sign">
-                    <img src="https://raw.githubusercontent.com/Rahilsamani/SkillStep/main/src/assets/Signatures/ceo-signature.png" alt="CEO Signature">
-                    <div>CEO, SkillStep</div>
-                </div>
-                <div class="sign">
-                    <img src="https://raw.githubusercontent.com/Rahilsamani/SkillStep/main/src/assets/Signatures/course-instructor-signature.png" alt="Instructor Signature">
-                    <div>Instructor</div>
-                </div>
-            </div>
-            <div class="footer">
-                Powered by <strong>SkillStep</strong>. For inquiries, contact us at <a href="mailto:info@SkillStep.com">info@SkillStep.com</a>
-            </div>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Certificate of Completion</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333333;
+      }
+      .cert-container {
+        width: 750px;
+        height: 520px;
+        position: relative;
+        padding: 20px;
+      }
+      .cert-content {
+        text-align: center;
+        padding: 20px;
+        font-family: Georgia, serif;
+      }
+      .cert-subtitle {
+        margin-top: 110px;
+        font-size: 18px;
+        font-style: italic;
+        color: #555;
+        margin-bottom: 25px;
+      }
+      .cert-details {
+        font-size: 16px;
+        line-height: 1.7;
+        text-align: justify;
+        margin: 0 auto;
+        width: 90%;
+      }
+      .highlight {
+        font-weight: bold;
+        color: #3f51b5;
+        padding: 2px 5px;
+      }
+      .signature-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 60px;
+        margin-left: 10px;
+        padding: 0 20px;
+      }
+      .signature-box {
+        text-align: center;
+        font-size: 12px;
+        color: #555;
+      }
+      .signature-box img {
+        width: 120px;
+        margin-top: 10px;
+      }
+      .seal {
+        width: 70px;
+        position: absolute;
+        bottom: 120px;
+        right: 90px;
+      }
+      .bg-image {
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true"
+      width="800"
+      height="520"
+      class="bg-image"
+      alt=""
+    />
+    <div class="cert-container">
+      <div class="cert-content">
+        <div class="cert-subtitle">This certifies that</div>
+        <div class="cert-details">
+          <p>
+            <span class="highlight">${firstName} ${lastName},</span> has
+            successfully completed the professional course
+            <span class="highlight">${course}</span> on
+            <span class="highlight">SkillStep</span> from
+            <span class="highlight">${startDate}</span> to
+            <span class="highlight">${endDate}</span>. The candidate has
+            demonstrated exceptional skills and understanding. Issued on
+            <span class="highlight">${issueDate}</span>. This certificate serves
+            as recognition of the candidate's outstanding achievement.
+          </p>
         </div>
-    </body>
-    </html>
+        <div class="signature-section">
+          <div class="signature-box">
+            <div>Authorized Signature</div>
+            <img
+              src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/signature.png?raw=true"
+              alt="Signature"
+            />
+          </div>
+        </div>
+        <img
+          class="seal"
+          src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/seal.png?raw=true"
+          alt="Seal"
+        />
+      </div>
+    </div>
+  </body>
+</html>
