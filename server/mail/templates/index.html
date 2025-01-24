@@ -1,6 +1,4 @@
-const certificateTemplate = (firstName, lastName, Author, endDate) => {
-  return `
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -74,7 +72,11 @@ const certificateTemplate = (firstName, lastName, Author, endDate) => {
             <span class="highlight">${firstName} ${lastName},</span> has
             successfully completed the professional course
             <span class="highlight">${Author}</span> on
-            <span class="highlight">SkillStep</span>, demonstrating exceptional skills and a comprehensive understanding of the subject. The course was completed on <span class="highlight">${endDate}</span>, and this certificate is issued as a recognition of the candidate's outstanding achievement.
+            <span class="highlight">SkillStep</span>, demonstrating exceptional
+            skills and a comprehensive understanding of the subject. The course
+            was completed on <span class="highlight">${endDate}</span>, and this
+            certificate is issued as a recognition of the candidate's
+            outstanding achievement.
           </p>
         </div>
         <div class="signature-section">
@@ -96,7 +98,3 @@ const certificateTemplate = (firstName, lastName, Author, endDate) => {
     </div>
   </body>
 </html>
-`;
-};
-
-module.exports = certificateTemplate;

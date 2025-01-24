@@ -21,7 +21,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.profile);
-  const [enrollmentDate, setEnrollmentDate] = useState(null);
+  const [enrollmentDate, setEnrollmentDate] = useState(1);
 
   useEffect(() => {
     if (!courseSectionData.length) return;

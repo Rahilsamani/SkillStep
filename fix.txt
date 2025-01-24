@@ -2,6 +2,4 @@
 
 12. mobile responsive check kar lena
 
-20. section available nh ihora hai direct side bar mein
-
 21. recourse mein problem hai shayad check it
