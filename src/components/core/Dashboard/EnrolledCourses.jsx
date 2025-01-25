@@ -97,7 +97,6 @@ export default function EnrolledCourses() {
                 </div>
               </div>
               <div className="flex w-1/5 flex-col gap-2 px-2 py-3">
-                {/* {console.log("course -> ", course)} */}
                 <p>Progress: {course.progressPercentage}%</p>
                 <ProgressBar
                   completed={course.progressPercentage}

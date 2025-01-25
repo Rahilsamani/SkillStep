@@ -143,7 +143,6 @@ export default function CourseInformationForm() {
           }
         }
 
-        toast.dismiss(toastId);
         dispatch(setCourse(result));
         toast.success("Course Created successfully!");
       } else if (result.exist) {
@@ -155,6 +154,7 @@ export default function CourseInformationForm() {
       console.error("Error fetching playlist items or saving course:", error);
       toast.error("An error occurred. Please try again.");
     } finally {
+      toast.dismiss(toastId);
       setLoading(false);
     }
   };

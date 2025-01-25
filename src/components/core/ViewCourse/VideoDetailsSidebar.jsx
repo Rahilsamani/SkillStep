@@ -90,7 +90,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
                   navigate(`/dashboard/enrolled-courses`);
                 }}
                 title="back"
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-richblack-100 text-richblack-700 pr-1 hover:scale-90"
+                className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-richblack-100 text-richblack-700 pr-1 hover:scale-90 cursor-pointer"
               >
                 <IoIosArrowBack size={25} />
               </div>

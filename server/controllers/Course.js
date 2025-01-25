@@ -31,49 +31,34 @@ exports.createCourse = async (req, res) => {
     // Check if course already exists
     let course = await Course.findOne({ youtubePlaylistId });
 
-    // Function to handle course progress and user enrollment
-    const handleCourseProgressAndUser = async (course) => {
+    // course already exists, do enrollment
+    if (course) {
       if (!course.studentsEnrolled.includes(userId)) {
         course.studentsEnrolled.push(userId);
         await course.save();
       }
 
-      // Ensure the course is added to the user's courses if not already present
       const user = await User.findById(userId);
       const existingCourse = user.courses.find(
         (c) => c.courseId.toString() === course._id.toString()
       );
+
+      // Course exists, handle progress and enrollment
+      const courseProgress = await CourseProgress.create({
+        userId,
+        courseID: course._id,
+        completedVideos: [],
+      });
 
       if (!existingCourse) {
         user.courses.push({
           courseId: course._id,
           enrollmentDate: new Date(),
         });
+        user.courseProgress.push(courseProgress._id);
         await user.save();
       }
 
-      // Create CourseProgress if not already created
-      let courseProgress = await CourseProgress.findOne({
-        userId,
-        courseID: course._id,
-      });
-      course.courseProgress = courseProgress;
-      course.save();
-
-      if (!courseProgress) {
-        courseProgress = await CourseProgress.create({
-          userId,
-          courseID: course._id,
-          completedVideos: [],
-        });
-      }
-
-      return courseProgress;
-    };
-
-    if (course) {
-      // Course exists, handle progress and enrollment
-      const courseProgress = await handleCourseProgressAndUser(course);
       return res.status(200).json({
         success: true,
         data: course,
