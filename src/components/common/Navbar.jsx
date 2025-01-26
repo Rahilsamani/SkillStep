@@ -15,7 +15,7 @@ function Navbar() {
     { title: "Home", path: "/" },
     { title: "About Us", path: "/about" },
     { title: "Contact Us", path: "/contact" },
-    { title: "Dashboard", path: "/dashboard" },
+    { title: "Dashboard", path: "/dashboard/my-profile" },
   ];
 
   function matchRoute(route) {

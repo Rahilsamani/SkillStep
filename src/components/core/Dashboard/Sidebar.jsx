@@ -2,6 +2,8 @@ import { useState } from "react";
 import { VscSignOut } from "react-icons/vsc";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FiMenu } from "react-icons/fi";
+import { IoCloseSharp } from "react-icons/io5";
 
 import { logout } from "../../../services/operations/authAPI";
 import ConfirmationModal from "../../common/ConfirmationModal";
@@ -38,6 +40,7 @@ export default function Sidebar() {
   const navigate = useNavigate();
   // Tracks of confirmation modal
   const [confirmationModal, setConfirmationModal] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   if (profileLoading || authLoading) {
     return (
@@ -49,24 +52,40 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="flex h-[calc(100vh-3.5rem)] min-w-[220px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10">
+      <div
+        className={`flex h-[calc(100vh-3.5rem)] w-20 md:w-52 transition-width duration-300 flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 py-10 ${
+          isOpen ? "w-52" : "w-20"
+        }`}
+      >
         <div className="flex flex-col">
+          <button
+            className="text-richblack-300 text-2xl flex justify-center md:justify-start md:px-8 items-center -mt-6 mb-3 md:hidden"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <IoCloseSharp size={26} /> : <FiMenu size={26} />}
+          </button>
           {sidebarLinks.map((link) => {
             if (link.type && user?.accountType !== link.type) return null;
             return (
-              <SidebarLink key={link.id} link={link} iconName={link.icon} />
+              <SidebarLink
+                key={link.id}
+                link={link}
+                iconName={link.icon}
+                isOpen={isOpen}
+              />
             );
           })}
         </div>
-        <div className="mx-auto mt-6 mb-6 h-[1px] w-10/12 bg-richblack-700" />
+        <div className="mx-auto mt-6 mb-6 h-[1px] w-full bg-richblack-700" />
         <div className="flex flex-col">
           <SidebarLink
             link={{ name: "Settings", path: "/dashboard/settings" }}
             iconName="VscSettingsGear"
+            isOpen={isOpen}
           />
 
           <button
-            className="px-8 py-2 text-sm font-medium text-richblack-300"
+            className="md:px-8 py-4 text-sm font-medium text-richblack-300"
             onClick={() =>
               setConfirmationModal({
                 text1: "Are you sure?",
@@ -78,9 +97,15 @@ export default function Sidebar() {
               })
             }
           >
-            <div className="flex items-center gap-x-2">
-              <VscSignOut className="text-lg" />
-              <span>Logout</span>
+            <div
+              className={`flex items-center md:justify-start md:gap-x-2 ${
+                isOpen ? "justify-start gap-x-2 px-8" : "justify-center"
+              }`}
+            >
+              <VscSignOut className="text-2xl md:text-lg" />
+              <span className={`md:block ${isOpen ? "block" : "hidden"}`}>
+                Logout
+              </span>
             </div>
           </button>
         </div>
