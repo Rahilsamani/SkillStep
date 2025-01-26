@@ -53,8 +53,8 @@ function SignupForm() {
     <div>
       {/* Form */}
       <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-4">
-        <div className="flex gap-x-4">
-          <label>
+        <div className="flex justify-between gap-x-4">
+          <label className="w-full" >
             {/* First Name */}
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
               First Name <sup className="text-pink-200">*</sup>
@@ -73,7 +73,7 @@ function SignupForm() {
             />
           </label>
 
-          <label>
+          <label className="w-full" >
             {/* Last Name */}
             <p className="text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]">
               Last Name <sup className="text-pink-200">*</sup>
@@ -112,9 +112,9 @@ function SignupForm() {
           />
         </label>
 
-        <div className="flex gap-x-4">
+        <div className="flex justify-between gap-x-4">
           {/* createPassword and Confirm Password */}
-          <label className="relative">
+          <label className="relative w-full">
             <p className="text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]">
               Create Password<sup className="text-pink-200">*</sup>
             </p>
@@ -142,7 +142,7 @@ function SignupForm() {
               )}
             </span>
           </label>
-          <label className="relative">
+          <label className="relative w-full">
             <p className="text-[0.875rem] text-richblack-5 mb-1 leading-[1.375rem]">
               Confirm Password<sup className="text-pink-200">*</sup>
             </p>
