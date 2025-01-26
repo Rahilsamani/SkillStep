@@ -14,19 +14,21 @@ export default function MyProfile() {
         My Profile
       </h1>
 
-      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 sm:px-12 gap-y-5">
         <div className="flex items-center gap-x-4">
           <img
             src={user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
+            className="aspect-square w-[60px] sm:w-[78px] rounded-full object-cover"
           />
 
           <div className="space-y-1">
-            <p className="text-lg font-semibold text-richblack-5">
+            <p className="text-md sm:text-lg font-semibold text-richblack-5">
               {user?.firstName + " " + user?.lastName}
             </p>
-            <p className="text-sm text-richblack-300">{user?.email}</p>
+            <p className="text-xs sm:text-sm text-richblack-300">
+              {user?.email}
+            </p>
           </div>
         </div>
         <IconBtn
@@ -34,6 +36,7 @@ export default function MyProfile() {
           onclick={() => {
             navigate("/dashboard/settings");
           }}
+          className=""
         >
           <RiEditBoxLine />
         </IconBtn>
@@ -41,7 +44,9 @@ export default function MyProfile() {
 
       <div className="my-10 flex flex-col gap-y-10 rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12">
         <div className="flex w-full items-center justify-between">
-          <p className="text-lg font-semibold text-richblack-5">About</p>
+          <p className="text-md sm:text-lg font-semibold text-richblack-5">
+            About
+          </p>
           <IconBtn
             text="Edit"
             onclick={() => {
@@ -56,7 +61,7 @@ export default function MyProfile() {
             user?.additionalDetails?.about
               ? "text-richblack-5"
               : "text-richblack-400"
-          } text-sm font-medium`}
+          } text-xs font-medium`}
         >
           {user?.additionalDetails?.about ?? "Write Something About Yourself"}
         </p>
@@ -77,7 +82,7 @@ export default function MyProfile() {
           </IconBtn>
         </div>
 
-        <div className="flex max-w-[500px] justify-between">
+        <div className="flex flex-col sm:flex-row max-w-[500px] justify-between">
           <div className="flex flex-col gap-y-5">
             <div>
               <p className="mb-2 text-sm text-richblack-600">First Name</p>

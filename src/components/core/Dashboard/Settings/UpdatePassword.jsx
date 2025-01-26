@@ -92,7 +92,7 @@ export default function UpdatePassword() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-center sm:justify-end gap-2">
           <button
             className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
             onClick={() => {

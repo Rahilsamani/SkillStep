@@ -56,12 +56,12 @@ export default function ChangeProfilePicture() {
 
   return (
     <>
-      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-8 px-12 text-richblack-5">
+      <div className="flex items-center justify-between rounded-md border-[1px] border-richblack-700 bg-richblack-800 p-5 sm:p-8 sm:px-12 text-richblack-5">
         <div className="flex items-center gap-x-4">
           <img
             src={previewSource || user?.image}
             alt={`profile-${user?.firstName}`}
-            className="aspect-square w-[78px] rounded-full object-cover"
+            className="aspect-square w-[60px] sm:w-[78px] rounded-full object-cover"
           />
           <div className="space-y-2">
             <p>Change Profile Picture</p>
@@ -76,7 +76,7 @@ export default function ChangeProfilePicture() {
               <button
                 onClick={handleClick}
                 disabled={loading}
-                className="cursor-pointer rounded-md bg-richblack-700 py-2 px-5 font-semibold text-richblack-50"
+                className="cursor-pointer rounded-md bg-richblack-700 px-4 py-2 sm:px-5 font-semibold text-richblack-50"
               >
                 Select
               </button>
@@ -85,7 +85,7 @@ export default function ChangeProfilePicture() {
                 onclick={handleFileUpload}
               >
                 {!loading && (
-                  <FiUpload className="text-lg text-richblack-900" />
+                  <FiUpload className="text-md sm:text-lg text-richblack-900" />
                 )}
               </IconBtn>
             </div>

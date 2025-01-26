@@ -60,7 +60,7 @@ export default function Sidebar() {
         <div className="flex flex-col">
           <button
             className="text-richblack-300 text-2xl flex justify-center md:justify-start md:px-8 items-center -mt-6 mb-3 md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen((prev) => !prev)}
           >
             {isOpen ? <IoCloseSharp size={26} /> : <FiMenu size={26} />}
           </button>

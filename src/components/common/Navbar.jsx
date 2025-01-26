@@ -34,7 +34,7 @@ function Navbar() {
           <img src={logo} alt="Logo" width={130} height={28} loading="lazy" />
         </Link>
         {/* Navigation links */}
-        <nav className="hidden md:block">
+        <nav className="pl-20 hidden md:block">
           <ul className="flex gap-x-6 text-richblack-25">
             {NavbarLinks.map((link, index) =>
               token === null && link.title === "Dashboard" ? null : (
