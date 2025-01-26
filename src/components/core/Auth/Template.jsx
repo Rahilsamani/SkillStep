@@ -26,7 +26,7 @@ function Template({ title, description1, description2, image, formType }) {
           </div>
 
           <div className="w-full md:w-1/2 relative mx-auto flex justify-center items-center md:mx-0">
-            <img src={image} alt="Students" loading="lazy" className="w-[70%] md:w-full" />
+            <img src={image} alt="Students" className="w-[70%] md:w-full" />
           </div>
         </div>
       )}

@@ -3,24 +3,19 @@ import { useSelector } from "react-redux";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import logo from "../../assets/Logo/brand_logo.png";
 import ProfileDropdown from "../core/Auth/profileDropDown";
+import { useState } from "react";
+import ResponsiveMenu from "./ResponsiveMenu";
 
 function Navbar() {
   const { token } = useSelector((state) => state.auth);
   const location = useLocation();
+  const [open, setOpen] = useState(false);
 
   const NavbarLinks = [
-    {
-      title: "Home",
-      path: "/",
-    },
-    {
-      title: "About Us",
-      path: "/about",
-    },
-    {
-      title: "Contact Us",
-      path: "/contact",
-    },
+    { title: "Home", path: "/" },
+    { title: "About Us", path: "/about" },
+    { title: "Contact Us", path: "/contact" },
+    { title: "Dashboard", path: "/dashboard" },
   ];
 
   function matchRoute(route) {
@@ -38,24 +33,26 @@ function Navbar() {
         <Link to="/">
           <img src={logo} alt="Logo" width={130} height={28} loading="lazy" />
         </Link>
+        {/* Navigation links */}
         <nav className="hidden md:block">
-          {/* Navigation links */}
           <ul className="flex gap-x-6 text-richblack-25">
-            {NavbarLinks.map((link, index) => (
-              <li key={index}>
-                <Link to={link?.path}>
-                  <p
-                    className={` ${
-                      matchRoute(link?.path)
-                        ? "text-blue-200"
-                        : "text-richblack-25"
-                    } `}
-                  >
-                    {link.title}
-                  </p>
-                </Link>
-              </li>
-            ))}
+            {NavbarLinks.map((link, index) =>
+              token === null && link.title === "Dashboard" ? null : (
+                <li key={index}>
+                  <Link to={link.path}>
+                    <p
+                      className={`${
+                        matchRoute(link.path)
+                          ? "text-blue-200"
+                          : "text-richblack-25"
+                      }`}
+                    >
+                      {link.title}
+                    </p>
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </nav>
         <div className="hidden items-center gap-x-4 md:flex">
@@ -63,7 +60,7 @@ function Navbar() {
             <Link to="/login">
               <button
                 className={`${
-                  matchRoute("login") ? "text-blue-50" : "text-richblack-25"
+                  matchRoute("/login") ? "text-blue-50" : "text-richblack-25"
                 } rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100`}
               >
                 Log in
@@ -74,18 +71,28 @@ function Navbar() {
             <Link to="/signup">
               <button
                 className={`${
-                  matchRoute("signup") ? "text-blue-50" : "text-richblack-25"
-                } rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100"`}
+                  matchRoute("/signup") ? "text-blue-50" : "text-richblack-25"
+                } rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100`}
               >
                 Sign up
               </button>
             </Link>
           )}
-          {token !== null && <ProfileDropdown />}
         </div>
-        <button className="mr-4 md:hidden">
-          <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
-        </button>
+        {token !== null && <ProfileDropdown />}
+
+        {/* Mobile Menu Button */}
+        {token === null && (
+          <button
+            className="mr-4 md:hidden"
+            onClick={() => setOpen((prev) => !prev)}
+          >
+            <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
+          </button>
+        )}
+
+        {/* Responsive Menu */}
+        <ResponsiveMenu open={open} token={token} setOpen={setOpen} />
       </div>
     </div>
   );

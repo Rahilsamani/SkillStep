@@ -1,6 +1,11 @@
 import { useRef, useState } from "react";
-import { AiOutlineCaretDown } from "react-icons/ai";
-import { VscDashboard, VscSignOut } from "react-icons/vsc";
+import {
+  AiOutlineCaretDown,
+  AiOutlineHome,
+  AiOutlineUser,
+} from "react-icons/ai";
+import { RiContactsLine } from "react-icons/ri";
+import { MdOutlineDashboard, MdLogout } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -31,11 +36,33 @@ export default function ProfileDropdown() {
         <div
           onClick={(e) => e.stopPropagation()}
           ref={ref}
-          className="absolute top-[118%] right-0 z-[1000] divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800"
+          className="absolute top-[118%] right-0 z-[1000] divide-y-[1px] divide-richblack-700 overflow-hidden rounded-md border-[1px] border-richblack-700 bg-richblack-800 w-[120px]"
         >
-          <Link to="/dashboard/my-profile" onClick={() => setOpen(false)}>
+          <Link to="/home" className="md:hidden">
             <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
-              <VscDashboard className="text-lg" />
+              <AiOutlineHome className="text-lg" />
+              Home
+            </div>
+          </Link>
+          <Link to="/about" className="md:hidden">
+            <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
+              <AiOutlineUser className="text-lg" />
+              About Us
+            </div>
+          </Link>
+          <Link to="/contact" className="md:hidden">
+            <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
+              <RiContactsLine className="text-lg" />
+              Contact Us
+            </div>
+          </Link>
+          <Link
+            to="/dashboard/my-profile"
+            onClick={() => setOpen(false)}
+            className="md:hidden"
+          >
+            <div className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25">
+              <MdOutlineDashboard className="text-lg" />
               Dashboard
             </div>
           </Link>
@@ -46,7 +73,7 @@ export default function ProfileDropdown() {
             }}
             className="flex w-full items-center gap-x-1 py-[10px] px-[12px] text-sm text-richblack-100 hover:bg-richblack-700 hover:text-richblack-25"
           >
-            <VscSignOut className="text-lg" />
+            <MdLogout className="text-lg" />
             Logout
           </div>
         </div>
