@@ -9,10 +9,10 @@ const About = () => {
       {/* Section 1 */}
       <section>
         <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-center text-richblack-50">
-          <header className="mx-auto py-20 text-4xl font-semibold lg:w-[90%]">
-            Driving Innovation in Online Education for a<br></br>
-            <HighlightText text={"Brighter Future"} />
-            <p className="mx-auto mt-3 text-center text-base font-medium text-richblack-300 lg:w-[90%]">
+          <header className="mx-auto pt-20 pb-12 text-4xl md:text-5xl font-semibold lg:w-[90%]">
+            Driving Innovation in Online Education for a
+            <HighlightText text={" Brighter Future"} />
+            <p className="mx-auto mt-5 text-center text-base font-medium text-richblack-300 lg:w-[87%]">
               At SkillStep, we make learning accessible, engaging, and
               structured to help you grow step by step. Our platform supports
               individuals committed to self-improvement, offering curated
@@ -25,10 +25,10 @@ const About = () => {
       {/* Section 2 */}
       <section>
         <div className="mx-auto flex w-11/12 max-w-maxContent flex-col justify-between gap-10 text-richblack-500">
-          <div className="flex flex-col items-center gap-10 lg:flex-row justify-between">
+          <div className="flex flex-col items-center gap-5 md:gap-10 md:flex-row justify-between">
             {/* Our Founding Story */}
-            <div className="my-24 flex lg:w-[50%] flex-col gap-10">
-              <h1 className="bg-gradient-to-br from-[#833AB4] via-[#69c0e9] to-[#c2c3c4] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
+            <div className="my-12 mb:my-20 flex md:w-[50%] flex-col gap-10">
+              <h1 className="bg-gradient-to-br from-[#833AB4] via-[#69c0e9] to-[#c2c3c4] bg-clip-text text-3xl md:text-4xl font-semibold text-transparent lg:w-[70%] ">
                 Our Founding Story
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
@@ -46,15 +46,19 @@ const About = () => {
                 information and effective, goal-oriented learning.
               </p>
             </div>
-            <div>
-              <img src={FoundingStory} width={550} alt="" />
+            <div className="w-full md:w-1/2 flex justify-center items-center">
+              <img
+                src={FoundingStory}
+                alt="story"
+                className="w-[80%] md:w-full"
+              />
             </div>
           </div>
 
-          <div className="flex flex-col items-center lg:gap-10 lg:flex-row justify-between -mt-20">
+          <div className="flex flex-col items-center lg:gap-10 md:flex-row justify-between mt-10 md:mt-0">
             {/* Our vision and mission */}
-            <div className="flex lg:w-[40%] flex-col gap-10">
-              <h1 className="bg-gradient-to-b from-[#e5f1b3] to-[#4dcdf0] bg-clip-text text-4xl font-semibold text-transparent lg:w-[70%] ">
+            <div className="flex md:w-[40%] flex-col gap-10">
+              <h1 className="bg-gradient-to-b from-[#e5f1b3] to-[#4dcdf0] bg-clip-text text-3xl md:text-4xl font-semibold text-transparent lg:w-[70%] ">
                 Our Vision
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">
@@ -65,8 +69,8 @@ const About = () => {
                 grow, adapt, and excel, regardless of their starting point.
               </p>
             </div>
-            <div className="my-24 flex lg:w-[40%] flex-col gap-10">
-              <h1 className="bg-gradient-to-b from-[#4dcdf0] to-[#e5f1b3] text-transparent bg-clip-text text-4xl font-semibold lg:w-[70%] ">
+            <div className="my-24 flex md:w-[40%] flex-col gap-10">
+              <h1 className="bg-gradient-to-b from-[#4dcdf0] to-[#e5f1b3] text-transparent bg-clip-text text-3xl md:text-4xl font-semibold lg:w-[70%]">
                 Our Mission
               </h1>
               <p className="text-base font-medium text-richblack-300 lg:w-[95%]">

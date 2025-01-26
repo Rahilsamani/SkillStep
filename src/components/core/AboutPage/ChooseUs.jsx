@@ -43,7 +43,7 @@ const WhyChooseUs = () => {
   ];
 
   return (
-    <div className="w-11/12 py-16">
+    <div className="w-11/12 pb-12 pt-5">
       <div className="text-center mb-12">
         <h2 className="text-4xl font-bold text-richblack-50">
           Why Choose <HighlightText text={"SkillStep "} />?
