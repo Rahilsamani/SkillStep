@@ -1,5 +1,3 @@
 9. courses page bhi hona chahiye
 
 12. mobile responsive check kar lena
-
-21. recourse mein problem hai shayad check it
