@@ -21,7 +21,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.profile);
-  const [enrollmentDate, setEnrollmentDate] = useState(1);
+  const [enrollmentDate, setEnrollmentDate] = useState(null);
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
@@ -34,11 +34,11 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
     setVideoBarActive(activeSectionId);
 
     const course = user.courses.find(
-      (course) => course.courseId === courseEntireData._id
+      (co) => co.courseId === courseEntireData._id
     );
 
-    if (course && course.enrollmentDate) {
-      setEnrollmentDate(new Date(course.enrollmentDate));
+    if (course && course?.enrollmentDate) {
+      setEnrollmentDate(new Date(course?.enrollmentDate));
     }
   }, [courseSectionData, courseEntireData, location.pathname, sectionId]);
 
@@ -89,9 +89,9 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
           }`}
         >
           <div
-            className={`mx-5 flex flex-col items-start justify-between gap-2 gap-y-4  py-2 text-lg font-bold text-richblack-25 ${
+            className={`mx-5 flex flex-col items-start justify-between gap-2 py-2 text-lg font-bold text-richblack-25 ${
               isOpen ? "border-b border-richblack-600" : ""
-            } `}
+            }`}
           >
             <div className="flex w-full items-center justify-between mt-5">
               <div
@@ -103,23 +103,23 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
               >
                 <IoIosArrowBack size={25} />
               </div>
-              {isOpen ? (
+              {isOpen && (
                 <IconBtn
                   text="Add Review"
                   customClasses="ml-auto"
                   onclick={() => setReviewModal(true)}
                 />
-              ) : null}
+              )}
             </div>
 
-            {isOpen ? (
+            {isOpen && (
               <div className="flex flex-col">
                 <p>{courseEntireData?.Author}</p>
                 <p className="text-sm font-semibold text-richblack-500">
                   {completedLectures?.length} / {totalNoOfLectures}
                 </p>
               </div>
-            ) : null}
+            )}
           </div>
 
           <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
