@@ -7,4 +7,4 @@
 /server/Payment_Steps.png
 node_modules
 .env
-
+/build

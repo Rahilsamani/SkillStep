@@ -89,7 +89,7 @@ exports.notificationEmailTemplate = (
       
       <body>
           <div class="container">
-              <a href="https://SkillStep-edtech-project.vercel.app">
+              <a href="https://skillstep.vercel.app/">
                   <img class="logo" 
                        src="https://github.com/Rahilsamani/SkillStep/blob/main/src/assets/Logo/logo.jpeg?raw=true" 
                        alt="SkillStep Logo">

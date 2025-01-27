@@ -195,7 +195,7 @@ exports.notifyUsers = async () => {
             `${user.firstName} ${user.lastName}`,
             `New Video: ${section.title}`,
             `We're excited to let you know that a new video titled "${section.title}" is now available. Head over to your course dashboard and continue learning!`,
-            `http://localhost:3000/view-course/${section.courseId._id}/${section._id}`,
+            `https://skillstep.vercel.app/view-course/${section.courseId._id}/${section._id}`,
             "Go to Course"
           );
 
