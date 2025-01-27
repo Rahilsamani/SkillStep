@@ -61,7 +61,7 @@ export default function MyProfile() {
             user?.additionalDetails?.about
               ? "text-richblack-5"
               : "text-richblack-400"
-          } text-xs font-medium`}
+          } text-sm md:text-base font-medium`}
         >
           {user?.additionalDetails?.about ?? "Write Something About Yourself"}
         </p>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import IconBtn from "../../common/IconBtn";
@@ -22,7 +22,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.profile);
   const [enrollmentDate, setEnrollmentDate] = useState(1);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
     if (!courseSectionData.length) return;
@@ -84,8 +84,8 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
         </div>
       ) : (
         <div
-          className={`flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 transition-all duration-300 absolute lg:relative ${
-            isOpen ? "w-80" : "w-16"
+          className={`flex h-[calc(100vh-3.5rem)] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 transition-all duration-300 lg:relative ${
+            isOpen ? "w-80 absolute" : "w-16 relative"
           }`}
         >
           <div
