@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import IconBtn from "../../common/IconBtn";
@@ -22,6 +22,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.profile);
   const [enrollmentDate, setEnrollmentDate] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (!courseSectionData.length) return;
@@ -82,35 +83,48 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
           <div className="spinner"></div>
         </div>
       ) : (
-        <div className="flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800">
-          <div className="mx-5 flex flex-col items-start justify-between gap-2 gap-y-4 border-b border-richblack-600 py-2 text-lg font-bold text-richblack-25">
+        <div
+          className={`flex h-[calc(100vh-3.5rem)] w-[320px] max-w-[350px] flex-col border-r-[1px] border-r-richblack-700 bg-richblack-800 transition-all duration-300 absolute lg:relative ${
+            isOpen ? "w-80" : "w-16"
+          }`}
+        >
+          <div
+            className={`mx-5 flex flex-col items-start justify-between gap-2 gap-y-4  py-2 text-lg font-bold text-richblack-25 ${
+              isOpen ? "border-b border-richblack-600" : ""
+            } `}
+          >
             <div className="flex w-full items-center justify-between mt-5">
               <div
-                onClick={() => {
-                  navigate(`/dashboard/enrolled-courses`);
-                }}
+                onClick={() => setIsOpen((prev) => !prev)}
                 title="back"
-                className="flex h-[30px] w-[30px] items-center justify-center rounded-full bg-richblack-100 text-richblack-700 pr-1 hover:scale-90 cursor-pointer"
+                className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-richblack-100 text-richblack-700 pr-1 hover:scale-90 cursor-pointer transition-all duration-300 ${
+                  isOpen ? "" : "rotate-180"
+                }`}
               >
                 <IoIosArrowBack size={25} />
               </div>
-              <IconBtn
-                text="Add Review"
-                customClasses="ml-auto"
-                onclick={() => setReviewModal(true)}
-              />
+              {isOpen ? (
+                <IconBtn
+                  text="Add Review"
+                  customClasses="ml-auto"
+                  onclick={() => setReviewModal(true)}
+                />
+              ) : null}
             </div>
 
-            <div className="flex flex-col">
-              <p>{courseEntireData?.Author}</p>
-              <p className="text-sm font-semibold text-richblack-500">
-                {completedLectures?.length} / {totalNoOfLectures}
-              </p>
-            </div>
+            {isOpen ? (
+              <div className="flex flex-col">
+                <p>{courseEntireData?.Author}</p>
+                <p className="text-sm font-semibold text-richblack-500">
+                  {completedLectures?.length} / {totalNoOfLectures}
+                </p>
+              </div>
+            ) : null}
           </div>
 
           <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
             {enrollmentDate &&
+              isOpen &&
               getAvailableSections(courseSectionData, enrollmentDate).map(
                 (section, index) => (
                   <div
