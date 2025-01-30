@@ -95,15 +95,21 @@ http://localhost:3000
 
 ### 🔹 Home Page
 > _A clean and intuitive interface for users to enroll in courses._  
-> ![Homepage](https://via.placeholder.com/800x400?text=Homepage)
+> ![Homepage](https://github.com/Rahilsamani/SkillStep/blob/main/Project_Demo/home.png?raw=true)
 
 ### 🔹 Course Dashboard
 > _Users see their progress, available videos, and upcoming lessons._  
-> ![Dashboard](https://via.placeholder.com/800x400?text=Course+Dashboard)
+> ![Dashboard](https://github.com/Rahilsamani/SkillStep/blob/main/Project_Demo/add%20course.png?raw=true)
+> ![Dashboard](https://github.com/Rahilsamani/SkillStep/blob/main/Project_Demo/enrolled%20courses.png?raw=true)
+> ![Dashboard](https://github.com/Rahilsamani/SkillStep/blob/main/Project_Demo/view%20course.png?raw=true)
 
 ### 🔹 Email Notification
 > _A sample email reminder users receive daily._  
 > ![Email Notification](https://via.placeholder.com/800x400?text=Email+Notification)
+
+### 🔹 Certificate Email Notification
+> _A sample email for certificate_  
+> ![Certificate](https://via.placeholder.com/800x400?text=Email+Notification)
 
 ---
 

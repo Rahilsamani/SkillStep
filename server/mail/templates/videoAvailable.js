@@ -7,7 +7,6 @@ exports.notificationEmailTemplate = (
   return `
     <!DOCTYPE html>
       <html>
-      
       <head>
           <meta charset="UTF-8">
           <title>Notification</title>
@@ -21,7 +20,6 @@ exports.notificationEmailTemplate = (
                   margin: 0;
                   padding: 0;
               }
-      
               .container {
                   max-width: 600px;
                   margin: 40px auto;
@@ -32,13 +30,11 @@ exports.notificationEmailTemplate = (
                   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
                   text-align: center;
               }
-      
               .logo {
                   max-width: 150px;
                   margin: 20px auto;
                   border-radius: 8px;
               }
-      
               .title {
                   font-size: 22px;
                   font-weight: bold;
@@ -46,18 +42,16 @@ exports.notificationEmailTemplate = (
                   margin-bottom: 20px;
                   text-transform: uppercase;
               }
-      
               .message {
                   font-size: 16px;
                   color: #555555;
                   text-align: left;
                   margin-bottom: 30px;
               }
-      
               .cta {
                   display: inline-block;
                   padding: 12px 24px;
-                  background-color: #4CAF50;
+                  background-color: #44CCFF;
                   color: #d8d8d8;
                   text-decoration: none;
                   border-radius: 4px;
@@ -65,28 +59,23 @@ exports.notificationEmailTemplate = (
                   font-weight: bold;
                   transition: background-color 0.3s ease;
               }
-      
               .cta:hover {
                   background-color: #fbfaf2;
               }
-      
               .footer {
                   font-size: 14px;
                   color: #777777;
                   margin-top: 30px;
               }
-      
               .footer a {
                   color: #4CAF50;
                   text-decoration: none;
               }
-      
               .footer a:hover {
                   text-decoration: underline;
               }
           </style>
       </head>
-      
       <body>
           <div class="container">
               <a href="https://skillstep.vercel.app/">
@@ -111,6 +100,5 @@ exports.notificationEmailTemplate = (
               </div>
           </div>
       </body>
-      
       </html>`;
 };

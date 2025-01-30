@@ -57,11 +57,13 @@ const certificateTemplate = (firstName, lastName, Author, endDate) => {
         text-align: center;
         font-size: 12px;
         color: #555;
-        margin-right: 420px;
       }
       .signature-box img {
         width: 120px;
         margin-top: 10px;
+      }
+      .seal {
+        margin-left: 400px;
       }
     </style>
   </head>
