@@ -105,11 +105,11 @@ http://localhost:3000
 
 ### 🔹 Email Notification
 > _A sample email reminder users receive daily._  
-> ![Email Notification](https://via.placeholder.com/800x400?text=Email+Notification)
+> ![Email Notification](https://github.com/Rahilsamani/SkillStep/blob/main/Project_Demo/email.png?raw=true)
 
 ### 🔹 Certificate Email Notification
 > _A sample email for certificate_  
-> ![Certificate](https://via.placeholder.com/800x400?text=Email+Notification)
+> ![Certificate](https://github.com/Rahilsamani/SkillStep/blob/main/Project_Demo/certificate.png?raw=true)
 
 ---
 
