@@ -1,6 +1,7 @@
 # 📚 SkillStep - Smart Learning, One Step at a Time 🚀
 
 **SkillStep** is a smart and structured learning platform that enhances students' learning experiences by dynamically releasing course videos instead of overwhelming them with all content at once.
+**SkillStep** is a smart and structured learning platform that enhances students' learning experiences by dynamically releasing course videos instead of overwhelming them with all content at once.
 
 With **SkillStep**, students control the pace of their learning by selecting how many videos they want to watch daily. They receive **automated email reminders**, ensuring consistency in learning. Upon completing the course, students receive a **certificate of completion**.
 
@@ -14,6 +15,7 @@ With **SkillStep**, students control the pace of their learning by selecting how
 ✅ **YouTube API Integration** - Manage and fetch course content dynamically.  
 ✅ **Certification** - Get a certificate upon completing the course.  
 ✅ **Secure Authentication** - User authentication with JWT, bcrypt, and cookies for personalized course tracking.
+✅ **Secure Authentication** - User authentication with JWT, bcrypt, and cookies for personalized course tracking.
 
 ---
 
@@ -22,11 +24,19 @@ With **SkillStep**, students control the pace of their learning by selecting how
 ### 1. **User Enrollment**
 - Users provide a **YouTube playlist link**.
 - They choose how many videos they want per day.
+### 1. **User Enrollment**
+- Users provide a **YouTube playlist link**.
+- They choose how many videos they want per day.
 
 ### 2. **Dynamic Video Release**
 - Videos unlock **one by one** based on the selected frequency.
 - Users receive **daily email notifications** when new videos are available.
+### 2. **Dynamic Video Release**
+- Videos unlock **one by one** based on the selected frequency.
+- Users receive **daily email notifications** when new videos are available.
 
+### 3. **Course Completion & Certification**
+- Upon finishing all videos, users receive a **certificate of completion**.
 ### 3. **Course Completion & Certification**
 - Upon finishing all videos, users receive a **certificate of completion**.
 
@@ -40,7 +50,9 @@ With **SkillStep**, students control the pace of their learning by selecting how
 | **Backend**        | Node.js, Express.js, Render    |
 | **Database**       | MongoDB Atlas                  |
 | **Authentication** | JWT, Bcrypt, Cookies           |
+| **Authentication** | JWT, Bcrypt, Cookies           |
 | **Email Service**  | Nodemailer                     |
+| **External API**   | YouTube Playlist API           |
 | **External API**   | YouTube Playlist API           |
 
 ---
@@ -55,11 +67,13 @@ cd SkillStep
 
 ### 2. Install Dependencies
 #### Backend:
+#### Backend:
 ```bash
 cd server
 npm install
 ```
 
+#### Frontend:
 #### Frontend:
 ```bash
 npm install
@@ -67,11 +81,13 @@ npm install
 
 ### 3. Run the Application
 #### Start Backend
+#### Start Backend
 ```bash
 cd server
 npm run start
 ```
 
+#### Start Frontend
 #### Start Frontend
 ```bash
 npm start
@@ -90,12 +106,18 @@ http://localhost:3000
 ### 🔹 Home Page
 > _A clean and intuitive interface for users to enroll in courses._  
 > ![Homepage](https://via.placeholder.com/800x400?text=Homepage)
+> _A clean and intuitive interface for users to enroll in courses._  
+> ![Homepage](https://via.placeholder.com/800x400?text=Homepage)
 
 ### 🔹 Course Dashboard
 > _Users see their progress, available videos, and upcoming lessons._  
 > ![Dashboard](https://via.placeholder.com/800x400?text=Course+Dashboard)
+> _Users see their progress, available videos, and upcoming lessons._  
+> ![Dashboard](https://via.placeholder.com/800x400?text=Course+Dashboard)
 
 ### 🔹 Email Notification
+> _A sample email reminder users receive daily._  
+> ![Email Notification](https://via.placeholder.com/800x400?text=Email+Notification)
 > _A sample email reminder users receive daily._  
 > ![Email Notification](https://via.placeholder.com/800x400?text=Email+Notification)
 
@@ -113,6 +135,8 @@ SkillStep provides a **certification system** where users receive a digital cert
 - [✅] Deploy frontend on Vercel, backend on Render
 - [ ] Implement AI-based progress tracking (🛠️ Coming Soon)
 - [ ] Mobile app version (🛠️ Coming Soon)
+- [ ] Implement AI-based progress tracking (🛠️ Coming Soon)
+- [ ] Mobile app version (🛠️ Coming Soon)
 
 ---
 
@@ -128,15 +152,21 @@ We welcome contributions! Here's how you can help:
 ---
 
 ## 💌 Contact & Support
+## 💌 Contact & Support
 
+📧 **Email:** [rahilahmed1720@gmail.com](mailto:rahilahmed1720@gmail.com)  
+🌚 **LinkedIn:** [rahil-ahmed-samani](https://www.linkedin.com/in/rahil-ahmed-samani/)  
+💻 **GitHub:** [Rahilsamani](https://github.com/Rahilsamani)  
 📧 **Email:** [rahilahmed1720@gmail.com](mailto:rahilahmed1720@gmail.com)  
 🌚 **LinkedIn:** [rahil-ahmed-samani](https://www.linkedin.com/in/rahil-ahmed-samani/)  
 💻 **GitHub:** [Rahilsamani](https://github.com/Rahilsamani)  
 
 📢 **If you like this project, don't forget to ⭐ star the repository!**
+📢 **If you like this project, don't forget to ⭐ star the repository!**
 
 ---
 
+## 📝 License
 ## 📝 License
 
 This project is licensed under the **MIT License** - feel free to modify and use it for your projects.
