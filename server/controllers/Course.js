@@ -28,45 +28,6 @@ exports.createCourse = async (req, res) => {
         .json({ success: false, message: "Category not found" });
     }
 
-    // Check if course already exists
-    let course = await Course.findOne({ youtubePlaylistId });
-
-    // course already exists, do enrollment
-    if (course) {
-      if (!course.studentsEnrolled.includes(userId)) {
-        course.studentsEnrolled.push(userId);
-        await course.save();
-      }
-
-      const user = await User.findById(userId);
-      const existingCourse = user.courses.find(
-        (c) => c.courseId.toString() === course._id.toString()
-      );
-
-      // Course exists, handle progress and enrollment
-      const courseProgress = await CourseProgress.create({
-        userId,
-        courseID: course._id,
-        completedVideos: [],
-      });
-
-      if (!existingCourse) {
-        user.courses.push({
-          courseId: course._id,
-          enrollmentDate: new Date(),
-        });
-        user.courseProgress.push(courseProgress._id);
-        await user.save();
-      }
-
-      return res.status(200).json({
-        success: true,
-        data: course,
-        message: "Course already exists and user enrolled successfully",
-        exist: true,
-      });
-    }
-
     // Create a new course if not found
     const newCourse = await Course.create({
       Author,
