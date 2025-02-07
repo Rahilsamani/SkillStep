@@ -28,6 +28,19 @@ exports.createCourse = async (req, res) => {
         .json({ success: false, message: "Category not found" });
     }
 
+    const existingCourse = await Course.findOne({ youtubePlaylistId });
+    const userAlreadyEnrolled =
+      existingCourse?.studentsEnrolled.includes(userId);
+
+    if (userAlreadyEnrolled) {
+      return res.status(409).json({
+        success: false,
+        message: "You have already created a course with this playlist.",
+        exist: true,
+        data: existingCourse,
+      });
+    }
+
     // Create a new course if not found
     const newCourse = await Course.create({
       Author,
@@ -52,7 +65,7 @@ exports.createCourse = async (req, res) => {
       { new: true }
     );
 
-    await User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
       userId,
       {
         $push: {
@@ -70,6 +83,7 @@ exports.createCourse = async (req, res) => {
     res.status(200).json({
       success: true,
       data: newCourse,
+      user,
       message: "Course created successfully",
       exist: false,
     });

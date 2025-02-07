@@ -10,6 +10,7 @@ import {
 } from "../../../../services/operations/courseDetailsAPI";
 import { setCourse } from "../../../../slices/courseSlice";
 import IconBtn from "../../../common/IconBtn";
+import { setUser } from "../../../../slices/profileSlice";
 
 export default function CourseInformationForm() {
   const {
@@ -112,6 +113,7 @@ export default function CourseInformationForm() {
       // Send form data
       setLoading(true);
       const result = await addCourseDetails(formData, token);
+      dispatch(setUser(result.user));
 
       if (result && result._id && !result.exist) {
         let dayCount = -1;
