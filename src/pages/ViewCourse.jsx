@@ -34,6 +34,7 @@ export default function ViewCourse() {
 
       dispatch(setTotalNoOfLectures(lectures));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

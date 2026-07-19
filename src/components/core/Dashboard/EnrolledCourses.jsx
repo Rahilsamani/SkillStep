@@ -58,6 +58,7 @@ export default function EnrolledCourses() {
   useEffect(() => {
     getEnrolledCourses();
     getCoursesProgress();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const coursesWithProgress = mergeCoursesWithProgress();
