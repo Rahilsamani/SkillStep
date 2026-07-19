@@ -16,6 +16,7 @@ function VerifyEmail() {
   useEffect(() => {
     // Only allow access of this route when user has filled the signup form
     if (!signupData) navigate("/signup");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleVerifyAndSignup = (e) => {

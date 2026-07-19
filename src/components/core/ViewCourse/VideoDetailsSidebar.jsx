@@ -19,7 +19,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   } = useSelector((state) => state.viewCourse);
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const { user } = useSelector((state) => state.profile);
   const [enrollmentDate, setEnrollmentDate] = useState(null);
   const [targetSpeed, setTargetSpeed] = useState(1);
