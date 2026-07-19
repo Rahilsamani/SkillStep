@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "https://skillstep.vercel.app",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
@@ -55,7 +55,7 @@ app.get("/", (req, res) => {
 });
 
 // Schedule job to run daily at 12:01 AM
-schedule.scheduleJob("1 0 * * *", notifyUsers);
+schedule.scheduleJob("53 14 * * *", notifyUsers);
 
 app.listen(PORT, () => {
   console.log(`App is running at ${PORT}`);

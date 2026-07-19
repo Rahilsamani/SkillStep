@@ -1,3 +1,4 @@
+const path = require("path");
 const mailSender = require("../utils/mailSender");
 const certificateTemplate = require("../mail/templates/certificate");
 
@@ -18,7 +19,26 @@ exports.sendCertificate = async (user, course, userCourse) => {
       course.Author,
       formattedCompletionDate
     );
-    await mailSender(user.email, title, body);
+
+    const attachments = [
+      {
+        filename: "border1.png",
+        path: path.join(__dirname, "../mail/certificate/border1.png"),
+        cid: "border1img",
+      },
+      {
+        filename: "signature.png",
+        path: path.join(__dirname, "../mail/certificate/signature.png"),
+        cid: "signatureimg",
+      },
+      {
+        filename: "seal.png",
+        path: path.join(__dirname, "../mail/certificate/seal.png"),
+        cid: "sealimg",
+      },
+    ];
+
+    await mailSender(user.email, title, body, attachments);
 
     userCourse.certificateIssued = true;
     await user.save();

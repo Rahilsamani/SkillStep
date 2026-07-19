@@ -7,18 +7,103 @@ const {
   notificationEmailTemplate,
 } = require("../mail/templates/videoAvailable");
 const mailSender = require("../utils/mailSender");
+const { getOrFetchPlaylist } = require("../utils/youtubeService");
 
-// Create a new course
+/**
+ * Extract YouTube playlist ID from a URL string.
+ */
+function extractPlaylistId(url) {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.searchParams.get("list");
+  } catch {
+    // If it's not a URL, try it as a raw playlist ID
+    return url;
+  }
+}
+
+// Create a new course (or enroll in an existing one)
 exports.createCourse = async (req, res) => {
   try {
-    const { Author, category, youtubePlaylistId, thumbnail, userId } = req.body;
+    const { category, playlistUrl, videosPerDay, isEnded, userId } = req.body;
 
     // Validate required fields
-    if (!Author || !youtubePlaylistId || !category || !thumbnail || !userId) {
+    if (!playlistUrl || !category || !userId) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
     }
+
+    // Extract playlist ID from URL
+    const playlistId = extractPlaylistId(playlistUrl);
+    if (!playlistId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid playlist URL" });
+    }
+
+    // Check if a course already exists for this playlist
+    const existingCourse = await Course.findOne({ youtubePlaylistId: playlistId });
+
+    if (existingCourse) {
+      // Check if user is already enrolled
+      const userAlreadyEnrolled = existingCourse.studentsEnrolled.some(
+        (id) => id.toString() === userId.toString()
+      );
+
+      if (userAlreadyEnrolled) {
+        return res.status(409).json({
+          success: false,
+          message: "You have already created a course with this playlist.",
+          exist: true,
+          data: existingCourse,
+        });
+      }
+
+      // User NOT enrolled → enroll them in the existing course
+      existingCourse.studentsEnrolled.push(userId);
+      await existingCourse.save();
+
+      const vPerDay = parseInt(videosPerDay) || 1;
+
+      // Create CourseProgress for this user
+      const courseProgress = await CourseProgress.create({
+        userId,
+        courseID: existingCourse._id,
+        targetVideosPerDay: vPerDay,
+        completedVideos: [],
+      });
+
+      // Update user document
+      const user = await User.findByIdAndUpdate(
+        userId,
+        {
+          $push: {
+            courses: {
+              courseId: existingCourse._id,
+              enrollmentDate: new Date(),
+              videosPerDay: vPerDay,
+            },
+            courseProgress: courseProgress._id,
+          },
+        },
+        { new: true }
+      );
+
+      return res.status(200).json({
+        success: true,
+        data: existingCourse,
+        user,
+        message: "Enrolled in existing course successfully",
+        exist: true,
+      });
+    }
+
+    // No existing course — fetch playlist data (uses cache for ended playlists)
+    const { videos, channelTitle, thumbnail } = await getOrFetchPlaylist(
+      playlistId,
+      isEnded || false
+    );
 
     // Check if category exists
     const categoryDetails = await Category.findById(category);
@@ -28,33 +113,38 @@ exports.createCourse = async (req, res) => {
         .json({ success: false, message: "Category not found" });
     }
 
-    const existingCourse = await Course.findOne({ youtubePlaylistId });
-    const userAlreadyEnrolled =
-      existingCourse?.studentsEnrolled.includes(userId);
-
-    if (userAlreadyEnrolled) {
-      return res.status(409).json({
-        success: false,
-        message: "You have already created a course with this playlist.",
-        exist: true,
-        data: existingCourse,
-      });
-    }
-
-    // Create a new course if not found
+    // Create the new course
     const newCourse = await Course.create({
-      Author,
+      Author: channelTitle,
       category,
-      youtubePlaylistId,
+      youtubePlaylistId: playlistId,
       thumbnail,
       studentsEnrolled: [userId],
       discordLink: "",
     });
 
+    // Bulk-create all sections at once instead of sequential API calls
+    const vPerDay = parseInt(videosPerDay) || 1;
+    const sectionDocs = videos.map((video, index) => ({
+      title: video.title,
+      description: video.description,
+      thumbnail: video.thumbnail,
+      videoId: video.videoId,
+      releaseOffset: Math.floor(index / vPerDay),
+      courseId: newCourse._id,
+    }));
+
+    const createdSections = await Section.insertMany(sectionDocs);
+
+    // Update course with all section references
+    newCourse.courseContent = createdSections.map((s) => s._id);
+    await newCourse.save();
+
     // Create CourseProgress for the new course
     const courseProgress = await CourseProgress.create({
       userId,
       courseID: newCourse._id,
+      targetVideosPerDay: vPerDay,
       completedVideos: [],
     });
 
@@ -72,6 +162,7 @@ exports.createCourse = async (req, res) => {
           courses: {
             courseId: newCourse._id,
             enrollmentDate: new Date(),
+            videosPerDay: vPerDay,
           },
           courseProgress: courseProgress._id,
         },
@@ -136,6 +227,7 @@ exports.getFullCourseDetails = async (req, res) => {
   }
 };
 
+// Optimized: batch queries instead of nested loops with individual lookups
 exports.notifyUsers = async () => {
   try {
     const today = new Date();
@@ -144,44 +236,149 @@ exports.notifyUsers = async () => {
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
 
+    // Fetch all sections with their course populated
     const sections = await Section.find({}).populate("courseId");
 
+    // Group sections by courseId for efficient processing
+    const sectionsByCourse = {};
     for (const section of sections) {
-      const users = await User.find({
-        "courses.courseId": section.courseId._id,
-      });
+      if (!section.courseId) continue;
+      const courseIdStr = section.courseId._id.toString();
+      if (!sectionsByCourse[courseIdStr]) {
+        sectionsByCourse[courseIdStr] = [];
+      }
+      sectionsByCourse[courseIdStr].push(section);
+    }
 
-      for (const user of users) {
-        // Find the specific course in the user's courses array
-        const userCourse = user.courses.find((c) =>
-          c.courseId.equals(section.courseId._id)
-        );
+    // Get all unique course IDs
+    const courseIds = Object.keys(sectionsByCourse);
+    if (courseIds.length === 0) return;
 
-        if (!userCourse) continue;
+    // Fetch all users who have any of these courses in a single query
+    const users = await User.find({
+      "courses.courseId": { $in: courseIds },
+    });
+
+    // Track sent notifications to avoid duplicates and count total sent
+    const notifiedSet = new Set();
+    let sentCount = 0;
+
+    console.log(`[NotifyUsers] Running daily email notification check for ${courseIds.length} course(s) and ${users.length} user(s)...`);
+
+    for (const user of users) {
+      for (const userCourse of user.courses) {
+        if (!userCourse || !userCourse.courseId) continue;
+
+        const courseIdStr = userCourse.courseId._id
+          ? userCourse.courseId._id.toString()
+          : userCourse.courseId.toString();
+
+        const courseSections = sectionsByCourse[courseIdStr];
+        if (!courseSections) continue;
 
         const enrollmentDate = new Date(userCourse.enrollmentDate);
-        const availableOn = new Date(enrollmentDate);
-        availableOn.setDate(enrollmentDate.getDate() + section.releaseOffset);
+        enrollmentDate.setHours(0, 0, 0, 0);
 
-        if (availableOn >= today && availableOn < tomorrow) {
-          const subject = `New Section Available: ${section.title}`;
+        const userProgress = await CourseProgress.findOne({
+          courseID: courseIdStr,
+          userId: user._id,
+        });
 
-          const htmlContent = notificationEmailTemplate(
-            `${user.firstName} ${user.lastName}`,
-            `New Video: ${section.title}`,
-            `We're excited to let you know that a new video titled "${section.title}" is now available. Head over to your course dashboard and continue learning!`,
-            `https://skillstep.vercel.app/view-course/${section.courseId._id}/${section._id}`,
-            "Go to Course"
+        const userVideosPerDay =
+          userCourse.videosPerDay || userProgress?.targetVideosPerDay || 1;
+
+        for (let index = 0; index < courseSections.length; index++) {
+          const section = courseSections[index];
+          const userReleaseOffset = Math.floor(
+            index / Math.max(1, userVideosPerDay)
           );
+          const availableOn = new Date(enrollmentDate);
+          availableOn.setDate(enrollmentDate.getDate() + userReleaseOffset);
+          availableOn.setHours(0, 0, 0, 0);
 
-          // Send email notification to the user
-          await mailSender(user.email, subject, htmlContent);
+          if (availableOn.getTime() === today.getTime()) {
+            // Unique key to prevent duplicate notifications
+            const notifKey = `${user._id}_${section._id}`;
+            if (notifiedSet.has(notifKey)) continue;
+            notifiedSet.add(notifKey);
+
+            // Fetch student course progress to generate AI Daily Motivation text
+            const userProgress = await CourseProgress.findOne({
+              courseID: section.courseId._id,
+              userId: user._id,
+            });
+
+            const completedCount = userProgress?.completedVideos?.length || 0;
+            const totalVideos = courseSections.length;
+            const remainingVideos = Math.max(0, totalVideos - completedCount);
+
+            // Compute percentile rank among enrolled students
+            const allProgressForCourse = await CourseProgress.find({
+              courseID: section.courseId._id,
+            });
+            const lessOrEqual = allProgressForCourse.filter(
+              (p) => (p.completedVideos ? p.completedVideos.length : 0) <= completedCount
+            ).length;
+            const totalEnrolled = Math.max(1, allProgressForCourse.length);
+            const percentile = Math.round((lessOrEqual / totalEnrolled) * 100);
+            const topPercent = Math.max(5, Math.min(50, 100 - percentile + 5));
+
+            // Estimate days remaining
+            const msPerDay = 24 * 60 * 60 * 1000;
+            const daysEnrolled = Math.max(1, Math.floor((today - enrollmentDate) / msPerDay));
+            const userPace = completedCount > 0 ? completedCount / daysEnrolled : 1;
+            const daysRemaining = Math.max(1, Math.ceil(remainingVideos / Math.max(0.5, userPace)));
+
+            let motivationMsg = "";
+            if (completedCount === 0) {
+              motivationMsg = `A new lesson "${section.title}" is unlocked! Ready to kickstart your journey? Watch today's video to start your learning streak and join top performers!`;
+            } else {
+              motivationMsg = `You've already completed ${completedCount} lesson${completedCount > 1 ? "s" : ""}. You're in the top ${topPercent}% of learners! Only ${daysRemaining} day${daysRemaining > 1 ? "s" : ""} left to finish your course! New lesson unlocked: "${section.title}".`;
+            }
+
+            const baseUrl = process.env.CLIENT_URL || "http://localhost:3000";
+            const subject = `AI Daily Motivation: ${section.title}`;
+            const htmlContent = notificationEmailTemplate(
+              `${user.firstName} ${user.lastName}`,
+              `🔥 SkillStep AI Daily Motivation`,
+              motivationMsg,
+              `${baseUrl}/view-course/${section.courseId._id}/${section._id}`,
+              "Go to Course"
+            );
+
+            // Send email notification to the user
+            console.log(`[NotifyUsers] Sending notification email to ${user.email} for section "${section.title}"...`);
+            const mailResult = await mailSender(user.email, subject, htmlContent);
+            if (mailResult) {
+              sentCount++;
+              console.log(`[NotifyUsers] Successfully sent email to ${user.email}`);
+            } else {
+              console.log(`[NotifyUsers] Failed to send email to ${user.email} (check mailSender logs/env)`);
+            }
+          }
         }
       }
     }
 
-    console.log("Email notifications processed successfully.");
+    console.log(`[NotifyUsers] Email notifications processed. Total emails sent: ${sentCount}`);
   } catch (error) {
-    console.error("Error notifying users:", error);
+    console.error("[NotifyUsers] Error notifying users:", error);
+  }
+};
+
+// Express controller to manually trigger daily video email notifications
+exports.triggerNotifications = async (req, res) => {
+  try {
+    await exports.notifyUsers();
+    return res.status(200).json({
+      success: true,
+      message: "Daily video notification email check triggered successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to trigger notifications",
+      error: error.message,
+    });
   }
 };

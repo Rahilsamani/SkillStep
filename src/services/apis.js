@@ -12,6 +12,9 @@ export const endpoints = {
 // CATAGORIES API
 export const categories = {
   CATEGORIES_API: BASE_URL + "/course/showAllCategories",
+  CREATE_CATEGORY_API: BASE_URL + "/course/createCategory",
+  UPDATE_CATEGORY_API: BASE_URL + "/course/updateCategory",
+  DELETE_CATEGORY_API: BASE_URL + "/course/deleteCategory",
 };
 
 // CONTACT-US API
@@ -38,11 +41,11 @@ export const profileEndpoints = {
 export const courseEndpoints = {
   COURSE_CATEGORIES_API: BASE_URL + "/course/showAllCategories",
   CREATE_COURSE_API: BASE_URL + "/course/createCourse",
-  CREATE_SECTION_API: BASE_URL + "/course/addSection",
   GET_FULL_COURSE_DETAILS_AUTHENTICATED:
     BASE_URL + "/course/getFullCourseDetails",
   LECTURE_COMPLETION_API: BASE_URL + "/course/updateCourseProgress",
   CREATE_RATING_API: BASE_URL + "/course/createRating",
+  GET_PROGRESS_INSIGHTS_API: BASE_URL + "/course/getProgressInsights",
 };
 
 // RATINGS AND REVIEWS

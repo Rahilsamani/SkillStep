@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
-import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+import { motion } from "framer-motion";
 import {
   getUserEnrolledCourses,
   getUserCoursesProgress,
 } from "../../../services/operations/profileAPI";
+import ProgressInsights from "./ProgressInsights";
 
 export default function EnrolledCourses() {
   const { token } = useSelector((state) => state.auth);
@@ -57,7 +57,9 @@ export default function EnrolledCourses() {
 
   return (
     <>
-      <div className="text-3xl text-richblack-50 mb-4">Enrolled Courses</div>
+      <div className="text-3xl text-richblack-50 mb-6 font-semibold">
+        Enrolled Courses
+      </div>
       {!enrolledCourses || !coursesProgress ? (
         <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
           <div className="spinner"></div>
@@ -67,47 +69,67 @@ export default function EnrolledCourses() {
           You have not enrolled in any course yet.
         </p>
       ) : (
-        <Table className="my-8 w-full text-richblack-5 border border-richblack-700">
-          <Thead className="bg-richblack-500">
-            <Tr>
-              <Th className="p-4 text-left w-[55%]">Course Name</Th>
-              <Th className="p-4 text-left w-[45%]">Progress</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {coursesWithProgress.map((course, i) => (
-              <Tr
-                key={i}
-                className="border-b border-richblack-700 hover:bg-richblack-600"
+        <div className="flex flex-col gap-4">
+          {coursesWithProgress.map((course, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: i * 0.08 }}
+              className="rounded-xl border border-richblack-700 bg-richblack-800 overflow-hidden hover:border-richblack-600 transition-colors duration-200"
+            >
+              {/* Clickable course header */}
+              <div
+                className="flex items-center gap-4 p-4 cursor-pointer hover:bg-richblack-700/30 transition-colors"
                 onClick={() => {
                   navigate(
-                    `/view-course/${course.courseId._id}/${course.courseId.courseContent?.[0]._id}`
+                    `/view-course/${course.courseId._id}/${course.courseId.courseContent?.[0]?._id}`
                   );
                 }}
               >
-                <Td className="p-4 cursor-pointer flex items-center gap-4">
-                  <img
-                    src={course.courseId.thumbnail}
-                    alt="course_img"
-                    className="h-14 w-14 rounded-lg object-cover"
-                  />
-                  <div className="flex flex-col gap-2">
-                    <p className="font-semibold">{course.courseId.Author}</p>
+                <img
+                  src={course.courseId.thumbnail}
+                  alt="course_img"
+                  className="h-16 w-16 rounded-lg object-cover flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold text-richblack-5 truncate">
+                    {course.courseId.Author}
+                  </p>
+                  <div className="mt-2 flex items-center gap-3">
+                    <span className="text-xs text-richblack-400">
+                      {course.progressPercentage}%
+                    </span>
+                    <div className="flex-1 max-w-[200px]">
+                      <ProgressBar
+                        completed={course.progressPercentage}
+                        height="6px"
+                        width="100%"
+                        isLabelVisible={false}
+                        bgColor={
+                          course.progressPercentage >= 100
+                            ? "#34d399"
+                            : course.progressPercentage >= 50
+                            ? "#818cf8"
+                            : "#60a5fa"
+                        }
+                        baseBgColor="rgba(255,255,255,0.08)"
+                        borderRadius="99px"
+                      />
+                    </div>
                   </div>
-                </Td>
-                <Td className="p-4">
-                  <p>Progress: {course.progressPercentage}%</p>
-                  <ProgressBar
-                    completed={course.progressPercentage}
-                    height="8px"
-                    width="100%"
-                    isLabelVisible={false}
-                  />
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
+                </div>
+              </div>
+
+              {/* AI Progress Insights */}
+              <div className="px-4 pb-4 pt-0">
+                <div className="border-t border-richblack-700 pt-3">
+                  <ProgressInsights courseId={course.courseId._id} />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       )}
     </>
   );

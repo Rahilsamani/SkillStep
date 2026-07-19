@@ -35,6 +35,10 @@ exports.updateCourseProgress = async (req, res) => {
     }
 
     courseProgress.completedVideos.push(sectionId);
+    courseProgress.completionLog.push({
+      sectionId: sectionId,
+      completedAt: new Date(),
+    });
     await courseProgress.save();
 
     const allSections = await Section.find({ courseId });

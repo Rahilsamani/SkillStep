@@ -5,7 +5,6 @@ import { toast } from "react-hot-toast";
 import { MdNavigateNext } from "react-icons/md";
 import {
   addCourseDetails,
-  createSection,
   fetchCourseCategories,
 } from "../../../../services/operations/courseDetailsAPI";
 import { setCourse } from "../../../../slices/courseSlice";
@@ -16,7 +15,6 @@ export default function CourseInformationForm() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm();
   const dispatch = useDispatch();
@@ -37,123 +35,65 @@ export default function CourseInformationForm() {
     };
 
     getCategories();
-  }, [course, setValue]);
-
-  async function fetchAllPlaylistItems(playlistId) {
-    let allItems = [];
-    let nextPageToken = "";
-
-    do {
-      // Fetch the playlist data
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/playlistItems?playlistId=${playlistId}&part=snippet&maxResults=50${
-          nextPageToken ? `&pageToken=${nextPageToken}` : ""
-        }&key=${process.env.REACT_APP_Youtube_API_KEY}`
-      );
-
-      // Parse the JSON response
-      const data = await response.json();
-
-      // Check if items exist in the response
-      if (data.items) {
-        allItems = allItems.concat(data.items);
-      }
-
-      // Get the next page token, if any
-      nextPageToken = data.nextPageToken || null;
-    } while (nextPageToken);
-
-    return allItems;
-  }
+  }, [course]);
 
   const validatePlaylistUrl = (url) => {
-    const regex =
-      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/(?:playlist\?list=)([A-Za-z0-9_-]{34})/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
+    if (!url) return null;
+    try {
+      const regex =
+        /(?:https?:\/\/)?(?:www\.|m\.)?youtube\.com\/(?:playlist\?list=|watch\?.*list=)([A-Za-z0-9_-]+)/;
+      const match = url.trim().match(regex);
+      if (match) return match[1];
+
+      // Fallback using URL API
+      const urlObj = new URL(url.trim());
+      const listId = urlObj.searchParams.get("list");
+      if (listId && listId.length > 0) return listId;
+    } catch {
+      // Allow direct playlist ID string if entered
+      if (/^[A-Za-z0-9_-]{10,}$/.test(url.trim())) {
+        return url.trim();
+      }
+    }
+    return null;
   };
 
-  function getPlaylistId(url) {
-    const urlParams = new URLSearchParams(new URL(url).search);
-    return urlParams.get("list");
-  }
-
   const onSubmit = async (data) => {
-    // Validate playlist URL
     const toastId = toast.loading("Loading...");
+
+    // Validate playlist URL
     const isValid = validatePlaylistUrl(data.playlistUrl);
     if (!isValid) {
+      toast.dismiss(toastId);
       toast.error("Please Enter a Valid URL");
       return;
     }
 
-    // Extract playlistId from the URL
-    const playlistId = getPlaylistId(data.playlistUrl);
-
     try {
-      // Fetch all playlist items
-      const courseSections = await fetchAllPlaylistItems(playlistId);
-
-      if (!courseSections || courseSections.length === 0) {
-        toast.error("No sections found in the playlist.");
-        return;
-      }
-
-      // Prepare form data for submission
-      const formData = new FormData();
-      formData.append("youtubePlaylistId", data.playlistUrl);
-      formData.append("userId", user);
-      formData.append("category", data.courseCategory);
-      formData.append("videosPerDay", data.videosPerDay);
-
-      const firstSectionDetails = courseSections[0].snippet;
-      formData.append("Author", firstSectionDetails.videoOwnerChannelTitle);
-      formData.append("thumbnail", firstSectionDetails.thumbnails.default.url);
-
-      // Send form data
       setLoading(true);
-      const result = await addCourseDetails(formData, token);
-      dispatch(setUser(result.user));
 
-      if (result && result._id && !result.exist) {
-        let dayCount = -1;
+      // Send everything to the server — it handles YouTube fetching,
+      // caching, and bulk section creation
+      const result = await addCourseDetails(
+        {
+          playlistUrl: data.playlistUrl,
+          category: data.courseCategory,
+          videosPerDay: data.videosPerDay,
+          isEnded: data.isEnded || false,
+          userId: user,
+        },
+        token
+      );
 
-        for (let i = 0; i < courseSections.length; i++) {
-          if (i % data.videosPerDay === 0) {
-            dayCount += 1;
-          }
-
-          const section = courseSections[i];
-          if (section && section.snippet) {
-            const { title, thumbnails, description, resourceId } =
-              section.snippet;
-            const sectionThumbnail = thumbnails.high.url;
-            const videoId = resourceId.videoId;
-
-            const releaseOffset = dayCount;
-            await createSection(
-              {
-                title,
-                thumbnail: sectionThumbnail,
-                description,
-                videoId,
-                courseId: result._id,
-                releaseOffset,
-              },
-              token
-            );
-          }
-        }
-
+      if (result) {
+        dispatch(setUser(result.user));
         dispatch(setCourse(result));
-        toast.success("Course Created successfully!");
-      } else if (result.exist) {
         toast.success("Course Created successfully!");
       } else {
         toast.error("Error saving course details.");
       }
     } catch (error) {
-      console.error("Error fetching playlist items or saving course:", error);
+      console.error("Error saving course:", error);
       toast.error("An error occurred. Please try again.");
     } finally {
       toast.dismiss(toastId);
@@ -235,6 +175,22 @@ export default function CourseInformationForm() {
           </span>
         )}
       </div>
+
+      {/* Is Playlist Ended */}
+      <div className="flex items-center space-x-3">
+        <input
+          id="isEnded"
+          type="checkbox"
+          {...register("isEnded")}
+          className="h-4 w-4 rounded border-richblack-600 bg-richblack-700 text-yellow-50 focus:ring-yellow-50"
+        />
+        <label className="text-sm text-richblack-5" htmlFor="isEnded">
+          This playlist is complete (no new videos will be added)
+        </label>
+      </div>
+      <p className="text-xs text-richblack-300 -mt-4 ml-7">
+        Check this if the playlist is finalized.
+      </p>
 
       {/* Submit Button */}
       <div className="flex justify-end gap-x-2">

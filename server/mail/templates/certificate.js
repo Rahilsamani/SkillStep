@@ -1,4 +1,17 @@
-const certificateTemplate = (firstName, lastName, Author, endDate) => {
+const certificateTemplate = (
+  firstName,
+  lastName,
+  Author,
+  endDate,
+  borderSrc = "cid:border1img",
+  signatureSrc = "cid:signatureimg",
+  sealSrc = "cid:sealimg"
+) => {
+  // Direct raw GitHub URLs as fallbacks if CID is not passed or for external HTML preview
+  const finalBorder = borderSrc || "https://raw.githubusercontent.com/Rahilsamani/SkillStep/main/server/mail/certificate/border1.png";
+  const finalSignature = signatureSrc || "https://raw.githubusercontent.com/Rahilsamani/SkillStep/main/server/mail/certificate/signature.png";
+  const finalSeal = sealSrc || "https://raw.githubusercontent.com/Rahilsamani/SkillStep/main/server/mail/certificate/seal.png";
+
   return `
   <!DOCTYPE html>
 <html>
@@ -11,13 +24,15 @@ const certificateTemplate = (firstName, lastName, Author, endDate) => {
         font-size: 16px;
         line-height: 1.6;
         color: #333333;
+        margin: 0;
+        padding: 0;
       }
       .cert-container {
         width: 750px;
         height: 520px;
         position: relative;
         padding: 20px;
-        background-image: url("https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/border1.png?raw=true");
+        background-image: url("${finalBorder}");
         background-size: cover;
         background-position: center;
         box-sizing: border-box;
@@ -83,14 +98,14 @@ const certificateTemplate = (firstName, lastName, Author, endDate) => {
           <div class="signature-box">
             <div>Authorized Signature</div>
             <img
-              src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/signature.png?raw=true"
+              src="${finalSignature}"
               alt="Signature"
             />
           </div>
           <img
             class="seal"
             width="70px"
-            src="https://github.com/Rahilsamani/SkillStep/blob/main/server/mail/certificate/seal.png?raw=true"
+            src="${finalSeal}"
             alt="Seal"
           />
         </div>

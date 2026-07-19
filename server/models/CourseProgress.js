@@ -9,10 +9,26 @@ const courseProgressSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  targetVideosPerDay: {
+    type: Number,
+    default: 1,
+  },
   completedVideos: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Section",
+    },
+  ],
+  completionLog: [
+    {
+      sectionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Section",
+      },
+      completedAt: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
 });

@@ -1,15 +1,15 @@
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiConnector";
-import { courseEndpoints } from "../apis";
+import { courseEndpoints, categories } from "../apis";
 import { setLoading } from "../../slices/courseSlice";
 
 const {
   COURSE_CATEGORIES_API,
   CREATE_COURSE_API,
-  CREATE_SECTION_API,
   GET_FULL_COURSE_DETAILS_AUTHENTICATED,
   CREATE_RATING_API,
   LECTURE_COMPLETION_API,
+  GET_PROGRESS_INSIGHTS_API,
 } = courseEndpoints;
 
 // fetching the available course categories
@@ -29,12 +29,83 @@ export const fetchCourseCategories = async () => {
   return result;
 };
 
-// add the course details
+// create a new course category (Admin only)
+export const addCategory = async (data, token) => {
+  let result = null;
+  try {
+    const response = await apiConnector(
+      "POST",
+      categories.CREATE_CATEGORY_API,
+      data,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Create Category");
+    }
+    result = response?.data?.data;
+  } catch (error) {
+    console.log("CREATE CATEGORY API ERROR............", error);
+    toast.error(error.response?.data?.message || error.message);
+  }
+  return result;
+};
+
+// update a course category (Admin only)
+export const editCategory = async (data, token) => {
+  let result = null;
+  try {
+    const response = await apiConnector(
+      "POST",
+      categories.UPDATE_CATEGORY_API,
+      data,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Update Category");
+    }
+    result = response?.data?.data;
+  } catch (error) {
+    console.log("UPDATE CATEGORY API ERROR............", error);
+    toast.error(error.response?.data?.message || error.message);
+  }
+  return result;
+};
+
+// delete a course category (Admin only)
+export const removeCategory = async (data, token) => {
+  let success = false;
+  try {
+    const response = await apiConnector(
+      "POST",
+      categories.DELETE_CATEGORY_API,
+      data,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Delete Category");
+    }
+    success = true;
+  } catch (error) {
+    console.log("DELETE CATEGORY API ERROR............", error);
+    toast.error(error.response?.data?.message || error.message);
+  }
+  return success;
+};
+
+// add the course details (server now handles YouTube fetch + bulk section creation)
 export const addCourseDetails = async (data, token) => {
   let result = null;
   try {
     const response = await apiConnector("POST", CREATE_COURSE_API, data, {
-      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${token}`,
     });
 
@@ -46,25 +117,6 @@ export const addCourseDetails = async (data, token) => {
     result.exist = response?.data?.exist;
   } catch (error) {
     console.log("CREATE COURSE API ERROR............", error);
-    toast.error(error.message);
-  }
-  return result;
-};
-
-// create a section
-export const createSection = async (data, token) => {
-  let result = null;
-  try {
-    const response = await apiConnector("POST", CREATE_SECTION_API, data, {
-      Authorization: `Bearer ${token}`,
-    });
-
-    if (!response?.data?.success) {
-      throw new Error("Could Not Create Section");
-    }
-    result = response?.data?.updatedCourseDetails;
-  } catch (error) {
-    console.log("CREATE SECTION API ERROR............", error);
     toast.error(error.message);
   }
   return result;
@@ -139,4 +191,25 @@ export const createRating = async (data, token) => {
   }
   toast.dismiss(toastId);
   return success;
+};
+
+// get AI progress insights for a course
+export const getProgressInsights = async (courseId, token) => {
+  let result = null;
+  try {
+    const response = await apiConnector(
+      "POST",
+      GET_PROGRESS_INSIGHTS_API,
+      { courseId },
+      { Authorization: `Bearer ${token}` }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch Progress Insights");
+    }
+    result = response?.data?.data;
+  } catch (error) {
+    console.log("GET_PROGRESS_INSIGHTS_API ERROR............", error);
+  }
+  return result;
 };

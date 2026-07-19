@@ -22,6 +22,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => state.profile);
   const [enrollmentDate, setEnrollmentDate] = useState(null);
+  const [targetSpeed, setTargetSpeed] = useState(1);
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
@@ -33,23 +34,36 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
     const activeSectionId = courseSectionData[currentSectionIndx]?._id;
     setVideoBarActive(activeSectionId);
 
-    const course = user.courses.find(
-      (co) => co.courseId === courseEntireData._id
-    );
+    const course = user?.courses?.find((co) => {
+      const cId = co?.courseId?._id || co?.courseId;
+      return cId?.toString() === courseEntireData?._id?.toString();
+    });
 
-    if (course && course?.enrollmentDate) {
-      setEnrollmentDate(new Date(course?.enrollmentDate));
+    if (course) {
+      if (course.videosPerDay) {
+        setTargetSpeed(course.videosPerDay);
+      }
+      if (course.enrollmentDate) {
+        setEnrollmentDate(new Date(course.enrollmentDate));
+      }
+    } else if (courseEntireData?.createdAt) {
+      setEnrollmentDate(new Date(courseEntireData.createdAt));
+    } else {
+      setEnrollmentDate(new Date());
     }
-  }, [courseSectionData, courseEntireData, location.pathname, sectionId]);
+  }, [courseSectionData, courseEntireData, location.pathname, sectionId, user]);
 
-  const getAvailableSections = (sections, enrollmentDate) => {
-    if (!enrollmentDate) return [];
+  const getAvailableSections = (sections, enrollmentDate, speed = 1) => {
+    if (!sections || !sections.length) return [];
+    if (!enrollmentDate) return sections;
 
     const currentDate = new Date();
 
-    return sections.filter((section) => {
+    return sections.filter((section, index) => {
+      // Dynamic per-user release offset based on user's selected speed
+      const userReleaseOffset = Math.floor(index / Math.max(1, speed));
       const releaseDate = new Date(enrollmentDate);
-      releaseDate.setDate(releaseDate.getDate() + section.releaseOffset);
+      releaseDate.setDate(releaseDate.getDate() + userReleaseOffset);
       return releaseDate <= currentDate;
     });
   };
@@ -125,7 +139,7 @@ export default function VideoDetailsSidebar({ setReviewModal }) {
           <div className="h-[calc(100vh - 5rem)] overflow-y-auto">
             {enrollmentDate &&
               isOpen &&
-              getAvailableSections(courseSectionData, enrollmentDate).map(
+              getAvailableSections(courseSectionData, enrollmentDate, targetSpeed).map(
                 (section, index) => (
                   <div
                     className={`mt-2 cursor-pointer text-sm text-richblack-25 ${

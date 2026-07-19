@@ -63,22 +63,21 @@ exports.deleteAccount = async (req, res) => {
       _id: new mongoose.Types.ObjectId(user.additionalDetails),
     });
 
-    for (const courseId of user.courses) {
+    for (const courseEntry of user.courses) {
       await Course.findByIdAndUpdate(
-        courseId,
+        courseEntry.courseId,
         { $pull: { studentsEnrolled: id } },
         { new: true }
       );
     }
 
+    await CourseProgress.deleteMany({ userId: id });
     await User.findByIdAndDelete({ _id: id });
 
     res.status(200).json({
       success: true,
       message: "User deleted successfully",
     });
-
-    await CourseProgress.deleteMany({ userId: id });
   } catch (error) {
     res
       .status(500)

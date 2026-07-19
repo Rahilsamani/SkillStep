@@ -22,6 +22,7 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./components/core/Dashboard/Settings";
 import EnrolledCourses from "./components/core/Dashboard/EnrolledCourses";
 import AddCourse from "./components/core/Dashboard/AddCourse";
+import AddCategory from "./components/core/Dashboard/AddCategory";
 import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/ViewCourse/VideoDetails";
 
@@ -100,7 +101,7 @@ function App() {
           <Route path="dashboard/my-profile" element={<MyProfile />} />
           <Route path="dashboard/Settings" element={<Settings />} />
 
-          {user?.accountType === "Student" && (
+          {(user?.accountType === "Student" || user?.accountType === "Admin") && (
             <>
               <Route
                 path="dashboard/enrolled-courses"
@@ -112,6 +113,10 @@ function App() {
           <>
             <Route path="dashboard/add-course" element={<AddCourse />} />
           </>
+
+          {user?.accountType === "Admin" && (
+            <Route path="dashboard/add-category" element={<AddCategory />} />
+          )}
         </Route>
 
         <Route
@@ -121,7 +126,7 @@ function App() {
             </PrivateRoute>
           }
         >
-          {user?.accountType === "Student" && (
+          {(user?.accountType === "Student" || user?.accountType === "Admin") && (
             <>
               <Route
                 path="view-course/:courseId/:sectionId"

@@ -37,6 +37,7 @@ const userSchema = new mongoose.Schema(
       {
         courseId: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
         enrollmentDate: { type: Date, required: true },
+        videosPerDay: { type: Number, default: 1 },
         completed: { type: Boolean, default: false },
         completionDate: Date,
         certificateIssued: { type: Boolean, default: false },

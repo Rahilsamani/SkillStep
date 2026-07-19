@@ -160,6 +160,7 @@ const sendOTP = async (req, res) => {
         lowerCaseAlphabets: false,
         specialChars: false,
       });
+      result = await OTP.findOne({ otp });
     }
 
     const otpPayload = { email, otp };

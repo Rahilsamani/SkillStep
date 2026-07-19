@@ -34,6 +34,13 @@ export default function Sidebar() {
       path: "/dashboard/enrolled-courses",
       icon: "VscMortarBoard",
     },
+    {
+      id: 4,
+      name: "Add Category",
+      path: "/dashboard/add-category",
+      type: "Admin",
+      icon: "VscFolder",
+    },
   ];
 
   const dispatch = useDispatch();
