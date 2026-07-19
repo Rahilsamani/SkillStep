@@ -90,7 +90,7 @@ function SpeedBadge({ speed }) {
 
   return (
     <span
-      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold border ${c.bg} ${c.border} ${c.text} shadow-md ${c.glow}`}
+      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold border ${c.bg} ${c.border} text-yellow-50 ${c.text} shadow-md ${c.glow}`}
     >
       ⚡ {speed}
     </span>
@@ -234,6 +234,48 @@ export default function ProgressInsights({ courseId }) {
             className="overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* AI Weekly Report Card (Option 4) */}
+            {insights.aiWeeklyReport && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-3 p-4 rounded-xl bg-gradient-to-br from-richblack-800 via-richblack-800 to-blue-950/70 border border-yellow-50/40 text-richblack-25 shadow-xl"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-base">🤖</span>
+                  <span className="text-xs font-extrabold text-yellow-50 uppercase tracking-wider">
+                    AI Weekly Report & Consistency Analysis
+                  </span>
+                </div>
+                <div className="space-y-1 text-sm text-richblack-100">
+                  <p className="text-yellow-5 text-base font-bold">
+                    {insights.aiWeeklyReport.greeting}
+                  </p>
+                  <p className="font-semibold text-richblack-5">
+                    {insights.aiWeeklyReport.completedText}
+                  </p>
+                  {insights.aiWeeklyReport.habitText && (
+                    <p className="text-richblack-200">
+                      {insights.aiWeeklyReport.habitText}
+                    </p>
+                  )}
+                  {insights.aiWeeklyReport.projectionText && (
+                    <p className="text-emerald-400 font-semibold">
+                      {insights.aiWeeklyReport.projectionText}
+                    </p>
+                  )}
+                  {insights.aiWeeklyReport.aiMessage && (
+                    <p className="whitespace-pre-line text-richblack-100 italic bg-richblack-900/80 p-3 rounded-lg border border-richblack-700 mt-2">
+                      "{insights.aiWeeklyReport.aiMessage}"
+                    </p>
+                  )}
+                  <p className="text-yellow-50 font-bold mt-2">
+                    {insights.aiWeeklyReport.closing}
+                  </p>
+                </div>
+              </motion.div>
+            )}
+
             {/* AI Daily Motivation Banner */}
             {aiMotivation && (
               <motion.div

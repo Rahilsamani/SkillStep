@@ -22,6 +22,7 @@ const {
 const { auth, isStudent, isAdmin } = require("../middlewares/auth");
 const { updateCourseProgress } = require("../controllers/courseProgress");
 const { getProgressInsights } = require("../controllers/insightsController");
+const { getAIMotivation } = require("../controllers/aiChatController");
 
 // Course Creation Route (Course)
 router.post("/createCourse", auth, createCourse);
@@ -30,6 +31,7 @@ router.post("/getFullCourseDetails", auth, getFullCourseDetails);
 router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress);
 router.post("/getProgressInsights", auth, isStudent, getProgressInsights);
 router.post("/triggerNotifications", auth, triggerNotifications);
+router.post("/ai-motivation", auth, getAIMotivation);
 
 router.post("/createCategory", auth, isAdmin, createCategory);
 router.post("/updateCategory", auth, isAdmin, updateCategory);

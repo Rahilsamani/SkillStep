@@ -25,6 +25,7 @@ import AddCourse from "./components/core/Dashboard/AddCourse";
 import AddCategory from "./components/core/Dashboard/AddCategory";
 import ViewCourse from "./pages/ViewCourse";
 import VideoDetails from "./components/core/ViewCourse/VideoDetails";
+import AIChatbot from "./components/common/AIChatbot";
 
 import { getUserDetails } from "./services/operations/profileAPI";
 
@@ -138,6 +139,7 @@ function App() {
 
         <Route path="*" element={<Error />} />
       </Routes>
+      <AIChatbot />
     </div>
   );
 }

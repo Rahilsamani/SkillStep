@@ -213,3 +213,24 @@ export const getProgressInsights = async (courseId, token) => {
   }
   return result;
 };
+
+// fetch AI motivation chatbot reply
+export const fetchAIMotivation = async (messages, courseId, token) => {
+  let reply = null;
+  try {
+    const response = await apiConnector(
+      "POST",
+      courseEndpoints.AI_MOTIVATION_API,
+      { messages, courseId },
+      { Authorization: `Bearer ${token}` }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Could Not Fetch AI Motivation");
+    }
+    reply = response?.data?.reply;
+  } catch (error) {
+    console.log("AI_MOTIVATION_API ERROR............", error);
+  }
+  return reply;
+};

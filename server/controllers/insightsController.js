@@ -2,6 +2,7 @@ const Course = require("../models/Course");
 const User = require("../models/User");
 const Section = require("../models/Section");
 const CourseProgress = require("../models/CourseProgress");
+const { callAIAPI } = require("./aiChatController");
 
 /**
  * Compute AI Progress Insights for a user's course enrollment.
@@ -18,34 +19,41 @@ exports.getProgressInsights = async (req, res) => {
     }
 
     // Fetch all required data in parallel
-    const [user, courseProgress, allSections] = await Promise.all([
+    let [user, courseProgress, allSections] = await Promise.all([
       User.findById(userId),
       CourseProgress.findOne({ courseID: courseId, userId }),
       Section.find({ courseId }).sort({ releaseOffset: 1 }),
     ]);
 
-    if (!user || !courseProgress) {
+    if (!user) {
       return res
         .status(404)
-        .json({ success: false, message: "Progress data not found" });
+        .json({ success: false, message: "User data not found" });
     }
 
-    // Find the user's enrollment for this course
-    const userCourse = user.courses.find(
-      (c) => c.courseId && c.courseId.toString() === courseId.toString()
+    // Auto-initialize course progress if missing for user
+    if (!courseProgress) {
+      courseProgress = await CourseProgress.create({
+        courseID: courseId,
+        userId: userId,
+        completedVideos: [],
+      });
+    }
+
+    // Find the user's enrollment for this course safely
+    const userCourse = user.courses?.find((c) => {
+      if (!c || !c.courseId) return false;
+      const cId = c.courseId._id ? c.courseId._id.toString() : c.courseId.toString();
+      return cId === courseId.toString();
+    });
+
+    const enrollmentDate = new Date(
+      userCourse?.enrollmentDate || user.createdAt || Date.now()
     );
-
-    if (!userCourse) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Enrollment not found" });
-    }
-
-    const enrollmentDate = new Date(userCourse.enrollmentDate);
     const now = new Date();
-    const completedCount = courseProgress.completedVideos.length;
+    const completedCount = courseProgress?.completedVideos?.length || 0;
     const totalVideos = allSections.length;
-    const completionLog = courseProgress.completionLog || [];
+    const completionLog = courseProgress?.completionLog || [];
 
     // Days since enrollment (minimum 1 to avoid division by zero)
     const msPerDay = 24 * 60 * 60 * 1000;
@@ -193,6 +201,34 @@ exports.getProgressInsights = async (req, res) => {
       aiMotivation = `🔥 You've completed ${completedCount} of ${totalVideos} lessons at ${targetVideosPerDay} video${targetVideosPerDay > 1 ? "s" : ""}/day. You're in the top ${topPercent}% of learners. Only ${daysRemaining} day${daysRemaining > 1 ? "s" : ""} left to finish!`;
     }
 
+    // Option 4: AI Weekly Report Card Generation
+    const daysSaved = Math.max(0, totalTargetDays - daysRemaining);
+    const earlyText = daysSaved > 0
+      ? `Based on your consistency, you'll finish the course ${daysSaved} day${daysSaved > 1 ? "s" : ""} earlier.`
+      : `At your target pace of ${targetVideosPerDay} video${targetVideosPerDay > 1 ? "s" : ""}/day, you'll finish in about ${daysRemaining} day${daysRemaining > 1 ? "s" : ""}.`;
+
+    const reportPrompt = `Generate a concise 4-bullet AI Weekly Learning Report for student ${user.firstName}. Stats: Completed ${completedCount} of ${totalVideos} videos (${Math.round(progressPercent)}%). Speed: ${learningSpeed}. Projection: ${earlyText}. Format output as short punchy lines.`;
+
+    const groqReport = await callAIAPI(reportPrompt);
+
+    let aiWeeklyReport = null;
+    if (groqReport) {
+      aiWeeklyReport = {
+        greeting: "Great progress!",
+        completedText: `You've completed ${completedCount} video${completedCount !== 1 ? "s" : ""}.`,
+        aiMessage: groqReport,
+        closing: "Keep going! 🚀",
+      };
+    } else {
+      aiWeeklyReport = {
+        greeting: progressPercent >= 50 ? "Great progress!" : "Awesome start!",
+        completedText: `You've completed ${completedCount} video${completedCount !== 1 ? "s" : ""}.`,
+        habitText: "You usually study with steady consistency.",
+        projectionText: earlyText,
+        closing: "Keep going! 🚀",
+      };
+    }
+
     return res.status(200).json({
       success: true,
       data: {
@@ -201,6 +237,7 @@ exports.getProgressInsights = async (req, res) => {
         predictedCompletion,
         interviewReadiness,
         aiMotivation,
+        aiWeeklyReport,
         stats: {
           completedCount,
           totalVideos,

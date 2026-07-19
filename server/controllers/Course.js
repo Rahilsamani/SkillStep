@@ -8,6 +8,7 @@ const {
 } = require("../mail/templates/videoAvailable");
 const mailSender = require("../utils/mailSender");
 const { getOrFetchPlaylist } = require("../utils/youtubeService");
+const { callAIAPI } = require("./aiChatController");
 
 /**
  * Extract YouTube playlist ID from a URL string.
@@ -329,21 +330,24 @@ exports.notifyUsers = async () => {
             const userPace = completedCount > 0 ? completedCount / daysEnrolled : 1;
             const daysRemaining = Math.max(1, Math.ceil(remainingVideos / Math.max(0.5, userPace)));
 
-            let motivationMsg = "";
-            if (completedCount === 0) {
-              motivationMsg = `A new lesson "${section.title}" is unlocked! Ready to kickstart your journey? Watch today's video to start your learning streak and join top performers!`;
-            } else {
-              motivationMsg = `You've already completed ${completedCount} lesson${completedCount > 1 ? "s" : ""}. You're in the top ${topPercent}% of learners! Only ${daysRemaining} day${daysRemaining > 1 ? "s" : ""} left to finish your course! New lesson unlocked: "${section.title}".`;
+            // Option 5: AI Learning Buddy Daily Morning Message
+            const yesterdayCompleted = Math.min(completedCount, userVideosPerDay || 1);
+            const buddyPrompt = `Write a short 4-sentence AI Learning Buddy daily morning email for student ${user.firstName}. Yesterday they completed ${yesterdayCompleted} video(s). Today's lesson: "${section.title}". Give 1 encouraging study recommendation.`;
+
+            let motivationMsg = await callAIAPI(buddyPrompt);
+
+            if (!motivationMsg) {
+              motivationMsg = `Good morning ${user.firstName}!\n\nYesterday you completed ${yesterdayCompleted} video${yesterdayCompleted !== 1 ? "s" : ""}.\n\nToday's lesson is about "${section.title}".\n\nI recommend staying focused and taking quick notes today to keep your streak going strong!\n\nGood luck! 🚀`;
             }
 
             const baseUrl = process.env.CLIENT_URL || "http://localhost:3000";
-            const subject = `AI Daily Motivation: ${section.title}`;
+            const subject = `AI Learning Buddy: Good Morning ${user.firstName}! (${section.title})`;
             const htmlContent = notificationEmailTemplate(
               `${user.firstName} ${user.lastName}`,
-              `🔥 SkillStep AI Daily Motivation`,
-              motivationMsg,
+              `🤖 SkillStep AI Learning Buddy`,
+              motivationMsg.replace(/\n/g, "<br/>"),
               `${baseUrl}/view-course/${section.courseId._id}/${section._id}`,
-              "Go to Course"
+              "Start Today's Lesson"
             );
 
             // Send email notification to the user
